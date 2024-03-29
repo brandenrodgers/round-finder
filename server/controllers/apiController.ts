@@ -1,6 +1,6 @@
 import express, { Response, Request, Router } from "express";
-import { TeeTime } from "../types/TeeTime";
 import { Handler } from "../types/Handler";
+import { Course, Courses } from "../types/Course";
 import courseHandlers from "../courseHandlers";
 
 const router = Router();
@@ -16,16 +16,24 @@ router.get("/tee-times", async (req: Request, res: Response) => {
 
   const params = { date } as { date: string };
 
-  const fetchTeeTimesForCourse = async (
-    handler: Handler
-  ): Promise<Array<TeeTime>> => {
+  const fetchTeeTimesForCourse = async (handler: Handler): Promise<Course> => {
     try {
       const resp = await handler.fetchTeeTimes(handler.formatParams(params));
       const formattedResponse = handler.formatResponse(resp);
-      return formattedResponse;
+      return {
+        courseId: handler.id,
+        courseName: handler.name,
+        bookLink: handler.bookLink,
+        teeTimes: formattedResponse,
+      };
     } catch (e: any) {
-      console.log(e);
-      return [];
+      console.error(e);
+      return {
+        courseId: handler.id,
+        courseName: handler.name,
+        bookLink: handler.bookLink,
+        error: e.response.data,
+      };
     }
   };
 
@@ -33,14 +41,19 @@ router.get("/tee-times", async (req: Request, res: Response) => {
     keyof typeof courseHandlers
   >;
 
-  const responses: Array<Array<TeeTime>> = await Promise.all<Array<TeeTime>>(
+  const teeTimesByCourse: Array<Course> = await Promise.all<Course>(
     courseIds.map((courseId) => {
       const handler = courseHandlers[courseId];
       return fetchTeeTimesForCourse(handler as Handler);
     })
   );
 
-  res.send(responses.flat());
+  const response = teeTimesByCourse.reduce((acc, course) => {
+    acc[course.courseId] = course;
+    return acc;
+  }, {} as Courses);
+
+  res.send(response);
 });
 
 router.get("/unicorn", async (req: Request, res: Response) => {

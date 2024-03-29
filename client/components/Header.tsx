@@ -40,18 +40,24 @@ const Header: React.FC = () => {
     return null;
   };
 
+  // A hack to make fixed position work
+  const renderToolbar = () => {
+    return (
+      <Toolbar>
+        {renderHomeIcon()}
+        <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+          Round <SportsGolfIcon /> Finder
+        </Typography>
+
+        <Box sx={{ flexGrow: 0 }}>{renderDate()}</Box>
+      </Toolbar>
+    );
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          {renderHomeIcon()}
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            Round <SportsGolfIcon /> Finder
-          </Typography>
-
-          <Box sx={{ flexGrow: 0 }}>{renderDate()}</Box>
-        </Toolbar>
-      </AppBar>
+      <AppBar position="fixed">{renderToolbar()}</AppBar>
+      {renderToolbar()}
     </Box>
   );
 };

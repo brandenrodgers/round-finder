@@ -71,7 +71,9 @@ const SearchForm: React.FC = () => {
           aria-label="holes-input"
         >
           <ToggleButton value={9}>
-            <Typography variant="h4"> 9</Typography>
+            <Typography variant="h4" sx={{ px: 1 }}>
+              9
+            </Typography>
           </ToggleButton>
           <ToggleButton value={18}>
             <Typography variant="h4">18</Typography>
@@ -140,6 +142,7 @@ const SearchForm: React.FC = () => {
           variant="contained"
           size="large"
           endIcon={<GolfCourseIcon />}
+          disabled={!holes || !people || !times.length}
           onClick={handleSearch}
         >
           Search

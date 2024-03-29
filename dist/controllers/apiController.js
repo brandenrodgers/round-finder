@@ -49,19 +49,33 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
         try {
             const resp = yield handler.fetchTeeTimes(handler.formatParams(params));
             const formattedResponse = handler.formatResponse(resp);
-            return formattedResponse;
+            return {
+                courseId: handler.id,
+                courseName: handler.name,
+                bookLink: handler.bookLink,
+                teeTimes: formattedResponse,
+            };
         }
         catch (e) {
-            console.log(e);
-            return [];
+            console.error(e);
+            return {
+                courseId: handler.id,
+                courseName: handler.name,
+                bookLink: handler.bookLink,
+                error: e.response.data,
+            };
         }
     });
     const courseIds = Object.keys(courseHandlers_1.default);
-    const responses = yield Promise.all(courseIds.map((courseId) => {
+    const teeTimesByCourse = yield Promise.all(courseIds.map((courseId) => {
         const handler = courseHandlers_1.default[courseId];
         return fetchTeeTimesForCourse(handler);
     }));
-    res.send(responses.flat());
+    const response = teeTimesByCourse.reduce((acc, course) => {
+        acc[course.courseId] = course;
+        return acc;
+    }, {});
+    res.send(response);
 }));
 router.get("/unicorn", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const handler = courseHandlers_1.default.unicorn;

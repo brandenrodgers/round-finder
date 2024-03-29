@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 app.use("/api", apiController);
 
-app.get("/*", (req: Request, res: Response, next: NextFunction): void => {
+app.get("*", (req: Request, res: Response, next: NextFunction): void => {
   try {
     res.sendFile(path.join(__dirname, "../public/index.html"));
   } catch (error) {
