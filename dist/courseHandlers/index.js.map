@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../server/courseHandlers/index.ts"],"names":[],"mappings":";;;;;AAAA,wDAAuC;AACvC,sEAAqD;AACrD,wDAAuC;AACvC,4DAA2C;AAE3C,kBAAe;IACb,SAAS,EAAE,mBAAgB;IAC3B,OAAO,EAAE,iBAAc;IACvB,cAAc,EAAE,wBAAqB;IACrC,OAAO,EAAE,iBAAc;CACxB,CAAC"}

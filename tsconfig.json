@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "lib": [
+      "es6",
+      "DOM"
+    ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+    "jsx": "react" /* Specify what JSX code is generated. */,
+    /* Modules */
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "resolveJsonModule": true /* Enable importing .json files. */,
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    /* JavaScript Support */
+    "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
+    /* Emit */
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "sourceMap": true,
+    /* Type Checking */
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+    /* Completeness */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["server/", "server/types"]
+}
