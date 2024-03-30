@@ -24,6 +24,7 @@ router.get("/tee-times", async (req: Request, res: Response) => {
         courseId: handler.id,
         courseName: handler.name,
         bookLink: handler.bookLink,
+        courseImage: handler.image,
         teeTimes: formattedResponse,
       };
     } catch (e: any) {
@@ -32,6 +33,7 @@ router.get("/tee-times", async (req: Request, res: Response) => {
         courseId: handler.id,
         courseName: handler.name,
         bookLink: handler.bookLink,
+        courseImage: handler.image,
         error: e.response.data,
       };
     }
@@ -85,3 +87,9 @@ router.get("/sagamore-spring", async (req: Request, res: Response) => {
 });
 
 export default router;
+
+// TODO
+// - Confirm button for filter drawer
+// Fix tee time times for filter (send hours and minutes instead?)
+// Make filter actually work
+// Include date in book links?

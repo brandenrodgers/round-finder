@@ -1,15 +1,22 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Box, AppBar, Toolbar, IconButton, Typography } from "@mui/material";
+import dayjs from "dayjs";
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import SportsGolfIcon from "@mui/icons-material/SportsGolf";
 import HomeIcon from "@mui/icons-material/Home";
 import { useAppSelector } from "../hooks/redux";
 
 const Header: React.FC = () => {
   const date = useAppSelector((state) => state.date.value);
-
   const location = useLocation();
   const navigate = useNavigate();
+
+  const shouldRenderFixedDate = date && location.pathname !== "/";
 
   const renderHomeIcon = () => {
     if (location.pathname.includes("tee-times")) {
@@ -29,18 +36,7 @@ const Header: React.FC = () => {
     return null;
   };
 
-  const renderDate = () => {
-    if (date && location.pathname !== "/") {
-      return (
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Playing on {date}
-        </Typography>
-      );
-    }
-    return null;
-  };
-
-  // A hack to make fixed position work
+  // A hack to make fixed position work. Hide this behind the fixed toolbar
   const renderToolbar = () => {
     return (
       <Toolbar>
@@ -48,16 +44,49 @@ const Header: React.FC = () => {
         <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
           Round <SportsGolfIcon /> Finder
         </Typography>
-
-        <Box sx={{ flexGrow: 0 }}>{renderDate()}</Box>
       </Toolbar>
     );
   };
 
+  const renderSubToolbarContent = () => {
+    return (
+      <Typography
+        variant="h6"
+        component="div"
+        sx={{ py: 1, flexGrow: 1, display: "flex", justifyContent: "center" }}
+      >
+        Playing {dayjs(date).format("dddd, MMM D")}
+      </Typography>
+    );
+  };
+
+  const renderSubToolbar = () => {
+    if (shouldRenderFixedDate) {
+      return (
+        <Fragment>
+          <Toolbar
+            disableGutters
+            sx={{ position: "fixed", width: "100%", alignItems: "flex-start" }}
+            onClick={() => navigate("/")}
+          >
+            <Paper square elevation={2} sx={{ width: "100%", height: "100%" }}>
+              {renderSubToolbarContent()}
+            </Paper>
+          </Toolbar>
+          <Paper component={Box}>{renderSubToolbarContent()}</Paper>
+        </Fragment>
+      );
+    }
+    return null;
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">{renderToolbar()}</AppBar>
+      <AppBar position="fixed" elevation={shouldRenderFixedDate ? 0 : 1}>
+        {renderToolbar()}
+      </AppBar>
       {renderToolbar()}
+      {renderSubToolbar()}
     </Box>
   );
 };

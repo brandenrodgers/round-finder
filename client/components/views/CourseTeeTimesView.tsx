@@ -2,19 +2,12 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import Header from "../Header";
 import { TeeTime } from "../../../server/types/TeeTime";
-
-const DisplayCard = styled(Paper)(() => ({
-  textAlign: "center",
-  height: 60,
-  lineHeight: "60px",
-}));
+import TeeTimeCard from "../TeeTimeCard";
 
 const CourseTeeTimesView: React.FC = () => {
   const { courseId } = useParams();
@@ -30,12 +23,10 @@ const CourseTeeTimesView: React.FC = () => {
     }
   }, [course]);
 
-  const renderTeeTime = (teeTime: TeeTime) => {
+  const renderTeeTime = (teeTime: TeeTime, index: number) => {
     return (
-      <Box key={teeTime.time}>
-        <Typography variant="h5">
-          {teeTime.availablePlayers} spots for {teeTime.time}
-        </Typography>
+      <Box key={`${index}-${teeTime.time}`}>
+        <TeeTimeCard teeTime={teeTime} />
       </Box>
     );
   };
@@ -43,8 +34,13 @@ const CourseTeeTimesView: React.FC = () => {
   const renderTeeTimes = () => {
     if (course && course.teeTimes && course.teeTimes.length) {
       return (
-        <Box>
-          <Box>{course.teeTimes.map(renderTeeTime)}</Box>
+        <Box
+          sx={{
+            display: "grid",
+            rowGap: 3,
+          }}
+        >
+          {course.teeTimes.map(renderTeeTime)}
         </Box>
       );
     }
@@ -55,34 +51,43 @@ const CourseTeeTimesView: React.FC = () => {
     if (course) {
       return (
         <Box>
-          <Typography variant="h4">{course.courseName}</Typography>
-          <Button
-            variant="contained"
-            size="small"
-            href={course.bookLink}
-            endIcon={<OpenInNewIcon />}
-            target="_blank"
-            rel="noreferrer"
+          <Typography
+            variant="h4"
+            sx={{ pb: 2, display: "flex", justifyContent: "center" }}
           >
-            Book
-          </Button>
-          <Box>{renderTeeTimes()}</Box>
+            {course.courseName}
+          </Typography>
+          {renderTeeTimes()}
         </Box>
       );
     }
-    return <Box>No info for this course</Box>;
+    return null;
   };
 
   return (
     <Box>
-      <Header />
-      <Button
-        variant="contained"
-        size="small"
-        onClick={() => navigate("/tee-times")}
+      <Box
+        sx={{ pb: 2, px: 2, display: "flex", justifyContent: "space-between" }}
       >
-        Back
-      </Button>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<ChevronLeftIcon />}
+          onClick={() => navigate("/tee-times")}
+        >
+          Back
+        </Button>
+        <Button
+          variant="outlined"
+          size="small"
+          href={course ? course.bookLink : ""}
+          endIcon={<OpenInNewIcon />}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Book
+        </Button>
+      </Box>
       {renderContent()}
     </Box>
   );

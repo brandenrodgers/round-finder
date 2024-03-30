@@ -53,6 +53,7 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
                 courseId: handler.id,
                 courseName: handler.name,
                 bookLink: handler.bookLink,
+                courseImage: handler.image,
                 teeTimes: formattedResponse,
             };
         }
@@ -62,6 +63,7 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
                 courseId: handler.id,
                 courseName: handler.name,
                 bookLink: handler.bookLink,
+                courseImage: handler.image,
                 error: e.response.data,
             };
         }

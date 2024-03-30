@@ -5,8 +5,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Home from "./views/HomeView";
-import TeeTimes from "./views/CourseListingsView";
-import CourseView from "./views/CourseTeeTimesView";
+import TeeTimesView from "./views/TeeTimesView";
+import CourseListingsView from "./views/CourseListingsView";
+import CourseTeeTimesView from "./views/CourseTeeTimesView";
 import theme from "../theme";
 
 const App: React.FC = () => {
@@ -17,8 +18,10 @@ const App: React.FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="tee-times" element={<TeeTimes />} />
-            <Route path="/tee-times/:courseId" element={<CourseView />} />
+            <Route path="tee-times" element={<TeeTimesView />}>
+              <Route index element={<CourseListingsView />} />
+              <Route path=":courseId" element={<CourseTeeTimesView />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
