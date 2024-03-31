@@ -33,7 +33,12 @@ const makeFormatResponse = (courseId, courseName) => (resp) => {
             courseId,
             courseName,
             availablePlayers: teeTime.available_spots,
-            time: (0, time_1.getTimeFromDate)(teeTime.time),
+            startSide: teeTime.teesheet_side_name.toLowerCase(),
+            time: {
+                hours: (0, time_1.getHoursFromDate)(teeTime.time),
+                minutes: (0, time_1.getMinutesFromDate)(teeTime.time),
+            },
+            holes: teeTime.holes,
         };
     });
 };

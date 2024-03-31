@@ -28,18 +28,52 @@ const formatParams = (params) => {
         date: `${year}-${(0, time_1.padDatePart)(month)}-${(0, time_1.padDatePart)(day)}`,
     };
 };
+const getHoles = (rates) => {
+    const result = { 9: false, 18: false };
+    rates.forEach((rate) => {
+        if (rate.holes === 9) {
+            result[9] = true;
+        }
+        else if (rate.holes === 18) {
+            result[18] = true;
+        }
+    });
+    return result;
+};
 const makeFormatResponse = (courseId, courseName) => (resp) => {
+    const result = [];
     if (resp && resp[0] && resp[0].teetimes) {
-        return resp[0].teetimes.map((teeTime) => {
-            return {
-                courseId,
-                courseName,
-                availablePlayers: 4 - teeTime.bookedPlayers,
-                time: (0, time_1.getTimeFromDate)(teeTime.teetime),
-            };
+        resp[0].teetimes.forEach((teeTime) => {
+            const holes = getHoles(teeTime.rates);
+            if (holes[9]) {
+                result.push({
+                    courseId,
+                    courseName,
+                    availablePlayers: 4 - teeTime.bookedPlayers,
+                    time: {
+                        hours: (0, time_1.getHoursFromDate)(teeTime.teetime),
+                        minutes: (0, time_1.getMinutesFromDate)(teeTime.teetime),
+                    },
+                    startSide: teeTime.backNine ? "back" : "front",
+                    holes: 9,
+                });
+            }
+            if (holes[18]) {
+                result.push({
+                    courseId,
+                    courseName,
+                    availablePlayers: 4 - teeTime.bookedPlayers,
+                    time: {
+                        hours: (0, time_1.getHoursFromDate)(teeTime.teetime),
+                        minutes: (0, time_1.getMinutesFromDate)(teeTime.teetime),
+                    },
+                    startSide: teeTime.backNine ? "back" : "front",
+                    holes: 18,
+                });
+            }
         });
     }
-    return [];
+    return result;
 };
 const makePHXHandler = ({ facilityAlias, facilityId, id, image, name, }) => ({
     bookLink: `https://${facilityAlias}.book.teeitup.golf/?course=${facilityId}`,

@@ -8,12 +8,12 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
 import { TeeTime } from "../../../server/types/TeeTime";
 import TeeTimeCard from "../TeeTimeCard";
+import { getFilteredTeeTimes } from "../../hooks/selectors";
 
 const CourseTeeTimesView: React.FC = () => {
   const { courseId } = useParams();
-  const course = useAppSelector((state) =>
-    courseId ? state.teeTimes.value[courseId] : null
-  );
+  const courses = useAppSelector(getFilteredTeeTimes);
+  const course = courseId ? courses[courseId] : null;
 
   const navigate = useNavigate();
 
@@ -38,6 +38,7 @@ const CourseTeeTimesView: React.FC = () => {
           sx={{
             display: "grid",
             rowGap: 3,
+            justifyContent: "center",
           }}
         >
           {course.teeTimes.map(renderTeeTime)}
@@ -71,6 +72,7 @@ const CourseTeeTimesView: React.FC = () => {
       >
         <Button
           variant="outlined"
+          color="secondary"
           size="small"
           startIcon={<ChevronLeftIcon />}
           onClick={() => navigate("/tee-times")}
@@ -79,6 +81,7 @@ const CourseTeeTimesView: React.FC = () => {
         </Button>
         <Button
           variant="outlined"
+          color="secondary"
           size="small"
           href={course ? course.bookLink : ""}
           endIcon={<OpenInNewIcon />}

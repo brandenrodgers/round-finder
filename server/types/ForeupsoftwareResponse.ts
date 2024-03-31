@@ -21,7 +21,7 @@ export type ForeupsoftwareTeeTime = {
   maximum_players_per_booking: string;
   minimum_players: string;
   allowed_group_sizes: Array<string>;
-  holes: string;
+  holes: number;
   has_special: boolean;
   special_id: boolean;
   special_discount_percentage: number;

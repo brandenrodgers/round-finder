@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import teeTimesReducer from "./teeTimesSlice";
+import courseReducer from "./courseSlice";
 import filterReducer from "./filterSlice";
 import dateReducer from "./dateSlice";
 
@@ -7,7 +7,7 @@ export const store = configureStore({
   reducer: {
     date: dateReducer,
     filter: filterReducer,
-    teeTimes: teeTimesReducer,
+    courses: courseReducer,
   },
 });
 

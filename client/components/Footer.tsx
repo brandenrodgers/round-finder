@@ -5,6 +5,8 @@ import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import PersonIcon from "@mui/icons-material/Person";
@@ -17,23 +19,24 @@ import AccessTimeFilledOutlinedIcon from "@mui/icons-material/AccessTimeFilledOu
 import CloseIcon from "@mui/icons-material/Close";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Holes, People } from "../types/filter";
+import { Holes, Players } from "../types/filter";
 import { updateFilter } from "../redux/filterSlice";
 import HolesPicker from "./inputs/HolesPicker";
-import PeoplePicker from "./inputs/PeoplePicker";
+import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
+import { getFilter } from "../hooks/selectors";
 
 const Footer: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const filter = useAppSelector((state) => state.filter.value);
+  const filter = useAppSelector(getFilter);
   const [holes, setHoles] = useState(filter.holes || (9 as Holes));
-  const [people, setPeople] = useState(filter.people || (1 as People));
+  const [players, setPlayers] = useState(filter.players || (1 as Players));
   const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
 
   const dispatch = useAppDispatch();
 
   const handleDrawerClose = () => {
-    dispatch(updateFilter({ holes, people, times }));
+    dispatch(updateFilter({ holes, players, times }));
     setDrawerOpen(false);
   };
 
@@ -46,13 +49,13 @@ const Footer: React.FC = () => {
   };
 
   const getPersonIcon = () => {
-    if (filter.people === 1) {
+    if (filter.players === 1) {
       return drawerOpen ? <PersonOutlineOutlinedIcon /> : <PersonIcon />;
     }
     return drawerOpen ? <PeopleAltOutlinedIcon /> : <PeopleIcon />;
   };
 
-  if (filter.holes && filter.people && filter.times) {
+  if (filter.holes && filter.players && filter.times) {
     return (
       <Fragment>
         <Paper
@@ -73,8 +76,8 @@ const Footer: React.FC = () => {
               showLabel={!drawerOpen}
             />
             <BottomNavigationAction
-              label={`${filter.people} ${
-                filter.people === 1 ? "Player" : "Players"
+              label={`${filter.players} ${
+                filter.players === 1 ? "Player" : "Players"
               }`}
               icon={getPersonIcon()}
               onClick={handleNavClick}
@@ -131,9 +134,9 @@ const Footer: React.FC = () => {
               <Typography variant="h5" gutterBottom>
                 Holes with
               </Typography>
-              <PeoplePicker
-                value={people}
-                onChange={(newPeople) => setPeople(newPeople)}
+              <PlayersPicker
+                value={players}
+                onChange={(newPlayers) => setPlayers(newPlayers)}
               />
             </Grid>
 
@@ -144,12 +147,28 @@ const Footer: React.FC = () => {
               flexDirection="column"
             >
               <Typography variant="h5" gutterBottom>
-                {people === 1 ? "Person" : "People"} at
+                {players === 1 ? "Player" : "Players"} at
               </Typography>
               <TimesPicker
                 value={times}
                 onChange={(newTimes) => setTimes(newTimes)}
               />
+            </Grid>
+
+            <Grid
+              xs={12}
+              display="flex"
+              alignItems="center"
+              flexDirection="column"
+            >
+              <Button
+                variant="contained"
+                size="medium"
+                endIcon={<FilterAltIcon />}
+                onClick={handleDrawerClose}
+              >
+                Apply
+              </Button>
             </Grid>
           </Grid>
         </Drawer>

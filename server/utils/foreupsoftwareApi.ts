@@ -1,5 +1,10 @@
 import axios from "axios";
-import { getDateParts, padDatePart, getTimeFromDate } from "../utils/time";
+import {
+  getDateParts,
+  padDatePart,
+  getHoursFromDate,
+  getMinutesFromDate,
+} from "../utils/time";
 import { ForeupsoftwareTeeTimeResponse } from "../types/ForeupsoftwareResponse";
 import { TeeTime } from "../types/TeeTime";
 import { GenericFetchParams } from "../types/Params";
@@ -43,7 +48,13 @@ const makeFormatResponse =
         courseId,
         courseName,
         availablePlayers: teeTime.available_spots,
-        time: getTimeFromDate(teeTime.time),
+        startSide:
+          teeTime.teesheet_side_name.toLowerCase() as TeeTime["startSide"],
+        time: {
+          hours: getHoursFromDate(teeTime.time),
+          minutes: getMinutesFromDate(teeTime.time),
+        },
+        holes: teeTime.holes as TeeTime["holes"],
       };
     });
   };

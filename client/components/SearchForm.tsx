@@ -7,17 +7,17 @@ import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Holes, People } from "../types/filter";
+import { Holes, Players } from "../types/filter";
 import { updateFilter } from "../redux/filterSlice";
 import { updateDate } from "../redux/dateSlice";
 import HolesPicker from "./inputs/HolesPicker";
-import PeoplePicker from "./inputs/PeoplePicker";
+import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
 
 const SearchForm: React.FC = () => {
   const [date, setDate] = React.useState(dayjs());
   const [holes, setHoles] = useState(9 as Holes);
-  const [people, setPeople] = useState(1 as People);
+  const [players, setPlayers] = useState(1 as Players);
   const [times, setTimes] = useState<number[]>([7, 11]);
 
   const dispatch = useAppDispatch();
@@ -31,7 +31,7 @@ const SearchForm: React.FC = () => {
 
   const handleSearch = () => {
     dispatch(updateDate(date.format("MM-DD-YYYY")));
-    dispatch(updateFilter({ holes, people, times }));
+    dispatch(updateFilter({ holes, players, times }));
     navigate("/tee-times");
   };
 
@@ -57,15 +57,15 @@ const SearchForm: React.FC = () => {
         <Typography variant="h3" gutterBottom>
           With
         </Typography>
-        <PeoplePicker
-          value={people}
-          onChange={(newPeople) => setPeople(newPeople)}
+        <PlayersPicker
+          value={players}
+          onChange={(newPlayers) => setPlayers(newPlayers)}
         />
       </Grid>
 
       <Grid xs={12} display="flex" alignItems="center" flexDirection="column">
         <Typography variant="h3" gutterBottom>
-          {people === 1 ? "Person" : "People"} at
+          {players === 1 ? "Player" : "Players"} at
         </Typography>
         <TimesPicker
           value={times}
@@ -78,7 +78,7 @@ const SearchForm: React.FC = () => {
           variant="contained"
           size="large"
           endIcon={<SearchIcon />}
-          disabled={!holes || !people || !times.length}
+          disabled={!holes || !players || !times.length}
           onClick={handleSearch}
         >
           Search

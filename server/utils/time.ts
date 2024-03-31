@@ -1,8 +1,11 @@
 export const padDatePart = (datePart: number) =>
   datePart.toString().padStart(2, "0");
 
-export const getTimeFromDate = (date: string): string =>
-  new Date(date).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+export const getHoursFromDate = (date: string): number =>
+  new Date(date).getHours();
+
+export const getMinutesFromDate = (date: string): number =>
+  new Date(date).getMinutes();
 
 export const getDateParts = (
   date: string

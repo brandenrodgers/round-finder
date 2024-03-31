@@ -5,13 +5,14 @@ import Grid from "@mui/material/Unstable_Grid2";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Courses } from "../../../server/types/Course";
-import { updateTeeTimes } from "../../redux/teeTimesSlice";
+import { updateCourses } from "../../redux/courseSlice";
 import CourseCard from "../CourseCard";
+import { getDate, getFilteredTeeTimes } from "../../hooks/selectors";
 
 const CourseListingsView: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const date = useAppSelector((state) => state.date.value);
-  const teeTimesByCourse = useAppSelector((state) => state.teeTimes.value);
+  const date = useAppSelector(getDate);
+  const teeTimesByCourse = useAppSelector(getFilteredTeeTimes);
   const courseIds = Object.keys(teeTimesByCourse);
 
   const dispatch = useAppDispatch();
@@ -30,11 +31,11 @@ const CourseListingsView: React.FC = () => {
         params: { date },
       }
     );
-    dispatch(updateTeeTimes(resp.data));
+    dispatch(updateCourses(resp.data));
     setLoading(false);
   };
 
-  const renderTeeTime = (courseId: string) => {
+  const renderCourseCard = (courseId: string) => {
     const course = teeTimesByCourse[courseId];
 
     return (
@@ -63,9 +64,10 @@ const CourseListingsView: React.FC = () => {
       sx={{
         display: "grid",
         rowGap: 3,
+        justifyContent: "center",
       }}
     >
-      {courseIds.map(renderTeeTime)}
+      {courseIds.map(renderCourseCard)}
     </Box>
   );
 };

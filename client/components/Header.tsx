@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import Box from "@mui/material/Box";
@@ -10,9 +10,10 @@ import Typography from "@mui/material/Typography";
 import SportsGolfIcon from "@mui/icons-material/SportsGolf";
 import HomeIcon from "@mui/icons-material/Home";
 import { useAppSelector } from "../hooks/redux";
+import { getDate } from "../hooks/selectors";
 
 const Header: React.FC = () => {
-  const date = useAppSelector((state) => state.date.value);
+  const date = useAppSelector(getDate);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -63,7 +64,12 @@ const Header: React.FC = () => {
   const renderSubToolbar = () => {
     if (shouldRenderFixedDate) {
       return (
-        <Fragment>
+        <Box
+          sx={{
+            position: "relative",
+            zIndex: (theme) => theme.zIndex.appBar - 1,
+          }}
+        >
           <Toolbar
             disableGutters
             sx={{ position: "fixed", width: "100%", alignItems: "flex-start" }}
@@ -74,7 +80,7 @@ const Header: React.FC = () => {
             </Paper>
           </Toolbar>
           <Paper component={Box}>{renderSubToolbarContent()}</Paper>
-        </Fragment>
+        </Box>
       );
     }
     return null;

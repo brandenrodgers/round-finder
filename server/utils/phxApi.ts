@@ -1,6 +1,11 @@
 import axios from "axios";
-import { getDateParts, padDatePart, getTimeFromDate } from "../utils/time";
-import { PHXTeeTimeResponse } from "../types/PHXResponse";
+import {
+  getDateParts,
+  padDatePart,
+  getHoursFromDate,
+  getMinutesFromDate,
+} from "../utils/time";
+import { PHXTeeTimeRate, PHXTeeTimeResponse } from "../types/PHXResponse";
 import { TeeTime } from "../types/TeeTime";
 import { GenericFetchParams } from "../types/Params";
 
@@ -28,20 +33,58 @@ const formatParams = (params: GenericFetchParams): FetchParams => {
   };
 };
 
+const getHoles = (
+  rates: Array<PHXTeeTimeRate>
+): { 9: boolean; 18: boolean } => {
+  const result = { 9: false, 18: false };
+
+  rates.forEach((rate: PHXTeeTimeRate) => {
+    if (rate.holes === 9) {
+      result[9] = true;
+    } else if (rate.holes === 18) {
+      result[18] = true;
+    }
+  });
+
+  return result;
+};
+
 const makeFormatResponse =
   (courseId: string, courseName: string) =>
   (resp: PHXTeeTimeResponse): Array<TeeTime> => {
+    const result = [] as Array<TeeTime>;
     if (resp && resp[0] && resp[0].teetimes) {
-      return resp[0].teetimes.map((teeTime): TeeTime => {
-        return {
-          courseId,
-          courseName,
-          availablePlayers: 4 - teeTime.bookedPlayers,
-          time: getTimeFromDate(teeTime.teetime),
-        };
+      resp[0].teetimes.forEach((teeTime) => {
+        const holes = getHoles(teeTime.rates);
+        if (holes[9]) {
+          result.push({
+            courseId,
+            courseName,
+            availablePlayers: 4 - teeTime.bookedPlayers,
+            time: {
+              hours: getHoursFromDate(teeTime.teetime),
+              minutes: getMinutesFromDate(teeTime.teetime),
+            },
+            startSide: teeTime.backNine ? "back" : "front",
+            holes: 9,
+          });
+        }
+        if (holes[18]) {
+          result.push({
+            courseId,
+            courseName,
+            availablePlayers: 4 - teeTime.bookedPlayers,
+            time: {
+              hours: getHoursFromDate(teeTime.teetime),
+              minutes: getMinutesFromDate(teeTime.teetime),
+            },
+            startSide: teeTime.backNine ? "back" : "front",
+            holes: 18,
+          });
+        }
       });
     }
-    return [];
+    return result;
   };
 
 export const makePHXHandler = ({
