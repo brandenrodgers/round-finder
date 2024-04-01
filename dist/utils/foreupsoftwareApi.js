@@ -28,19 +28,24 @@ const formatParams = (params) => {
     };
 };
 const makeFormatResponse = (courseId, courseName) => (resp) => {
-    return resp.map((teeTime) => {
-        return {
-            courseId,
-            courseName,
-            availablePlayers: teeTime.available_spots,
-            startSide: teeTime.teesheet_side_name.toLowerCase(),
-            time: {
-                hours: (0, time_1.getHoursFromDate)(teeTime.time),
-                minutes: (0, time_1.getMinutesFromDate)(teeTime.time),
-            },
-            holes: teeTime.holes,
-        };
+    const result = [];
+    resp.forEach((teeTime) => {
+        const holesArray = typeof teeTime.holes === "string" ? [9, 18] : [teeTime.holes];
+        holesArray.forEach((hole) => {
+            result.push({
+                courseId,
+                courseName,
+                availablePlayers: teeTime.available_spots,
+                startSide: teeTime.teesheet_side_name.toLowerCase(),
+                time: {
+                    hours: (0, time_1.getHoursFromDate)(teeTime.time),
+                    minutes: (0, time_1.getMinutesFromDate)(teeTime.time),
+                },
+                holes: hole,
+            });
+        });
     });
+    return result;
 };
 const makeForeupsoftwareHandler = ({ bookingClass, bookingId, id, image, name, scheduleId, }) => ({
     id,

@@ -29,13 +29,13 @@ const formatParams = (params) => {
     };
 };
 const getHoles = (rates) => {
-    const result = { 9: false, 18: false };
+    const result = [];
     rates.forEach((rate) => {
-        if (rate.holes === 9) {
-            result[9] = true;
+        if (rate.holes === 9 && !result.includes(9)) {
+            result.push(9);
         }
-        else if (rate.holes === 18) {
-            result[18] = true;
+        else if (rate.holes === 18 && !result.includes(18)) {
+            result.push(18);
         }
     });
     return result;
@@ -45,7 +45,7 @@ const makeFormatResponse = (courseId, courseName) => (resp) => {
     if (resp && resp[0] && resp[0].teetimes) {
         resp[0].teetimes.forEach((teeTime) => {
             const holes = getHoles(teeTime.rates);
-            if (holes[9]) {
+            holes.forEach((hole) => {
                 result.push({
                     courseId,
                     courseName,
@@ -55,22 +55,9 @@ const makeFormatResponse = (courseId, courseName) => (resp) => {
                         minutes: (0, time_1.getMinutesFromDate)(teeTime.teetime),
                     },
                     startSide: teeTime.backNine ? "back" : "front",
-                    holes: 9,
+                    holes: hole,
                 });
-            }
-            if (holes[18]) {
-                result.push({
-                    courseId,
-                    courseName,
-                    availablePlayers: 4 - teeTime.bookedPlayers,
-                    time: {
-                        hours: (0, time_1.getHoursFromDate)(teeTime.teetime),
-                        minutes: (0, time_1.getMinutesFromDate)(teeTime.teetime),
-                    },
-                    startSide: teeTime.backNine ? "back" : "front",
-                    holes: 18,
-                });
-            }
+            });
         });
     }
     return result;

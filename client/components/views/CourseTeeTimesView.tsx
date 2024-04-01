@@ -8,16 +8,23 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
 import { TeeTime } from "../../../server/types/TeeTime";
 import TeeTimeCard from "../TeeTimeCard";
-import { getFilteredTeeTimes } from "../../hooks/selectors";
+import { getFilteredTeeTimesMemoized } from "../../hooks/selectors";
+import { HIDDEN_HEADER_ID } from "../../constants";
 
 const CourseTeeTimesView: React.FC = () => {
   const { courseId } = useParams();
-  const courses = useAppSelector(getFilteredTeeTimes);
+  const courses = useAppSelector(getFilteredTeeTimesMemoized);
   const course = courseId ? courses[courseId] : null;
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Scroll back to top
+    const hiddenHeaderElement = document.querySelector(`#${HIDDEN_HEADER_ID}`);
+    if (hiddenHeaderElement) {
+      hiddenHeaderElement.scrollIntoView();
+    }
+
     if (!course) {
       navigate("/");
     }
@@ -26,7 +33,10 @@ const CourseTeeTimesView: React.FC = () => {
   const renderTeeTime = (teeTime: TeeTime, index: number) => {
     return (
       <Box key={`${index}-${teeTime.time}`}>
-        <TeeTimeCard teeTime={teeTime} />
+        <TeeTimeCard
+          bookLink={course ? course.bookLink : undefined}
+          teeTime={teeTime}
+        />
       </Box>
     );
   };
@@ -54,7 +64,12 @@ const CourseTeeTimesView: React.FC = () => {
         <Box>
           <Typography
             variant="h4"
-            sx={{ pb: 2, display: "flex", justifyContent: "center" }}
+            sx={{
+              pb: 2,
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
           >
             {course.courseName}
           </Typography>
@@ -68,10 +83,10 @@ const CourseTeeTimesView: React.FC = () => {
   return (
     <Box>
       <Box
-        sx={{ pb: 2, px: 2, display: "flex", justifyContent: "space-between" }}
+        sx={{ pb: 2, px: 2, display: "flex", justifyContent: "space-evenly" }}
       >
         <Button
-          variant="outlined"
+          variant="contained"
           color="secondary"
           size="small"
           startIcon={<ChevronLeftIcon />}
@@ -80,7 +95,7 @@ const CourseTeeTimesView: React.FC = () => {
           Back
         </Button>
         <Button
-          variant="outlined"
+          variant="contained"
           color="secondary"
           size="small"
           href={course ? course.bookLink : ""}

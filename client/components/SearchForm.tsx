@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
-import { useAppDispatch } from "../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
@@ -13,12 +13,18 @@ import { updateDate } from "../redux/dateSlice";
 import HolesPicker from "./inputs/HolesPicker";
 import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
+import { getDate, getFilter } from "../hooks/selectors";
 
 const SearchForm: React.FC = () => {
-  const [date, setDate] = React.useState(dayjs());
-  const [holes, setHoles] = useState(9 as Holes);
-  const [players, setPlayers] = useState(1 as Players);
-  const [times, setTimes] = useState<number[]>([7, 11]);
+  const filter = useAppSelector(getFilter);
+  const currentDate = useAppSelector(getDate);
+
+  const [date, setDate] = React.useState(
+    currentDate ? dayjs(currentDate) : dayjs()
+  );
+  const [holes, setHoles] = useState(filter.holes || (9 as Holes));
+  const [players, setPlayers] = useState(filter.players || (1 as Players));
+  const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

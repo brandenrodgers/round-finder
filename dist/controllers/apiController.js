@@ -37,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
 const courseHandlers_1 = __importDefault(require("../courseHandlers"));
+const cache_1 = require("../utils/cache");
 const router = (0, express_1.Router)();
 router.use(express_1.default.json());
 const TEMP_PARAMS = {
@@ -68,6 +69,13 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
             };
         }
     });
+    // Check to see if we have the courses cached
+    const cachedCourses = cache_1.cache.get(params.date);
+    if (cachedCourses) {
+        console.log("Cache hit!");
+        res.send(cachedCourses);
+        return;
+    }
     const courseIds = Object.keys(courseHandlers_1.default);
     const teeTimesByCourse = yield Promise.all(courseIds.map((courseId) => {
         const handler = courseHandlers_1.default[courseId];
@@ -77,6 +85,9 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
         acc[course.courseId] = course;
         return acc;
     }, {});
+    // Update the cache
+    console.log("cache miss...");
+    cache_1.cache.put(params.date, response);
     res.send(response);
 }));
 router.get("/unicorn", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

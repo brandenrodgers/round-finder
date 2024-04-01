@@ -65,6 +65,7 @@ const TimesPicker: React.FC<TimesPickerProps> = ({ value, onChange }) => {
   return (
     <Box sx={{ width: 300 }}>
       <Slider
+        color="primary"
         value={value}
         min={6}
         max={18}

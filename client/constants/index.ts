@@ -1,5 +1,1 @@
-export const TIMES = {
-  AM: "am",
-  NOON: "noon",
-  PM: "pm",
-};
+export const HIDDEN_HEADER_ID = "hidden-header-toolbar";

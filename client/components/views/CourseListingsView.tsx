@@ -3,16 +3,19 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import CircularProgress from "@mui/material/CircularProgress";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Courses } from "../../../server/types/Course";
 import { updateCourses } from "../../redux/courseSlice";
 import CourseCard from "../CourseCard";
-import { getDate, getFilteredTeeTimes } from "../../hooks/selectors";
+import { getDate, getFilteredTeeTimesMemoized } from "../../hooks/selectors";
 
 const CourseListingsView: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const date = useAppSelector(getDate);
-  const teeTimesByCourse = useAppSelector(getFilteredTeeTimes);
+  const teeTimesByCourse = useAppSelector(getFilteredTeeTimesMemoized);
   const courseIds = Object.keys(teeTimesByCourse);
 
   const dispatch = useAppDispatch();
@@ -35,14 +38,27 @@ const CourseListingsView: React.FC = () => {
     setLoading(false);
   };
 
+  const doAnyTeeTimesExist = (): boolean => {
+    return courseIds.some((courseId) => {
+      if (teeTimesByCourse[courseId]) {
+        const teeTimesForCourse = teeTimesByCourse[courseId].teeTimes;
+        return teeTimesForCourse && teeTimesForCourse.length;
+      }
+      return false;
+    });
+  };
+
   const renderCourseCard = (courseId: string) => {
     const course = teeTimesByCourse[courseId];
 
-    return (
-      <Box key={course.courseId} sx={{ px: 2 }}>
-        <CourseCard course={course} />
-      </Box>
-    );
+    if (course && course.teeTimes && course.teeTimes.length) {
+      return (
+        <Box key={course.courseId} sx={{ px: 2 }}>
+          <CourseCard course={course} />
+        </Box>
+      );
+    }
+    return null;
   };
 
   if (loading) {
@@ -55,8 +71,23 @@ const CourseListingsView: React.FC = () => {
     );
   }
 
-  if (!courseIds.length) {
-    return <Box>No tee times</Box>;
+  if (!courseIds.length || !doAnyTeeTimesExist()) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Card sx={{ maxWidth: 345 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              No tee times available
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
+    );
   }
 
   return (

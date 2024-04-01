@@ -33,16 +33,14 @@ const formatParams = (params: GenericFetchParams): FetchParams => {
   };
 };
 
-const getHoles = (
-  rates: Array<PHXTeeTimeRate>
-): { 9: boolean; 18: boolean } => {
-  const result = { 9: false, 18: false };
+const getHoles = (rates: Array<PHXTeeTimeRate>): Array<TeeTime["holes"]> => {
+  const result = [] as Array<TeeTime["holes"]>;
 
   rates.forEach((rate: PHXTeeTimeRate) => {
-    if (rate.holes === 9) {
-      result[9] = true;
-    } else if (rate.holes === 18) {
-      result[18] = true;
+    if (rate.holes === 9 && !result.includes(9)) {
+      result.push(9);
+    } else if (rate.holes === 18 && !result.includes(18)) {
+      result.push(18);
     }
   });
 
@@ -56,7 +54,7 @@ const makeFormatResponse =
     if (resp && resp[0] && resp[0].teetimes) {
       resp[0].teetimes.forEach((teeTime) => {
         const holes = getHoles(teeTime.rates);
-        if (holes[9]) {
+        holes.forEach((hole) => {
           result.push({
             courseId,
             courseName,
@@ -66,22 +64,9 @@ const makeFormatResponse =
               minutes: getMinutesFromDate(teeTime.teetime),
             },
             startSide: teeTime.backNine ? "back" : "front",
-            holes: 9,
+            holes: hole,
           });
-        }
-        if (holes[18]) {
-          result.push({
-            courseId,
-            courseName,
-            availablePlayers: 4 - teeTime.bookedPlayers,
-            time: {
-              hours: getHoursFromDate(teeTime.teetime),
-              minutes: getMinutesFromDate(teeTime.teetime),
-            },
-            startSide: teeTime.backNine ? "back" : "front",
-            holes: 18,
-          });
-        }
+        });
       });
     }
     return result;

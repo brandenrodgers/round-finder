@@ -3,8 +3,6 @@ import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import BottomNavigation from "@mui/material/BottomNavigation";
@@ -16,7 +14,6 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import GolfCourseIcon from "@mui/icons-material/GolfCourse";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AccessTimeFilledOutlinedIcon from "@mui/icons-material/AccessTimeFilledOutlined";
-import CloseIcon from "@mui/icons-material/Close";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Holes, Players } from "../types/filter";
@@ -66,7 +63,7 @@ const Footer: React.FC = () => {
             right: 0,
             zIndex: (theme) => theme.zIndex.drawer + 1,
           }}
-          elevation={3}
+          elevation={4}
         >
           <BottomNavigation showLabels>
             <BottomNavigationAction
@@ -100,16 +97,7 @@ const Footer: React.FC = () => {
           </BottomNavigation>
         </Paper>
         <Drawer anchor="bottom" open={drawerOpen} onClose={handleDrawerClose}>
-          <Box>
-            <IconButton
-              aria-label="delete"
-              size="large"
-              onClick={handleDrawerClose}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          </Box>
-          <Grid container rowSpacing={2} paddingBottom={8}>
+          <Grid container rowSpacing={2} paddingBottom={8} marginY={2}>
             <Grid
               xs={12}
               display="flex"

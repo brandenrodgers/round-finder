@@ -1,10 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Course } from "../../server/types/Course";
 import { useNavigate } from "react-router-dom";
@@ -27,17 +25,16 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
           image={course.courseImage}
           title="course-photo"
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+        <CardContent sx={{ pb: 0 }}>
+          <Typography variant="h5" component="div">
             {course.courseName}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+        </CardContent>
+        <CardContent>
+          <Typography variant="body1" component="div" color="primary">
             {course.teeTimes.length} tee times
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">See tee times</Button>
-        </CardActions>
       </Card>
     );
   }

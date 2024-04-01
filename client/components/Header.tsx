@@ -11,6 +11,7 @@ import SportsGolfIcon from "@mui/icons-material/SportsGolf";
 import HomeIcon from "@mui/icons-material/Home";
 import { useAppSelector } from "../hooks/redux";
 import { getDate } from "../hooks/selectors";
+import { HIDDEN_HEADER_ID } from "../constants";
 
 const Header: React.FC = () => {
   const date = useAppSelector(getDate);
@@ -38,9 +39,9 @@ const Header: React.FC = () => {
   };
 
   // A hack to make fixed position work. Hide this behind the fixed toolbar
-  const renderToolbar = () => {
+  const renderToolbar = (id?: string) => {
     return (
-      <Toolbar>
+      <Toolbar id={id}>
         {renderHomeIcon()}
         <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
           Round <SportsGolfIcon /> Finder
@@ -73,7 +74,6 @@ const Header: React.FC = () => {
           <Toolbar
             disableGutters
             sx={{ position: "fixed", width: "100%", alignItems: "flex-start" }}
-            onClick={() => navigate("/")}
           >
             <Paper square elevation={2} sx={{ width: "100%", height: "100%" }}>
               {renderSubToolbarContent()}
@@ -91,7 +91,7 @@ const Header: React.FC = () => {
       <AppBar position="fixed" elevation={shouldRenderFixedDate ? 0 : 1}>
         {renderToolbar()}
       </AppBar>
-      {renderToolbar()}
+      {renderToolbar(HIDDEN_HEADER_ID)}
       {renderSubToolbar()}
     </Box>
   );

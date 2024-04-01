@@ -1,3 +1,4 @@
+import { createSelector } from "reselect";
 import { Courses } from "../../server/types/Course";
 import { TeeTime } from "../../server/types/TeeTime";
 import type { RootState } from "../redux/store";
@@ -24,26 +25,26 @@ const filterTeeTime = (teeTime: TeeTime, filter: Filter): boolean => {
   return true;
 };
 
-export const getFilteredTeeTimes = (state: RootState) => {
-  const courses = getCourses(state);
-  const filter = getFilter(state);
+export const getFilteredTeeTimesMemoized = createSelector(
+  [getCourses, getFilter],
+  (courses, filter) => {
+    const courseIds = Object.keys(courses);
 
-  const courseIds = Object.keys(courses);
+    const result = {} as Courses;
 
-  const result = {} as Courses;
+    courseIds.forEach((courseId) => {
+      const course = courses[courseId];
 
-  courseIds.forEach((courseId) => {
-    const course = courses[courseId];
+      const filteredTeeTimes = course.teeTimes
+        ? course.teeTimes.filter((teeTime) => filterTeeTime(teeTime, filter))
+        : [];
 
-    const filteredTeeTimes = course.teeTimes
-      ? course.teeTimes.filter((teeTime) => filterTeeTime(teeTime, filter))
-      : [];
+      result[courseId] = {
+        ...course,
+        teeTimes: filteredTeeTimes,
+      };
+    });
 
-    result[courseId] = {
-      ...course,
-      teeTimes: filteredTeeTimes,
-    };
-  });
-
-  return result;
-};
+    return result;
+  }
+);

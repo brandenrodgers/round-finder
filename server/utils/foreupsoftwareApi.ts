@@ -43,20 +43,29 @@ const formatParams = (params: GenericFetchParams): FetchParams => {
 const makeFormatResponse =
   (courseId: string, courseName: string) =>
   (resp: ForeupsoftwareTeeTimeResponse): Array<TeeTime> => {
-    return resp.map((teeTime): TeeTime => {
-      return {
-        courseId,
-        courseName,
-        availablePlayers: teeTime.available_spots,
-        startSide:
-          teeTime.teesheet_side_name.toLowerCase() as TeeTime["startSide"],
-        time: {
-          hours: getHoursFromDate(teeTime.time),
-          minutes: getMinutesFromDate(teeTime.time),
-        },
-        holes: teeTime.holes as TeeTime["holes"],
-      };
+    const result = [] as Array<TeeTime>;
+
+    resp.forEach((teeTime) => {
+      const holesArray =
+        typeof teeTime.holes === "string" ? [9, 18] : [teeTime.holes];
+
+      holesArray.forEach((hole) => {
+        result.push({
+          courseId,
+          courseName,
+          availablePlayers: teeTime.available_spots,
+          startSide:
+            teeTime.teesheet_side_name.toLowerCase() as TeeTime["startSide"],
+          time: {
+            hours: getHoursFromDate(teeTime.time),
+            minutes: getMinutesFromDate(teeTime.time),
+          },
+          holes: hole as TeeTime["holes"],
+        });
+      });
     });
+
+    return result;
   };
 
 export const makeForeupsoftwareHandler = ({

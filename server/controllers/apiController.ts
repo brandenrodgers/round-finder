@@ -2,6 +2,7 @@ import express, { Response, Request, Router } from "express";
 import { Handler } from "../types/Handler";
 import { Course, Courses } from "../types/Course";
 import courseHandlers from "../courseHandlers";
+import { cache } from "../utils/cache";
 
 const router = Router();
 
@@ -39,6 +40,14 @@ router.get("/tee-times", async (req: Request, res: Response) => {
     }
   };
 
+  // Check to see if we have the courses cached
+  const cachedCourses = cache.get(params.date);
+  if (cachedCourses) {
+    console.log("Cache hit!");
+    res.send(cachedCourses);
+    return;
+  }
+
   const courseIds = Object.keys(courseHandlers) as Array<
     keyof typeof courseHandlers
   >;
@@ -54,6 +63,10 @@ router.get("/tee-times", async (req: Request, res: Response) => {
     acc[course.courseId] = course;
     return acc;
   }, {} as Courses);
+
+  // Update the cache
+  console.log("cache miss...");
+  cache.put(params.date, response);
 
   res.send(response);
 });
