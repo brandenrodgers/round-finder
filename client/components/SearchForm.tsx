@@ -38,7 +38,7 @@ const SearchForm: React.FC = () => {
   };
 
   const handleSearch = () => {
-    dispatch(updateDate(date.format("MM-DD-YYYY")));
+    dispatch(updateDate(date.format("MM/DD/YYYY")));
     dispatch(updateFilter({ holes, players, times }));
     navigate("/tee-times");
   };
