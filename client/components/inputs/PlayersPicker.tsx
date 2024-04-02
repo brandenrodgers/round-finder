@@ -26,16 +26,16 @@ const PlayersPicker: React.FC<PlayersPickerProps> = ({ value, onChange }) => {
       aria-label="players-input"
     >
       <ToggleButton value={1}>
-        <Typography variant="h4">1</Typography>
+        <Typography variant="h5">1</Typography>
       </ToggleButton>
       <ToggleButton value={2}>
-        <Typography variant="h4">2</Typography>
+        <Typography variant="h5">2</Typography>
       </ToggleButton>
       <ToggleButton value={3}>
-        <Typography variant="h4">3</Typography>
+        <Typography variant="h5">3</Typography>
       </ToggleButton>
       <ToggleButton value={4}>
-        <Typography variant="h4">4</Typography>
+        <Typography variant="h5">4</Typography>
       </ToggleButton>
     </ToggleButtonGroup>
   );

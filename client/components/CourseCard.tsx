@@ -19,6 +19,7 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
       <Card
         sx={{ maxWidth: 345 }}
         onClick={() => navigate(`/tee-times/${course.courseId}`)}
+        elevation={4}
       >
         <CardMedia
           sx={{ height: 140 }}

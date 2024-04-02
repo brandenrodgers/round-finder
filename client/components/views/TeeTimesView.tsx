@@ -19,9 +19,7 @@ const TeeTimesView: React.FC = () => {
   return (
     <Box>
       <Header />
-      <Box sx={{ pt: 2, pb: 8 }}>
-        <Outlet />
-      </Box>
+      <Outlet />
       <Footer />
     </Box>
   );

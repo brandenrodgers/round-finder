@@ -4,7 +4,9 @@ import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import SearchIcon from "@mui/icons-material/Search";
+import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Holes, Players } from "../types/filter";
@@ -42,44 +44,81 @@ const SearchForm: React.FC = () => {
   };
 
   return (
-    <Grid container rowSpacing={2}>
-      <Grid xs={12} display="flex" alignItems="center" flexDirection="column">
-        <Typography variant="h3" gutterBottom>
-          I want to play
-        </Typography>
-        <HolesPicker
-          value={holes}
-          onChange={(newValue) => setHoles(newValue)}
-        />
-      </Grid>
-      <Grid xs={12} display="flex" alignItems="center" flexDirection="column">
-        <Typography variant="h3" gutterBottom>
-          Holes on
-        </Typography>
-        <DatePicker label="Date" value={date} onChange={handleDateChange} />
-      </Grid>
+    <Box
+      sx={{
+        mt: 6,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Paper sx={{ width: "90%", py: 3, opacity: ".95" }} elevation={6}>
+        <Grid container rowSpacing={2}>
+          <Grid
+            xs={12}
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Typography variant="h4" gutterBottom>
+              I want to play
+            </Typography>
+            <HolesPicker
+              value={holes}
+              onChange={(newValue) => setHoles(newValue)}
+            />
+          </Grid>
+          <Grid
+            xs={12}
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Typography variant="h4" gutterBottom>
+              Holes on
+            </Typography>
+            <DatePicker label="Date" value={date} onChange={handleDateChange} />
+          </Grid>
 
-      <Grid xs={12} display="flex" alignItems="center" flexDirection="column">
-        <Typography variant="h3" gutterBottom>
-          With
-        </Typography>
-        <PlayersPicker
-          value={players}
-          onChange={(newPlayers) => setPlayers(newPlayers)}
-        />
-      </Grid>
+          <Grid
+            xs={12}
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Typography variant="h4" gutterBottom>
+              With
+            </Typography>
+            <PlayersPicker
+              value={players}
+              onChange={(newPlayers) => setPlayers(newPlayers)}
+            />
+          </Grid>
 
-      <Grid xs={12} display="flex" alignItems="center" flexDirection="column">
-        <Typography variant="h3" gutterBottom>
-          {players === 1 ? "Player" : "Players"} at
-        </Typography>
-        <TimesPicker
-          value={times}
-          onChange={(newTimes) => setTimes(newTimes)}
-        />
-      </Grid>
-
-      <Grid xs={12} display="flex" alignItems="center" flexDirection="column">
+          <Grid
+            xs={12}
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Typography variant="h4" gutterBottom>
+              {players === 1 ? "Player" : "Players"} at
+            </Typography>
+            <TimesPicker
+              value={times}
+              onChange={(newTimes) => setTimes(newTimes)}
+            />
+          </Grid>
+        </Grid>
+      </Paper>
+      <Grid
+        xs={12}
+        display="flex"
+        alignItems="center"
+        flexDirection="column"
+        paddingTop={3}
+      >
         <Button
           variant="contained"
           size="large"
@@ -90,7 +129,7 @@ const SearchForm: React.FC = () => {
           Search
         </Button>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 

@@ -27,12 +27,12 @@ const HolesPicker: React.FC<HolesPickerProps> = ({ value, onChange }) => {
       aria-label="holes-input"
     >
       <ToggleButton value={9}>
-        <Typography variant="h4" sx={{ px: 1 }}>
+        <Typography variant="h5" sx={{ px: 1 }}>
           9
         </Typography>
       </ToggleButton>
       <ToggleButton value={18}>
-        <Typography variant="h4">18</Typography>
+        <Typography variant="h5">18</Typography>
       </ToggleButton>
     </ToggleButtonGroup>
   );

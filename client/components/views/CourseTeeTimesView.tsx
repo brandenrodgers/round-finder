@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
 import { TeeTime } from "../../../server/types/TeeTime";
 import TeeTimeCard from "../TeeTimeCard";
 import { getFilteredTeeTimesMemoized } from "../../hooks/selectors";
@@ -62,17 +62,41 @@ const CourseTeeTimesView: React.FC = () => {
     if (course) {
       return (
         <Box>
-          <Typography
-            variant="h4"
-            sx={{
-              pb: 2,
-              display: "flex",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            {course.courseName}
-          </Typography>
+          <Card sx={{ width: "100%", mb: 2 }} elevation={1} square>
+            <Box sx={{ position: "relative" }}>
+              <CardMedia
+                sx={{ height: 200 }}
+                image={course.courseImage}
+                title="course-photo"
+              />
+              <Box
+                style={{
+                  opacity: ".85",
+                  minWidth: 275,
+                  maxWidth: 300,
+                  position: "absolute",
+                  color: "white",
+                  top: "35%",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                }}
+              >
+                <Paper elevation={3}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      py: 1,
+                      display: "flex",
+                      justifyContent: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    {course.courseName}
+                  </Typography>
+                </Paper>
+              </Box>
+            </Box>
+          </Card>
           {renderTeeTimes()}
         </Box>
       );
@@ -81,31 +105,12 @@ const CourseTeeTimesView: React.FC = () => {
   };
 
   return (
-    <Box>
-      <Box
-        sx={{ pb: 2, px: 2, display: "flex", justifyContent: "space-evenly" }}
-      >
-        <Button
-          variant="contained"
-          color="secondary"
-          size="small"
-          startIcon={<ChevronLeftIcon />}
-          onClick={() => navigate("/tee-times")}
-        >
-          Back
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="small"
-          href={course ? course.bookLink : ""}
-          endIcon={<OpenInNewIcon />}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Book
-        </Button>
-      </Box>
+    <Box
+      sx={{
+        pb: 8,
+        backgroundColor: (theme) => theme.palette.primary.light,
+      }}
+    >
       {renderContent()}
     </Box>
   );

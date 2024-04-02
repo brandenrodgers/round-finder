@@ -43,7 +43,6 @@ router.get("/tee-times", async (req: Request, res: Response) => {
   // Check to see if we have the courses cached
   const cachedCourses = cache.get(params.date);
   if (cachedCourses) {
-    console.log("Cache hit!");
     res.send(cachedCourses);
     return;
   }
@@ -65,7 +64,6 @@ router.get("/tee-times", async (req: Request, res: Response) => {
   }, {} as Courses);
 
   // Update the cache
-  console.log("cache miss...");
   cache.put(params.date, response);
 
   res.send(response);

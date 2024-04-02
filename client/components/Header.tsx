@@ -1,11 +1,13 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
 import SportsGolfIcon from "@mui/icons-material/SportsGolf";
 import HomeIcon from "@mui/icons-material/Home";
@@ -15,6 +17,7 @@ import { HIDDEN_HEADER_ID } from "../constants";
 
 const Header: React.FC = () => {
   const date = useAppSelector(getDate);
+  const { courseId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -23,16 +26,25 @@ const Header: React.FC = () => {
   const renderHomeIcon = () => {
     if (location.pathname.includes("tee-times")) {
       return (
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-          onClick={() => navigate("/")}
+        <Box
+          sx={{
+            position: "absolute",
+            left: 16,
+            display: "flex",
+            height: "100%",
+          }}
         >
-          <HomeIcon />
-        </IconButton>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => navigate("/")}
+            sx={{ pr: 0 }}
+          >
+            <HomeIcon />
+          </IconButton>
+        </Box>
       );
     }
     return null;
@@ -43,7 +55,11 @@ const Header: React.FC = () => {
     return (
       <Toolbar id={id}>
         {renderHomeIcon()}
-        <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h4"
+          component="div"
+          sx={{ flexGrow: 1, textAlign: "center" }}
+        >
           Round <SportsGolfIcon /> Finder
         </Typography>
       </Toolbar>
@@ -51,6 +67,40 @@ const Header: React.FC = () => {
   };
 
   const renderSubToolbarContent = () => {
+    if (courseId) {
+      return (
+        <Box sx={{ display: "flex", position: "relative" }}>
+          <Box
+            sx={{
+              position: "absolute",
+              left: 0,
+              display: "flex",
+              height: "100%",
+            }}
+          >
+            <Button
+              variant="text"
+              startIcon={<ChevronLeftIcon />}
+              onClick={() => navigate("/tee-times")}
+            >
+              Back
+            </Button>
+          </Box>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              py: 1,
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            Playing {dayjs(date).format("dddd, MMM D")}
+          </Typography>
+        </Box>
+      );
+    }
     return (
       <Typography
         variant="h6"
@@ -79,7 +129,9 @@ const Header: React.FC = () => {
               {renderSubToolbarContent()}
             </Paper>
           </Toolbar>
-          <Paper component={Box}>{renderSubToolbarContent()}</Paper>
+          <Paper component={Box} sx={{ visibility: "hidden" }}>
+            {renderSubToolbarContent()}
+          </Paper>
         </Box>
       );
     }
