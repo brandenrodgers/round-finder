@@ -4,7 +4,9 @@
   "description": "The Round Finder facilitates searching for local tee times",
   "main": "server/index.js",
   "scripts": {
-    "dev": "webpack -w & nodemon"
+    "dev": "webpack -w & nodemon",
+    "build": "webpack & tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "branden-rodgers",

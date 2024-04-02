@@ -12,6 +12,7 @@ const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
 app.use("/api", apiController_1.default);
+console.log("test");
 app.get("*", (req, res, next) => {
     try {
         res.sendFile(path_1.default.join(__dirname, "../public/index.html"));
