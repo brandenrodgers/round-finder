@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import SportsGolfIcon from "@mui/icons-material/SportsGolf";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { styled } from "@mui/material/styles";
 import { TeeTime } from "../../server/types/TeeTime";
@@ -58,7 +59,7 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({ bookLink, teeTime }) => {
           )}
         </Typography>
         <OpenInNewIcon
-          sx={{ right: 5, position: "absolute", color: "primary.contrastText" }}
+          sx={{ right: 8, position: "absolute", color: "primary.contrastText" }}
         />
       </CardContent>
       <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -84,13 +85,17 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({ bookLink, teeTime }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 1,
             py: 1,
           }}
         >
-          <PersonOutlineOutlinedIcon />
+          {teeTime.availablePlayers === 1 ? (
+            <PersonOutlineOutlinedIcon />
+          ) : (
+            <PeopleAltOutlinedIcon />
+          )}
           <Typography variant="h6" color="text.secondary">
-            {teeTime.availablePlayers} Players
+            {teeTime.availablePlayers}{" "}
+            {teeTime.availablePlayers === 1 ? "Player" : "Players"}
           </Typography>
         </CardContentNoPadding>
       </Box>

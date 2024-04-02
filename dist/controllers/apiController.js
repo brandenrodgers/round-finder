@@ -40,9 +40,6 @@ const courseHandlers_1 = __importDefault(require("../courseHandlers"));
 const cache_1 = require("../utils/cache");
 const router = (0, express_1.Router)();
 router.use(express_1.default.json());
-const TEMP_PARAMS = {
-    date: "04-01-2024",
-};
 router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { date } = req.query;
     const params = { date };
@@ -87,30 +84,6 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
     // Update the cache
     cache_1.cache.put(params.date, response);
     res.send(response);
-}));
-router.get("/unicorn", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const handler = courseHandlers_1.default.unicorn;
-    try {
-        const response = yield handler.fetchTeeTimes(handler.formatParams(TEMP_PARAMS));
-        console.log(response);
-        const teeTimes = handler.formatResponse(response);
-        res.send(teeTimes);
-    }
-    catch (e) {
-        res.send(e.response.data);
-    }
-}));
-router.get("/sagamore-spring", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const handler = courseHandlers_1.default.sagamoreSpring;
-    try {
-        const response = yield handler.fetchTeeTimes(handler.formatParams(TEMP_PARAMS));
-        console.log(response);
-        const teeTimes = handler.formatResponse(response);
-        res.send(teeTimes);
-    }
-    catch (e) {
-        res.send(e.response.data);
-    }
 }));
 exports.default = router;
 //# sourceMappingURL=apiController.js.map

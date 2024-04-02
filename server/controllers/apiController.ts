@@ -8,10 +8,6 @@ const router = Router();
 
 router.use(express.json());
 
-const TEMP_PARAMS = {
-  date: "04-01-2024",
-};
-
 router.get("/tee-times", async (req: Request, res: Response) => {
   const { date } = req.query;
 
@@ -67,34 +63,6 @@ router.get("/tee-times", async (req: Request, res: Response) => {
   cache.put(params.date, response);
 
   res.send(response);
-});
-
-router.get("/unicorn", async (req: Request, res: Response) => {
-  const handler = courseHandlers.unicorn;
-  try {
-    const response = await handler.fetchTeeTimes(
-      handler.formatParams(TEMP_PARAMS)
-    );
-    console.log(response);
-    const teeTimes = handler.formatResponse(response);
-    res.send(teeTimes);
-  } catch (e: any) {
-    res.send(e.response.data);
-  }
-});
-
-router.get("/sagamore-spring", async (req: Request, res: Response) => {
-  const handler = courseHandlers.sagamoreSpring;
-  try {
-    const response = await handler.fetchTeeTimes(
-      handler.formatParams(TEMP_PARAMS)
-    );
-    console.log(response);
-    const teeTimes = handler.formatResponse(response);
-    res.send(teeTimes);
-  } catch (e: any) {
-    res.send(e.response.data);
-  }
 });
 
 export default router;
