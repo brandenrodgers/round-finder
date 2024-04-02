@@ -32,7 +32,6 @@ const CourseListingsView: React.FC = () => {
   }, [date]);
 
   const fetchTeeTimes = async () => {
-    // const apiDomain = "http://localhost:3000";
     const resp = await axios.get<Courses>("/api/tee-times", {
       params: { date },
     });

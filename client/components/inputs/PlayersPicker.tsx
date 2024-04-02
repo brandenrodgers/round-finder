@@ -19,7 +19,7 @@ const PlayersPicker: React.FC<PlayersPickerProps> = ({ value, onChange }) => {
   return (
     <ToggleButtonGroup
       color="primary"
-      size="large"
+      size="medium"
       value={value}
       exclusive
       onChange={handlePlayersChange}

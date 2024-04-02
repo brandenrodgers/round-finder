@@ -46,7 +46,7 @@ const SearchForm: React.FC = () => {
   return (
     <Box
       sx={{
-        mt: 6,
+        mt: 3,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -61,7 +61,7 @@ const SearchForm: React.FC = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
               I want to play
             </Typography>
             <HolesPicker
@@ -75,7 +75,7 @@ const SearchForm: React.FC = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
               Holes on
             </Typography>
             <DatePicker label="Date" value={date} onChange={handleDateChange} />
@@ -87,7 +87,7 @@ const SearchForm: React.FC = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
               With
             </Typography>
             <PlayersPicker
@@ -102,7 +102,7 @@ const SearchForm: React.FC = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
               {players === 1 ? "Player" : "Players"} at
             </Typography>
             <TimesPicker
@@ -117,7 +117,7 @@ const SearchForm: React.FC = () => {
         display="flex"
         alignItems="center"
         flexDirection="column"
-        paddingTop={3}
+        paddingTop={2}
       >
         <Button
           variant="contained"

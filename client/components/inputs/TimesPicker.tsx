@@ -14,24 +14,16 @@ const timeSliderMarks = [
     label: "6 am",
   },
   {
-    value: 8,
-    label: "8 am",
-  },
-  {
-    value: 10,
-    label: "10 am",
+    value: 9,
+    label: "9 am",
   },
   {
     value: 12,
     label: "12 pm",
   },
   {
-    value: 14,
-    label: "2 pm",
-  },
-  {
-    value: 16,
-    label: "4 pm",
+    value: 15,
+    label: "3 pm",
   },
   {
     value: 18,
@@ -63,7 +55,7 @@ const TimesPicker: React.FC<TimesPickerProps> = ({ value, onChange }) => {
   };
 
   return (
-    <Box sx={{ width: 300 }}>
+    <Box sx={{ width: "80%" }}>
       <Slider
         color="primary"
         value={value}

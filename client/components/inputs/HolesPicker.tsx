@@ -20,7 +20,7 @@ const HolesPicker: React.FC<HolesPickerProps> = ({ value, onChange }) => {
   return (
     <ToggleButtonGroup
       color="primary"
-      size="large"
+      size="medium"
       value={value}
       exclusive
       onChange={handleHolesChange}
