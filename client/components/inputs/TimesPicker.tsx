@@ -2,6 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import { isIOS } from "../../utils/isIOS";
 
 type TimesPickerProps = {
   value: number[];
@@ -38,6 +39,11 @@ const TimesPicker: React.FC<TimesPickerProps> = ({ value, onChange }) => {
     activeThumb: number
   ) => {
     if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    // Fix for bug: https://github.com/mui/material-ui/issues/31869
+    if (isIOS && event.type === "mousedown") {
       return;
     }
 

@@ -9,7 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Holes, Players } from "../types/filter";
+import { Holes, Players } from "../types/Filter";
 import { updateFilter } from "../redux/filterSlice";
 import { updateDate } from "../redux/dateSlice";
 import HolesPicker from "./inputs/HolesPicker";
@@ -53,7 +53,10 @@ const SearchForm: React.FC = () => {
         justifyContent: "center",
       }}
     >
-      <Paper sx={{ width: "90%", py: 3, opacity: ".95" }} elevation={6}>
+      <Paper
+        sx={{ width: "90%", maxWidth: 600, py: 3, opacity: ".95" }}
+        elevation={6}
+      >
         <Grid container rowSpacing={2}>
           <Grid
             xs={12}

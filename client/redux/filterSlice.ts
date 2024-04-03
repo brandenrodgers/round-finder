@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Filter } from "../types/filter";
+import { Filter } from "../types/Filter";
 
 interface FilterState {
   value: Filter;

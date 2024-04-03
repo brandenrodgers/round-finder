@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 import { Courses } from "../../server/types/Course";
 import { TeeTime } from "../../server/types/TeeTime";
 import type { RootState } from "../redux/store";
-import { Filter } from "../types/filter";
+import { Filter } from "../types/Filter";
 
 export const getCourses = (state: RootState) => state.courses.value;
 export const getFilter = (state: RootState) => state.filter.value;

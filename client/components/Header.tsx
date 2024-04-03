@@ -14,6 +14,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useAppSelector } from "../hooks/redux";
 import { getDate } from "../hooks/selectors";
 import { HIDDEN_HEADER_ID } from "../constants";
+import SortMenu from "./SortMenu";
 
 const Header: React.FC = () => {
   const date = useAppSelector(getDate);
@@ -66,6 +67,23 @@ const Header: React.FC = () => {
     );
   };
 
+  const renderDate = () => {
+    return (
+      <Typography
+        variant="h6"
+        component="div"
+        sx={{
+          py: 1,
+          flexGrow: 1,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {dayjs(date).format("dddd, MMM D")}
+      </Typography>
+    );
+  };
+
   const renderSubToolbarContent = () => {
     if (courseId) {
       return (
@@ -73,7 +91,7 @@ const Header: React.FC = () => {
           <Box
             sx={{
               position: "absolute",
-              left: 0,
+              left: 8,
               display: "flex",
               height: "100%",
             }}
@@ -86,29 +104,24 @@ const Header: React.FC = () => {
               Back
             </Button>
           </Box>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              py: 1,
-              flexGrow: 1,
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            Playing {dayjs(date).format("dddd, MMM D")}
-          </Typography>
+          {renderDate()}
         </Box>
       );
     }
     return (
-      <Typography
-        variant="h6"
-        component="div"
-        sx={{ py: 1, flexGrow: 1, display: "flex", justifyContent: "center" }}
-      >
-        Playing {dayjs(date).format("dddd, MMM D")}
-      </Typography>
+      <Box sx={{ display: "flex", position: "relative" }}>
+        {renderDate()}
+        <Box
+          sx={{
+            position: "absolute",
+            right: 8,
+            display: "flex",
+            height: "100%",
+          }}
+        >
+          <SortMenu />
+        </Box>
+      </Box>
     );
   };
 

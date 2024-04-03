@@ -2,7 +2,7 @@ import React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
-import { Holes } from "../../types/filter";
+import { Holes } from "../../types/Filter";
 
 type HolesPickerProps = {
   value: Holes;

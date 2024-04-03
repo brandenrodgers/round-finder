@@ -2,7 +2,7 @@ import React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
-import { Players } from "../../types/filter";
+import { Players } from "../../types/Filter";
 
 type PlayersPickerProps = {
   value: Players;

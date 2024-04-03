@@ -16,7 +16,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AccessTimeFilledOutlinedIcon from "@mui/icons-material/AccessTimeFilledOutlined";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Holes, Players } from "../types/filter";
+import { Holes, Players } from "../types/Filter";
 import { updateFilter } from "../redux/filterSlice";
 import HolesPicker from "./inputs/HolesPicker";
 import PlayersPicker from "./inputs/PlayersPicker";
