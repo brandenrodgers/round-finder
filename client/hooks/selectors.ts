@@ -3,10 +3,12 @@ import { Courses } from "../../server/types/Course";
 import { TeeTime } from "../../server/types/TeeTime";
 import type { RootState } from "../redux/store";
 import { Filter } from "../types/Filter";
+import { SORT_VALUES } from "../constants";
 
 export const getCourses = (state: RootState) => state.courses.value;
 export const getFilter = (state: RootState) => state.filter.value;
 export const getDate = (state: RootState) => state.date.value;
+export const getSort = (state: RootState) => state.sort.value;
 
 const filterTeeTime = (teeTime: TeeTime, filter: Filter): boolean => {
   if (filter.players && teeTime.availablePlayers < filter.players) {
@@ -39,12 +41,56 @@ export const getFilteredTeeTimesMemoized = createSelector(
         ? course.teeTimes.filter((teeTime) => filterTeeTime(teeTime, filter))
         : [];
 
-      result[courseId] = {
-        ...course,
-        teeTimes: filteredTeeTimes,
-      };
+      if (filteredTeeTimes.length) {
+        result[courseId] = {
+          ...course,
+          teeTimes: filteredTeeTimes,
+        };
+      }
     });
 
     return result;
+  }
+);
+
+export const getSortedCourseIdsMemoized = createSelector(
+  [getFilteredTeeTimesMemoized, getSort],
+  (filterTeeTimes, sort) => {
+    const courseIds = Object.keys(filterTeeTimes);
+
+    if (sort === SORT_VALUES.alphabetical) {
+      return courseIds.sort((a: string, b: string) => {
+        const courseA = filterTeeTimes[a].courseName;
+        const courseB = filterTeeTimes[b].courseName;
+        if (courseA < courseB) {
+          return -1;
+        }
+        if (courseA > courseB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
+    if (sort === SORT_VALUES.favorites) {
+      return courseIds.sort((a: string, b: string) => {
+        const courseA = filterTeeTimes[a].rank;
+        const courseB = filterTeeTimes[b].rank;
+        if (courseA < courseB) {
+          return 1;
+        }
+        if (courseA > courseB) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+
+    // TODO add distance support
+    if (sort === SORT_VALUES.distance) {
+      return courseIds;
+    }
+
+    return courseIds;
   }
 );

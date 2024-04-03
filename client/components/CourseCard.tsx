@@ -4,6 +4,9 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import MoodOutlinedIcon from "@mui/icons-material/MoodOutlined";
+import SentimentNeutralOutlinedIcon from "@mui/icons-material/SentimentNeutralOutlined";
+import MoodBadOutlinedIcon from "@mui/icons-material/MoodBadOutlined";
 import { Course } from "../../server/types/Course";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +17,22 @@ type CourseCardPropTypes = {
 const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
   const navigate = useNavigate();
 
-  if (course.teeTimes) {
+  const renderRankIcon = () => {
+    const styles = {
+      position: "absolute",
+      right: 16,
+      bottom: 24,
+    };
+    if (course.rank > 7) {
+      return <MoodOutlinedIcon sx={styles} />;
+    }
+    if (course.rank > 4) {
+      return <SentimentNeutralOutlinedIcon sx={styles} />;
+    }
+    return <MoodBadOutlinedIcon sx={styles} />;
+  };
+
+  if (course.teeTimes && course.teeTimes.length) {
     return (
       <Card
         sx={{ maxWidth: 345 }}
@@ -31,15 +49,16 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
             {course.courseName}
           </Typography>
         </CardContent>
-        <CardContent>
+        <CardContent sx={{ position: "relative" }}>
           <Typography variant="body1" component="div" color="primary">
             {course.teeTimes.length} tee times
           </Typography>
+          {renderRankIcon()}
         </CardContent>
       </Card>
     );
   }
-  return <Box>No tee times for this course</Box>;
+  return <Box>No tee times</Box>;
 };
 
 export default CourseCard;

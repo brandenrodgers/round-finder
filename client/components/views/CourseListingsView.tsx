@@ -13,13 +13,17 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Courses } from "../../../server/types/Course";
 import { updateCourses } from "../../redux/courseSlice";
 import CourseCard from "../CourseCard";
-import { getDate, getFilteredTeeTimesMemoized } from "../../hooks/selectors";
+import {
+  getDate,
+  getFilteredTeeTimesMemoized,
+  getSortedCourseIdsMemoized,
+} from "../../hooks/selectors";
 
 const CourseListingsView: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const date = useAppSelector(getDate);
-  const teeTimesByCourse = useAppSelector(getFilteredTeeTimesMemoized);
-  const courseIds = Object.keys(teeTimesByCourse);
+  const filteredTeeTimes = useAppSelector(getFilteredTeeTimesMemoized);
+  const sortedCourseIds = useAppSelector(getSortedCourseIdsMemoized);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -39,18 +43,8 @@ const CourseListingsView: React.FC = () => {
     setLoading(false);
   };
 
-  const doAnyTeeTimesExist = (): boolean => {
-    return courseIds.some((courseId) => {
-      if (teeTimesByCourse[courseId]) {
-        const teeTimesForCourse = teeTimesByCourse[courseId].teeTimes;
-        return teeTimesForCourse && teeTimesForCourse.length;
-      }
-      return false;
-    });
-  };
-
   const renderCourseCard = (courseId: string) => {
-    const course = teeTimesByCourse[courseId];
+    const course = filteredTeeTimes[courseId];
 
     if (course && course.teeTimes && course.teeTimes.length) {
       return (
@@ -72,7 +66,7 @@ const CourseListingsView: React.FC = () => {
     );
   }
 
-  if (!courseIds.length || !doAnyTeeTimesExist()) {
+  if (!sortedCourseIds.length) {
     return (
       <Box
         sx={{
@@ -92,7 +86,7 @@ const CourseListingsView: React.FC = () => {
             </Typography>
           </CardContent>
           <CardMedia
-            sx={{ height: 400 }}
+            sx={{ height: 300 }}
             image="https://media.licdn.com/dms/image/C4E22AQH5mTLVpm2nnQ/feedshare-shrink_2048_1536/0/1647445330420?e=2147483647&v=beta&t=Us_zEwUdaj6db4-cDfnXVOO1_3RnIcFtXsuICOYp8qk"
             title="no-tee-times-photo"
           />
@@ -107,7 +101,7 @@ const CourseListingsView: React.FC = () => {
               size="large"
               onClick={() => navigate("/")}
             >
-              Return to home
+              Return home
             </Button>
           </CardContent>
         </Card>
@@ -125,7 +119,7 @@ const CourseListingsView: React.FC = () => {
         justifyContent: "center",
       }}
     >
-      {courseIds.map(renderCourseCard)}
+      {sortedCourseIds.map(renderCourseCard)}
     </Box>
   );
 };

@@ -62,7 +62,7 @@ const makeFormatResponse = (courseId, courseName) => (resp) => {
     }
     return result;
 };
-const makePHXHandler = ({ facilityAlias, facilityId, id, image, name, }) => ({
+const makePHXHandler = ({ facilityAlias, facilityId, id, image, name, rank, }) => ({
     bookLink: `https://${facilityAlias}.book.teeitup.golf/?course=${facilityId}`,
     fetchTeeTimes: makeFetchTeeTimes(facilityId, facilityAlias),
     formatParams,
@@ -70,6 +70,7 @@ const makePHXHandler = ({ facilityAlias, facilityId, id, image, name, }) => ({
     id,
     image,
     name,
+    rank,
 });
 exports.makePHXHandler = makePHXHandler;
 //# sourceMappingURL=phxApi.js.map

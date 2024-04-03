@@ -1,8 +1,8 @@
 export type TeeTime = {
+  availablePlayers: number;
   courseId: string;
   courseName: string;
-  availablePlayers: number;
-  time: { hours: number; minutes: number };
-  startSide: "front" | "back";
   holes: 9 | 18;
+  startSide: "front" | "back";
+  time: { hours: number; minutes: number };
 };

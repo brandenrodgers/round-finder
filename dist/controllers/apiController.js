@@ -52,6 +52,7 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
                 courseName: handler.name,
                 bookLink: handler.bookLink,
                 courseImage: handler.image,
+                rank: handler.rank,
                 teeTimes: formattedResponse,
             };
         }
@@ -62,6 +63,7 @@ router.get("/tee-times", (req, res) => __awaiter(void 0, void 0, void 0, functio
                 courseName: handler.name,
                 bookLink: handler.bookLink,
                 courseImage: handler.image,
+                rank: handler.rank,
                 error: `Failed to fetch tee times for ${handler.name}`,
             };
         }

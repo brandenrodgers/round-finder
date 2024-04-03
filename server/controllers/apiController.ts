@@ -22,6 +22,7 @@ router.get("/tee-times", async (req: Request, res: Response) => {
         courseName: handler.name,
         bookLink: handler.bookLink,
         courseImage: handler.image,
+        rank: handler.rank,
         teeTimes: formattedResponse,
       };
     } catch (e: any) {
@@ -31,6 +32,7 @@ router.get("/tee-times", async (req: Request, res: Response) => {
         courseName: handler.name,
         bookLink: handler.bookLink,
         courseImage: handler.image,
+        rank: handler.rank,
         error: `Failed to fetch tee times for ${handler.name}`,
       };
     }

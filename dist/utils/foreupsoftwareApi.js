@@ -47,14 +47,15 @@ const makeFormatResponse = (courseId, courseName) => (resp) => {
     });
     return result;
 };
-const makeForeupsoftwareHandler = ({ bookingClass, bookingId, id, image, name, scheduleId, }) => ({
-    id,
-    name,
-    image,
+const makeForeupsoftwareHandler = ({ bookingClass, bookingId, id, image, name, rank, scheduleId, }) => ({
     bookLink: `https://foreupsoftware.com/index.php/booking/${bookingId}/${scheduleId}#teetimes`,
     fetchTeeTimes: makeFetchTeeTimes(bookingClass, scheduleId),
     formatParams,
     formatResponse: makeFormatResponse(id, name),
+    id,
+    image,
+    name,
+    rank,
 });
 exports.makeForeupsoftwareHandler = makeForeupsoftwareHandler;
 //# sourceMappingURL=foreupsoftwareApi.js.map

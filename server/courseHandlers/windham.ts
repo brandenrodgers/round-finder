@@ -4,6 +4,8 @@ const ID = "windham";
 const NAME = "Windham Country Club";
 const IMAGE =
   "https://images.newhampshiregolf.com/courselarge/windhamcc-large.jpg";
+const RANK = 5;
+
 const FACILITY_ID = 15931;
 const FACILITY_ALIAS = "windham-country";
 
@@ -13,4 +15,5 @@ export default makePHXHandler({
   id: ID,
   image: IMAGE,
   name: NAME,
+  rank: RANK,
 });
