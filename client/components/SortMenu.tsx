@@ -3,9 +3,8 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import SortIcon from "@mui/icons-material/Sort";
+import MoodOutlinedIcon from "@mui/icons-material/MoodOutlined";
 import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { getSort } from "../hooks/selectors";
 import { updateSort } from "../redux/sortSlice";
@@ -37,8 +36,8 @@ const SortMenu: React.FC = () => {
     if (sortValue === SORT_VALUES.alphabetical) {
       return <SortByAlphaIcon sx={{ pr }} />;
     }
-    if (sortValue === SORT_VALUES.favorites) {
-      return <FavoriteIcon sx={{ pr }} />;
+    if (sortValue === SORT_VALUES.quality) {
+      return <MoodOutlinedIcon sx={{ pr }} />;
     }
     if (sortValue === SORT_VALUES.distance) {
       return <DirectionsCarIcon sx={{ pr }} />;
@@ -68,11 +67,11 @@ const SortMenu: React.FC = () => {
           {SORT_VALUES.alphabetical}
         </MenuItem>
         <MenuItem
-          selected={sort === SORT_VALUES.favorites}
-          onClick={() => handleMenuItemClick(SORT_VALUES.favorites)}
+          selected={sort === SORT_VALUES.quality}
+          onClick={() => handleMenuItemClick(SORT_VALUES.quality)}
         >
-          {renderIcon(SORT_VALUES.favorites, 1)}
-          {SORT_VALUES.favorites}
+          {renderIcon(SORT_VALUES.quality, 1)}
+          {SORT_VALUES.quality}
         </MenuItem>
         <MenuItem
           selected={sort === SORT_VALUES.distance}

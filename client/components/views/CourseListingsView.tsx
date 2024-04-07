@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Courses } from "../../../server/types/Course";
 import { updateCourses } from "../../redux/courseSlice";
 import CourseCard from "../CourseCard";
+import AdditionalCourses from "../AdditionalCourses";
 import {
   getDate,
   getFilteredTeeTimesMemoized,
@@ -58,9 +59,18 @@ const CourseListingsView: React.FC = () => {
 
   if (loading) {
     return (
-      <Stack spacing={4} sx={{ width: "100%", px: 2, pt: 2 }}>
-        <Skeleton variant="rounded" width={"100%"} height={250} />
-        <Skeleton variant="rounded" width={"100%"} height={250} />
+      <Stack
+        spacing={4}
+        sx={{
+          height: "100%",
+          width: "100%",
+          px: 2,
+          pt: 2,
+          backgroundColor: (theme) => theme.palette.secondary.light,
+        }}
+      >
+        <Skeleton variant="rounded" width={"100%"} height={240} />
+        <Skeleton variant="rounded" width={"100%"} height={240} />
       </Stack>
     );
   }
@@ -70,11 +80,16 @@ const CourseListingsView: React.FC = () => {
       <Box
         sx={{
           pt: 2,
+          pb: 8,
+          height: "100%",
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "column",
+          gap: 2,
+          alignItems: "center",
+          backgroundColor: (theme) => theme.palette.secondary.light,
         }}
       >
-        <Card sx={{ width: "90%" }}>
+        <Card sx={{ width: 345, height: 390 }}>
           <CardContent>
             <Typography
               sx={{ textAlign: "center" }}
@@ -85,7 +100,7 @@ const CourseListingsView: React.FC = () => {
             </Typography>
           </CardContent>
           <CardMedia
-            sx={{ height: 300 }}
+            sx={{ height: 250 }}
             image="https://media.licdn.com/dms/image/C4E22AQH5mTLVpm2nnQ/feedshare-shrink_2048_1536/0/1647445330420?e=2147483647&v=beta&t=Us_zEwUdaj6db4-cDfnXVOO1_3RnIcFtXsuICOYp8qk"
             title="no-tee-times-photo"
           />
@@ -104,6 +119,9 @@ const CourseListingsView: React.FC = () => {
             </Button>
           </CardContent>
         </Card>
+        <Box>
+          <AdditionalCourses />
+        </Box>
       </Box>
     );
   }
@@ -116,9 +134,13 @@ const CourseListingsView: React.FC = () => {
         display: "grid",
         rowGap: 3,
         justifyContent: "center",
+        backgroundColor: (theme) => theme.palette.secondary.light,
       }}
     >
       {sortedCourseIds.map(renderCourseCard)}
+      <Box sx={{ px: 2 }}>
+        <AdditionalCourses />
+      </Box>
     </Box>
   );
 };

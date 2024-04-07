@@ -110,7 +110,7 @@ const CourseTeeTimesView: React.FC = () => {
     <Box
       sx={{
         pb: 8,
-        backgroundColor: (theme) => theme.palette.primary.light,
+        backgroundColor: (theme) => theme.palette.secondary.light,
       }}
     >
       {renderContent()}

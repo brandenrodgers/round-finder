@@ -1,1 +1,1 @@
-export type SortBy = "alphabetical" | "favorites" | "distance";
+export type SortBy = "alphabetical" | "quality" | "distance";

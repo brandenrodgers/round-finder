@@ -7,12 +7,19 @@ import Typography from "@mui/material/Typography";
 import MoodOutlinedIcon from "@mui/icons-material/MoodOutlined";
 import SentimentNeutralOutlinedIcon from "@mui/icons-material/SentimentNeutralOutlined";
 import MoodBadOutlinedIcon from "@mui/icons-material/MoodBadOutlined";
+import { styled } from "@mui/material/styles";
 import { Course } from "../../server/types/Course";
 import { useNavigate } from "react-router-dom";
 
 type CourseCardPropTypes = {
   course: Course;
 };
+
+const CardContentNoPadding = styled(CardContent)(`
+  &:last-child {
+    padding-bottom: 8px;
+  }
+`);
 
 const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
   const navigate = useNavigate();
@@ -21,7 +28,7 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
     const styles = {
       position: "absolute",
       right: 16,
-      bottom: 24,
+      bottom: 8,
     };
     if (course.rank > 7) {
       return <MoodOutlinedIcon sx={styles} />;
@@ -49,12 +56,12 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
             {course.courseName}
           </Typography>
         </CardContent>
-        <CardContent sx={{ position: "relative" }}>
+        <CardContentNoPadding sx={{ position: "relative" }}>
           <Typography variant="body1" component="div" color="primary">
             {course.teeTimes.length} tee times
           </Typography>
           {renderRankIcon()}
-        </CardContent>
+        </CardContentNoPadding>
       </Card>
     );
   }

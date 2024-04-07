@@ -72,7 +72,7 @@ export const getSortedCourseIdsMemoized = createSelector(
       });
     }
 
-    if (sort === SORT_VALUES.favorites) {
+    if (sort === SORT_VALUES.quality) {
       return courseIds.sort((a: string, b: string) => {
         const courseA = filterTeeTimes[a].rank;
         const courseB = filterTeeTimes[b].rank;

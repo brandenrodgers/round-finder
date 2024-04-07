@@ -17,7 +17,7 @@ const TeeTimesView: React.FC = () => {
   }, [date]);
 
   return (
-    <Box>
+    <Box sx={{ height: "100%" }}>
       <Header />
       <Outlet />
       <Footer />
