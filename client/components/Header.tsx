@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
-import SportsGolfIcon from "@mui/icons-material/SportsGolf";
 import HomeIcon from "@mui/icons-material/Home";
 import { useAppSelector } from "../hooks/redux";
 import { getDate } from "../hooks/selectors";
@@ -58,9 +57,23 @@ const Header: React.FC = () => {
         <Typography
           variant="h4"
           component="div"
-          sx={{ flexGrow: 1, textAlign: "center" }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexGrow: 1,
+            gap: 1,
+            textAlign: "center",
+          }}
         >
-          Round <SportsGolfIcon /> Finder
+          Round
+          <Box
+            component="img"
+            sx={{ height: 30, width: 30 }}
+            alt="icon"
+            src="/round-finder-icon.png"
+          />
+          Finder
         </Typography>
       </Toolbar>
     );
