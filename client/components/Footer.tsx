@@ -7,10 +7,6 @@ import Button from "@mui/material/Button";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import PersonIcon from "@mui/icons-material/Person";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import PeopleIcon from "@mui/icons-material/People";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import GolfCourseIcon from "@mui/icons-material/GolfCourse";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AccessTimeFilledOutlinedIcon from "@mui/icons-material/AccessTimeFilledOutlined";
@@ -21,6 +17,7 @@ import { updateFilter } from "../redux/filterSlice";
 import HolesPicker from "./inputs/HolesPicker";
 import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
+import PlayersIcon from "./PlayersIcon";
 import { getFilter } from "../hooks/selectors";
 
 const Footer: React.FC = () => {
@@ -43,13 +40,6 @@ const Footer: React.FC = () => {
     } else {
       handleDrawerClose();
     }
-  };
-
-  const getPersonIcon = () => {
-    if (filter.players === 1) {
-      return drawerOpen ? <PersonOutlineOutlinedIcon /> : <PersonIcon />;
-    }
-    return drawerOpen ? <PeopleAltOutlinedIcon /> : <PeopleIcon />;
   };
 
   if (filter.holes && filter.players && filter.times) {
@@ -76,7 +66,9 @@ const Footer: React.FC = () => {
               label={`${filter.players} ${
                 filter.players === 1 ? "Player" : "Players"
               }`}
-              icon={getPersonIcon()}
+              icon={
+                <PlayersIcon players={filter.players} outlined={drawerOpen} />
+              }
               onClick={handleNavClick}
               showLabel={!drawerOpen}
             />

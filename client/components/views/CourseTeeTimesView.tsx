@@ -8,11 +8,12 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { TeeTime } from "../../../server/types/TeeTime";
 import TeeTimeCard from "../TeeTimeCard";
-import { getFilteredTeeTimesMemoized } from "../../hooks/selectors";
+import { getDate, getFilteredTeeTimesMemoized } from "../../hooks/selectors";
 import { HIDDEN_HEADER_ID } from "../../constants";
 
 const CourseTeeTimesView: React.FC = () => {
   const { courseId } = useParams();
+  const date = useAppSelector(getDate);
   const courses = useAppSelector(getFilteredTeeTimesMemoized);
   const course = courseId ? courses[courseId] : null;
 
@@ -35,6 +36,7 @@ const CourseTeeTimesView: React.FC = () => {
       <Box key={`${index}-${teeTime.time}`}>
         <TeeTimeCard
           bookLink={course ? course.bookLink : undefined}
+          date={date}
           teeTime={teeTime}
         />
       </Box>

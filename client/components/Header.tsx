@@ -41,7 +41,6 @@ const Header: React.FC = () => {
             color="inherit"
             aria-label="menu"
             onClick={() => navigate("/")}
-            sx={{ pr: 0 }}
           >
             <HomeIcon />
           </IconButton>

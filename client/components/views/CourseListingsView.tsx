@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Unstable_Grid2";
-import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -58,11 +58,10 @@ const CourseListingsView: React.FC = () => {
 
   if (loading) {
     return (
-      <Grid container minHeight={160}>
-        <Grid xs display="flex" justifyContent="center" alignItems="center">
-          <CircularProgress />
-        </Grid>
-      </Grid>
+      <Stack spacing={4} sx={{ width: "100%", px: 2, pt: 2 }}>
+        <Skeleton variant="rounded" width={"100%"} height={250} />
+        <Skeleton variant="rounded" width={"100%"} height={250} />
+      </Stack>
     );
   }
 

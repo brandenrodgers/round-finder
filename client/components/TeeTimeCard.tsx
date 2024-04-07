@@ -8,10 +8,9 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import SportsGolfIcon from "@mui/icons-material/SportsGolf";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { styled } from "@mui/material/styles";
+import PlayersIcon from "./PlayersIcon";
 import { TeeTime } from "../../server/types/TeeTime";
 
 dayjs.extend(customParseFormat);
@@ -25,17 +24,25 @@ const CardContentNoPadding = styled(CardContent)(`
 
 type TeeTimeCardPropTypes = {
   bookLink?: string;
+  date: string | null;
   teeTime: TeeTime;
 };
 
-const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({ bookLink, teeTime }) => {
+const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({
+  bookLink,
+  date,
+  teeTime,
+}) => {
   return (
     <Card
       sx={{ width: 325 }}
       elevation={5}
       onClick={() => {
         if (bookLink) {
-          window.open(bookLink, "_blank");
+          const bookingSiteUrl = new URL(bookLink);
+          const formattedDate = dayjs(date).format("YYYY-MM-DD");
+          bookingSiteUrl.searchParams.append("date", formattedDate);
+          window.open(bookingSiteUrl, "_blank", "noreferrer");
         }
       }}
     >
@@ -68,7 +75,6 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({ bookLink, teeTime }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 1,
             py: 1,
           }}
         >
@@ -88,11 +94,7 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({ bookLink, teeTime }) => {
             py: 1,
           }}
         >
-          {teeTime.availablePlayers === 1 ? (
-            <PersonOutlineOutlinedIcon />
-          ) : (
-            <PeopleAltOutlinedIcon />
-          )}
+          <PlayersIcon players={teeTime.availablePlayers} />
           <Typography variant="h6" color="text.secondary">
             {teeTime.availablePlayers}{" "}
             {teeTime.availablePlayers === 1 ? "Player" : "Players"}
