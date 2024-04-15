@@ -1,13 +1,26 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LoadScript, StandaloneSearchBox } from "@react-google-maps/api";
-import { Autocomplete, Slider, TextField } from "@mui/material";
+import { Autocomplete, Slider, TextField, Typography } from "@mui/material";
 import { GoogleMap } from "@react-google-maps/api";
 import DistancePicker from "./inputs/DistancePicker";
 
+type GeoCoordinates = {
+  lat: number;
+  lon: number;
+}; // TODO: figure out why I cant put this in the type folder and export it
+
 const libraries: any[] = ["places"];
-const LocationSearchBar = () => {
+
+interface LocationSearchBarInterface {
+  location: GeoCoordinates;
+  setLocation: (location: GeoCoordinates) => void;
+  distance: number;
+  setDistance: (distance: number) => void;
+}
+
+const LocationSearchBar = (props: LocationSearchBarInterface) => {
+  const { location, setLocation, distance, setDistance } = props;
   const inputRef: any = useRef(null);
-  const [distance, setDistance] = useState(30);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearByGolfCourses, setNearByGolfCourses] = useState([] as any);
   const key = ""; // Replace with your Google Maps API key
@@ -40,6 +53,25 @@ const LocationSearchBar = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({
+            lat: latitude,
+            lon: longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
   return (
     <div
@@ -74,6 +106,9 @@ const LocationSearchBar = () => {
           />
         </StandaloneSearchBox>
       </LoadScript>
+      <Typography variant="subtitle2">
+        lat: {location.lat} lon:{location.lon}
+      </Typography>
       <label htmlFor="distance" style={{ marginTop: ".5em" }}>
         Distance: {distance} miles
       </label>

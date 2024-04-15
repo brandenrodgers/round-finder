@@ -3,6 +3,8 @@ import courseReducer from "./courseSlice";
 import filterReducer from "./filterSlice";
 import dateReducer from "./dateSlice";
 import sortReducer from "./sortSlice";
+import locationReducer from "./locationSlice";
+import distanceReducer from "./distanceSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     filter: filterReducer,
     courses: courseReducer,
     sort: sortReducer,
+    location: locationReducer,
+    distance: distanceReducer,
   },
 });
 

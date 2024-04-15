@@ -3,14 +3,17 @@ import { Handler } from "../types/Handler";
 import { Course, Courses } from "../types/Course";
 import courseHandlers from "../courseHandlers";
 import { cache } from "../utils/cache";
+import { locationByIds } from "../utils/locationMap";
+import calculateDistance from "../utils/calculateDistance";
 
 const router = Router();
 
 router.use(express.json());
 
 router.get("/tee-times", async (req: Request, res: Response) => {
-  const { date } = req.query;
+  const { date, location, distance } = req.query;
 
+  console.log(distance);
   const params = { date } as { date: string };
 
   const fetchTeeTimesForCourse = async (handler: Handler): Promise<Course> => {
@@ -45,9 +48,21 @@ router.get("/tee-times", async (req: Request, res: Response) => {
     return;
   }
 
-  const courseIds = Object.keys(courseHandlers) as Array<
-    keyof typeof courseHandlers
-  >;
+  const courseIds = Object.keys(courseHandlers).filter((courseId) => {
+    const courseLocation = locationByIds[courseId];
+    const currentLocation = location as any;
+    const distanceToCourse = calculateDistance(
+      courseLocation.lat,
+      courseLocation.lon,
+      currentLocation.lat,
+      currentLocation.lon,
+      "mi"
+    ) as number;
+    const acceptableDistance = distance
+      ? parseInt(distance as any)
+      : (10000 as number);
+    return acceptableDistance > distanceToCourse;
+  }) as Array<keyof typeof courseHandlers>;
 
   const teeTimesByCourse: Array<Course> = await Promise.all<Course>(
     courseIds.map((courseId) => {

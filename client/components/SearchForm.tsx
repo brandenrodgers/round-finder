@@ -23,6 +23,13 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
+import { updateLocation } from "../redux/locationSlice";
+import { updateDistance } from "../redux/distanceSlice";
+
+type GeoCoordinates = {
+  lat: number;
+  lon: number;
+}; // TODO: figure out why I cant put this in the type folder and export it
 
 const SearchForm: React.FC = () => {
   const filter = useAppSelector(getFilter);
@@ -35,7 +42,11 @@ const SearchForm: React.FC = () => {
   const [players, setPlayers] = useState(filter.players || (1 as Players));
   const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
   const [isUsingDistance, setIsUsingDistance] = useState<Boolean>(false);
-
+  const [location, setLocation] = useState<GeoCoordinates>({
+    lat: 91, // impossible number for lat
+    lon: 91,
+  });
+  const [distance, setDistance] = useState<number>(30);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -48,6 +59,8 @@ const SearchForm: React.FC = () => {
   const handleSearch = () => {
     dispatch(updateDate(date.format("MM/DD/YYYY")));
     dispatch(updateFilter({ holes, players, times }));
+    dispatch(updateDistance(distance));
+    dispatch(updateLocation(location));
     navigate("/tee-times");
   };
 
@@ -126,7 +139,14 @@ const SearchForm: React.FC = () => {
                 label="Use Distance"
               />
             </div>
-            {isUsingDistance && <LocationSearchBar />}
+            {isUsingDistance && (
+              <LocationSearchBar
+                location={location}
+                setLocation={setLocation}
+                distance={distance}
+                setDistance={setDistance}
+              />
+            )}
             <Typography variant="h5" gutterBottom>
               {isUsingDistance ? "Distance" : "Any distance"}
             </Typography>
