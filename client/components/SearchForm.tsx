@@ -16,6 +16,13 @@ import HolesPicker from "./inputs/HolesPicker";
 import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
 import { getDate, getFilter } from "../hooks/selectors";
+import LocationSearchBar from "./LocationSearchBar";
+import {
+  FormControlLabel,
+  Switch,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 
 const SearchForm: React.FC = () => {
   const filter = useAppSelector(getFilter);
@@ -27,6 +34,7 @@ const SearchForm: React.FC = () => {
   const [holes, setHoles] = useState(filter.holes || (9 as Holes));
   const [players, setPlayers] = useState(filter.players || (1 as Players));
   const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
+  const [isUsingDistance, setIsUsingDistance] = useState<Boolean>(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -41,6 +49,10 @@ const SearchForm: React.FC = () => {
     dispatch(updateDate(date.format("MM/DD/YYYY")));
     dispatch(updateFilter({ holes, players, times }));
     navigate("/tee-times");
+  };
+
+  const handleUseDistanceToggle = () => {
+    setIsUsingDistance((prevUseDistance) => !prevUseDistance);
   };
 
   return (
@@ -81,7 +93,43 @@ const SearchForm: React.FC = () => {
             <Typography variant="h5" gutterBottom>
               Holes on
             </Typography>
-            <DatePicker label="Date" value={date} onChange={handleDateChange} />
+            <DatePicker
+              label="Date"
+              value={date as any}
+              onChange={handleDateChange}
+            />
+          </Grid>
+
+          <Grid
+            xs={12}
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Typography variant="h5" gutterBottom>
+              At
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "1rem",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isUsingDistance as any}
+                    onChange={handleUseDistanceToggle}
+                  />
+                }
+                label="Use Distance"
+              />
+            </div>
+            {isUsingDistance && <LocationSearchBar />}
+            <Typography variant="h5" gutterBottom>
+              {isUsingDistance ? "Distance" : "Any distance"}
+            </Typography>
           </Grid>
 
           <Grid
