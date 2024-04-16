@@ -25,8 +25,8 @@ import {
 const CourseListingsView: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const date = useAppSelector(getDate);
-  const location = useAppSelector(getLocation).value;
-  const distance = useAppSelector(getDistance).value;
+  const location = useAppSelector(getLocation);
+  const distance = useAppSelector(getDistance);
   const filteredTeeTimes = useAppSelector(getFilteredTeeTimesMemoized);
   const sortedCourseIds = useAppSelector(getSortedCourseIdsMemoized);
 
@@ -34,16 +34,18 @@ const CourseListingsView: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (date) {
+    if (date && !loading) {
       setLoading(true);
       fetchTeeTimes();
     }
-  }, [date]);
+  }, [date, location, distance]);
 
   const fetchTeeTimes = async () => {
+    console.log("distance before sending", distance);
     const resp = await axios.get<Courses>("/api/tee-times", {
-      params: { date, location, distance },
+      params: { date, location: location, distance: distance },
     });
+    console.log(resp);
     dispatch(updateCourses(resp.data));
     setLoading(false);
   };

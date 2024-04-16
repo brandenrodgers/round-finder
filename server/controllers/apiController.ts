@@ -13,7 +13,6 @@ router.use(express.json());
 router.get("/tee-times", async (req: Request, res: Response) => {
   const { date, location, distance } = req.query;
 
-  console.log(distance);
   const params = { date } as { date: string };
 
   const fetchTeeTimesForCourse = async (handler: Handler): Promise<Course> => {
@@ -61,8 +60,12 @@ router.get("/tee-times", async (req: Request, res: Response) => {
     const acceptableDistance = distance
       ? parseInt(distance as any)
       : (10000 as number);
+    if (parseInt(currentLocation.lat) > 90) return true;
+
     return acceptableDistance > distanceToCourse;
   }) as Array<keyof typeof courseHandlers>;
+
+  console.log("filtered courses", courseIds);
 
   const teeTimesByCourse: Array<Course> = await Promise.all<Course>(
     courseIds.map((courseId) => {

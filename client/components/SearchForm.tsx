@@ -57,6 +57,7 @@ const SearchForm: React.FC = () => {
   };
 
   const handleSearch = () => {
+    dispatch(updateDistance(distance));
     dispatch(updateDate(date.format("MM/DD/YYYY")));
     dispatch(updateFilter({ holes, players, times }));
     dispatch(updateDistance(distance));
@@ -65,6 +66,14 @@ const SearchForm: React.FC = () => {
   };
 
   const handleUseDistanceToggle = () => {
+    if (isUsingDistance) {
+      dispatch(
+        updateLocation({
+          lat: 91, // impossible number for lat
+          lon: 91,
+        })
+      );
+    }
     setIsUsingDistance((prevUseDistance) => !prevUseDistance);
   };
 

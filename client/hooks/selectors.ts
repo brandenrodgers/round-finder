@@ -9,8 +9,8 @@ export const getCourses = (state: RootState) => state.courses.value;
 export const getFilter = (state: RootState) => state.filter.value;
 export const getDate = (state: RootState) => state.date.value;
 export const getSort = (state: RootState) => state.sort.value;
-export const getLocation = (state: RootState) => state.location;
-export const getDistance = (state: RootState) => state.distance;
+export const getLocation = (state: RootState) => state.location.value;
+export const getDistance = (state: RootState) => state.distance.value;
 
 const filterTeeTime = (teeTime: TeeTime, filter: Filter): boolean => {
   if (filter.players && teeTime.availablePlayers < filter.players) {
