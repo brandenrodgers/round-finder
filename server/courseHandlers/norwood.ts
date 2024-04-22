@@ -8,6 +8,7 @@ const RANK = 4;
 
 const FACILITY_ID = 5720;
 const FACILITY_ALIAS = "norwood-country-club";
+const LOCATION = { lat: 42.198705, lon: -71.181494 };
 
 export default makePHXHandler({
   facilityAlias: FACILITY_ALIAS,
@@ -16,4 +17,5 @@ export default makePHXHandler({
   image: IMAGE,
   name: NAME,
   rank: RANK,
+  location: LOCATION,
 });

@@ -7,6 +7,7 @@ const RANK = 6;
 
 const FACILITY_ID = 16026;
 const FACILITY_ALIAS = "braintree-municipal-golf-course";
+const LOCATION = { lat: 42.196079, lon: -71.01064 };
 
 export default makePHXHandler({
   facilityAlias: FACILITY_ALIAS,
@@ -15,4 +16,5 @@ export default makePHXHandler({
   image: IMAGE,
   name: NAME,
   rank: RANK,
+  location: LOCATION,
 });

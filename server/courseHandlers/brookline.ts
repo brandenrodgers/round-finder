@@ -8,6 +8,7 @@ const RANK = 9;
 const BOOKING_CLASS = 7275;
 const BOOKING_ID = 19865;
 const SCHEDULE_ID = 2748;
+const LOCATION = { lat: 42.310866, lon: -71.160862 };
 
 export default makeForeupsoftwareHandler({
   bookingClass: BOOKING_CLASS,
@@ -17,4 +18,5 @@ export default makeForeupsoftwareHandler({
   name: NAME,
   rank: RANK,
   scheduleId: SCHEDULE_ID,
+  location: LOCATION,
 });

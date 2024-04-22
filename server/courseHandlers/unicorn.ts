@@ -8,6 +8,7 @@ const RANK = 2;
 
 const FACILITY_ID = 13988;
 const FACILITY_ALIAS = "unicorn-golf-course";
+const LOCATION = { lat: 42.488733, lon: -71.11305 };
 
 export default makePHXHandler({
   facilityAlias: FACILITY_ALIAS,
@@ -16,4 +17,5 @@ export default makePHXHandler({
   image: IMAGE,
   name: NAME,
   rank: RANK,
+  location: LOCATION,
 });

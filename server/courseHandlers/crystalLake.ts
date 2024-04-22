@@ -8,6 +8,7 @@ const RANK = 6;
 
 const FACILITY_ID = 13676;
 const FACILITY_ALIAS = "crystal-lake-golf";
+const LOCATION = { lat: 42.806071, lon: -71.139755 };
 
 export default makePHXHandler({
   facilityAlias: FACILITY_ALIAS,
@@ -16,4 +17,5 @@ export default makePHXHandler({
   image: IMAGE,
   name: NAME,
   rank: RANK,
+  location: LOCATION,
 });

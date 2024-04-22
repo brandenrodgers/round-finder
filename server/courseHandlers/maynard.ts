@@ -8,6 +8,7 @@ const RANK = 5;
 
 const FACILITY_ID = 15974;
 const FACILITY_ALIAS = "maynard-golf-course";
+const LOCATION = { lat: 42.442269, lon: -71.451605 };
 
 export default makePHXHandler({
   facilityAlias: FACILITY_ALIAS,
@@ -16,4 +17,5 @@ export default makePHXHandler({
   image: IMAGE,
   name: NAME,
   rank: RANK,
+  location: LOCATION,
 });

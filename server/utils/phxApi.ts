@@ -9,6 +9,7 @@ import { PHXTeeTimeRate, PHXTeeTimeResponse } from "../types/PHXResponse";
 import { TeeTime } from "../types/TeeTime";
 import { GenericFetchParams } from "../types/Params";
 import { Course } from "../types/Course";
+import { Location } from "../types/Location";
 
 type FetchParams = {
   date: string;
@@ -80,6 +81,7 @@ export const makePHXHandler = ({
   image,
   name,
   rank,
+  location,
 }: {
   facilityAlias: string;
   facilityId: number;
@@ -87,6 +89,7 @@ export const makePHXHandler = ({
   image: string;
   name: string;
   rank: Course["rank"];
+  location: Location;
 }) => ({
   bookLink: `https://${facilityAlias}.book.teeitup.golf/?course=${facilityId}`,
   fetchTeeTimes: makeFetchTeeTimes(facilityId, facilityAlias),
@@ -96,4 +99,5 @@ export const makePHXHandler = ({
   image,
   name,
   rank,
+  location,
 });

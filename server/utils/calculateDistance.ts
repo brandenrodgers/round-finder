@@ -1,9 +1,11 @@
+import DistanceUnit from "../types/DistanceUnit";
+
 function calculateDistance(
   lat1: number,
   lon1: number,
   lat2: number,
   lon2: number,
-  unit: "km" | "mi" | "nm" = "km"
+  unit: DistanceUnit
 ): number {
   const toRadians = (angle: number) => (Math.PI / 180) * angle;
 

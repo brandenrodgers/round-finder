@@ -17,12 +17,6 @@ import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
 import { getDate, getFilter } from "../hooks/selectors";
 import LocationSearchBar from "./LocationSearchBar";
-import {
-  FormControlLabel,
-  Switch,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
 import { updateLocation } from "../redux/locationSlice";
 import { updateDistance } from "../redux/distanceSlice";
 
@@ -41,7 +35,6 @@ const SearchForm: React.FC = () => {
   const [holes, setHoles] = useState(filter.holes || (9 as Holes));
   const [players, setPlayers] = useState(filter.players || (1 as Players));
   const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
-  const [isUsingDistance, setIsUsingDistance] = useState<Boolean>(false);
   const [location, setLocation] = useState<GeoCoordinates>({
     lat: 91, // impossible number for lat
     lon: 91,
@@ -63,18 +56,6 @@ const SearchForm: React.FC = () => {
     dispatch(updateDistance(distance));
     dispatch(updateLocation(location));
     navigate("/tee-times");
-  };
-
-  const handleUseDistanceToggle = () => {
-    if (isUsingDistance) {
-      dispatch(
-        updateLocation({
-          lat: 91, // impossible number for lat
-          lon: 91,
-        })
-      );
-    }
-    setIsUsingDistance((prevUseDistance) => !prevUseDistance);
   };
 
   return (
@@ -129,45 +110,6 @@ const SearchForm: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="h5" gutterBottom>
-              At
-            </Typography>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "1rem",
-              }}
-            >
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={isUsingDistance as any}
-                    onChange={handleUseDistanceToggle}
-                  />
-                }
-                label="Use Distance"
-              />
-            </div>
-            {isUsingDistance && (
-              <LocationSearchBar
-                location={location}
-                setLocation={setLocation}
-                distance={distance}
-                setDistance={setDistance}
-              />
-            )}
-            <Typography variant="h5" gutterBottom>
-              {isUsingDistance ? "Distance" : "Any distance"}
-            </Typography>
-          </Grid>
-
-          <Grid
-            xs={12}
-            display="flex"
-            alignItems="center"
-            flexDirection="column"
-          >
-            <Typography variant="h5" gutterBottom>
               With
             </Typography>
             <PlayersPicker
@@ -190,6 +132,19 @@ const SearchForm: React.FC = () => {
               onChange={(newTimes) => setTimes(newTimes)}
             />
           </Grid>
+        </Grid>
+
+        <Grid xs={12} display="flex" alignItems="center" flexDirection="column">
+          <Typography variant="h5" gutterBottom>
+            No further than
+          </Typography>
+
+          <LocationSearchBar
+            location={location}
+            setLocation={setLocation}
+            distance={distance}
+            setDistance={setDistance}
+          />
         </Grid>
       </Paper>
       <Grid

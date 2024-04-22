@@ -8,6 +8,7 @@ const RANK = 5;
 
 const FACILITY_ID = 13011;
 const FACILITY_ALIAS = "quailridge-country-club";
+const LOCATION = { lat: 42.506119, lon: -71.424219 };
 
 export default makePHXHandler({
   facilityAlias: FACILITY_ALIAS,
@@ -16,4 +17,5 @@ export default makePHXHandler({
   image: IMAGE,
   name: NAME,
   rank: RANK,
+  location: LOCATION,
 });

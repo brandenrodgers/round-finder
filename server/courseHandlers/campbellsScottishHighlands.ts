@@ -8,6 +8,7 @@ const RANK = 8;
 
 const FACILITY_ID = 15773;
 const FACILITY_ALIAS = "6391c422-2e57-4bc3-a1b3-8a6676c82588";
+const LOCATION = { lat: 42.753805, lon: -71.243991 };
 
 export default makePHXHandler({
   facilityAlias: FACILITY_ALIAS,
@@ -16,4 +17,5 @@ export default makePHXHandler({
   image: IMAGE,
   name: NAME,
   rank: RANK,
+  location: LOCATION,
 });

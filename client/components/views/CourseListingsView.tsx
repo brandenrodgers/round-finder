@@ -43,7 +43,7 @@ const CourseListingsView: React.FC = () => {
   const fetchTeeTimes = async () => {
     console.log("distance before sending", distance);
     const resp = await axios.get<Courses>("/api/tee-times", {
-      params: { date, location: location, distance: distance },
+      params: { date, location, distance },
     });
     console.log(resp);
     dispatch(updateCourses(resp.data));

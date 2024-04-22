@@ -9,6 +9,7 @@ import { ForeupsoftwareTeeTimeResponse } from "../types/ForeupsoftwareResponse";
 import { Course } from "../types/Course";
 import { TeeTime } from "../types/TeeTime";
 import { GenericFetchParams } from "../types/Params";
+import { Location } from "../types/Location";
 
 type FetchParams = {
   date: string;
@@ -77,6 +78,7 @@ export const makeForeupsoftwareHandler = ({
   name,
   rank,
   scheduleId,
+  location,
 }: {
   bookingClass: number;
   bookingId: number;
@@ -85,6 +87,7 @@ export const makeForeupsoftwareHandler = ({
   name: string;
   rank: Course["rank"];
   scheduleId: number;
+  location: Location;
 }) => ({
   bookLink: `https://foreupsoftware.com/index.php/booking/${bookingId}/${scheduleId}#teetimes`,
   fetchTeeTimes: makeFetchTeeTimes(bookingClass, scheduleId),
@@ -94,4 +97,5 @@ export const makeForeupsoftwareHandler = ({
   image,
   name,
   rank,
+  location,
 });

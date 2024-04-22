@@ -109,9 +109,7 @@ const LocationSearchBar = (props: LocationSearchBarInterface) => {
       <Typography variant="subtitle2">
         lat: {location.lat} lon:{location.lon}
       </Typography>
-      <label htmlFor="distance" style={{ marginTop: ".5em" }}>
-        Distance: {distance} miles
-      </label>
+
       <DistancePicker value={distance} onChange={handleSliderChange} />
       {currentLocation && <h5>current location: {currentLocation}</h5>}
     </div>

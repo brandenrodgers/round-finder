@@ -3,15 +3,18 @@ import { Handler } from "../types/Handler";
 import { Course, Courses } from "../types/Course";
 import courseHandlers from "../courseHandlers";
 import { cache } from "../utils/cache";
-import { locationByIds } from "../utils/locationMap";
 import calculateDistance from "../utils/calculateDistance";
+import { Location } from "../types/Location";
+import getCachedData from "../utils/getCacheData";
+import DistanceUnit from "../types/DistanceUnit";
 
 const router = Router();
 
 router.use(express.json());
 
 router.get("/tee-times", async (req: Request, res: Response) => {
-  const { date, location, distance } = req.query;
+  // TODO: implement distance units, temp set to default of mi, should remove turinary later
+  const { date, location, distance, units } = req.query;
 
   const params = { date } as { date: string };
 
@@ -40,32 +43,37 @@ router.get("/tee-times", async (req: Request, res: Response) => {
     }
   };
 
-  // Check to see if we have the courses cached
-  const cachedCourses = cache.get(params.date);
-  if (cachedCourses) {
-    res.send(cachedCourses);
-    return;
+  if (location && distance) {
+    const coursesCache = getCachedData(params.date, {
+      location: location as any as Location,
+      distance: distance as any as number,
+      units: units ? (units as DistanceUnit) : "mi",
+    });
+    if (coursesCache) {
+      res.send(coursesCache);
+      return;
+    }
   }
 
-  const courseIds = Object.keys(courseHandlers).filter((courseId) => {
-    const courseLocation = locationByIds[courseId];
+  const courseIds = [] as Array<keyof typeof courseHandlers>;
+
+  for (const [key, value] of Object.entries(courseHandlers)) {
     const currentLocation = location as any;
     const distanceToCourse = calculateDistance(
-      courseLocation.lat,
-      courseLocation.lon,
+      value.location.lat,
+      value.location.lon,
       currentLocation.lat,
       currentLocation.lon,
-      "mi"
-    ) as number;
+      units ? (units as DistanceUnit) : "mi"
+    );
     const acceptableDistance = distance
       ? parseInt(distance as any)
       : (10000 as number);
     if (parseInt(currentLocation.lat) > 90) return true;
-
-    return acceptableDistance > distanceToCourse;
-  }) as Array<keyof typeof courseHandlers>;
-
-  console.log("filtered courses", courseIds);
+    if (acceptableDistance > distanceToCourse) {
+      courseIds.push(key as keyof typeof courseHandlers);
+    }
+  }
 
   const teeTimesByCourse: Array<Course> = await Promise.all<Course>(
     courseIds.map((courseId) => {
@@ -80,7 +88,15 @@ router.get("/tee-times", async (req: Request, res: Response) => {
   }, {} as Courses);
 
   // Update the cache
-  cache.put(params.date, response);
+
+  cache.put(params.date, {
+    courses: response,
+    proximity: {
+      distance: distance as any as number,
+      units: units ? (units as DistanceUnit) : "mi",
+      location: location as any as Location,
+    },
+  });
 
   res.send(response);
 });
