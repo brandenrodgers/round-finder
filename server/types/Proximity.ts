@@ -1,7 +1,8 @@
+import DistanceUnit from "./DistanceUnit";
 import { Location } from "./Location";
 
 export type Proximity = {
   distance: number;
-  units: string;
+  units: DistanceUnit;
   location: Location;
 };
