@@ -5,6 +5,7 @@ import dateReducer from "./dateSlice";
 import sortReducer from "./sortSlice";
 import locationReducer from "./locationSlice";
 import distanceReducer from "./distanceSlice";
+import unitsReducer from "./unitsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     sort: sortReducer,
     location: locationReducer,
     distance: distanceReducer,
+    units: unitsReducer,
   },
 });
 

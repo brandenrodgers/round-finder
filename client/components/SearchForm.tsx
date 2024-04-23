@@ -15,10 +15,18 @@ import { updateDate } from "../redux/dateSlice";
 import HolesPicker from "./inputs/HolesPicker";
 import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
-import { getDate, getFilter } from "../hooks/selectors";
+import {
+  getDate,
+  getDistance,
+  getFilter,
+  getLocation,
+  getUnits,
+} from "../hooks/selectors";
 import LocationSearchBar from "./LocationSearchBar";
 import { updateLocation } from "../redux/locationSlice";
 import { updateDistance } from "../redux/distanceSlice";
+import { updateUnits } from "../redux/unitsSlice";
+import { getUnit } from "@mui/material/styles/cssUtils";
 
 type GeoCoordinates = {
   lat: number;
@@ -35,11 +43,11 @@ const SearchForm: React.FC = () => {
   const [holes, setHoles] = useState(filter.holes || (9 as Holes));
   const [players, setPlayers] = useState(filter.players || (1 as Players));
   const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
-  const [location, setLocation] = useState<GeoCoordinates>({
-    lat: 91, // impossible number for lat
-    lon: 91,
-  });
-  const [distance, setDistance] = useState<number>(30);
+  const [location, setLocation] = useState<GeoCoordinates>(
+    useAppSelector(getLocation)
+  );
+  const [unit, setUnit] = useState<"mi" | "km">(useAppSelector(getUnits));
+  const [distance, setDistance] = useState<number>(useAppSelector(getDistance));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -55,6 +63,7 @@ const SearchForm: React.FC = () => {
     dispatch(updateFilter({ holes, players, times }));
     dispatch(updateDistance(distance));
     dispatch(updateLocation(location));
+    dispatch(updateUnits(unit));
     navigate("/tee-times");
   };
 
@@ -144,6 +153,8 @@ const SearchForm: React.FC = () => {
             setLocation={setLocation}
             distance={distance}
             setDistance={setDistance}
+            unit={unit}
+            setUnit={setUnit}
           />
         </Grid>
       </Paper>

@@ -20,6 +20,7 @@ import {
   getFilteredTeeTimesMemoized,
   getSortedCourseIdsMemoized,
   getDistance,
+  getUnits,
 } from "../../hooks/selectors";
 
 const CourseListingsView: React.FC = () => {
@@ -29,6 +30,7 @@ const CourseListingsView: React.FC = () => {
   const distance = useAppSelector(getDistance);
   const filteredTeeTimes = useAppSelector(getFilteredTeeTimesMemoized);
   const sortedCourseIds = useAppSelector(getSortedCourseIdsMemoized);
+  const units = useAppSelector(getUnits);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -41,11 +43,9 @@ const CourseListingsView: React.FC = () => {
   }, [date, location, distance]);
 
   const fetchTeeTimes = async () => {
-    console.log("distance before sending", distance);
     const resp = await axios.get<Courses>("/api/tee-times", {
-      params: { date, location, distance },
+      params: { date, location, distance, units },
     });
-    console.log(resp);
     dispatch(updateCourses(resp.data));
     setLoading(false);
   };

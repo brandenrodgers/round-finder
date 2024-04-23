@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LoadScript, StandaloneSearchBox } from "@react-google-maps/api";
-import { Autocomplete, Slider, TextField, Typography } from "@mui/material";
+import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 import { GoogleMap } from "@react-google-maps/api";
 import DistancePicker from "./inputs/DistancePicker";
 
@@ -16,17 +16,33 @@ interface LocationSearchBarInterface {
   setLocation: (location: GeoCoordinates) => void;
   distance: number;
   setDistance: (distance: number) => void;
+  unit: "km" | "mi";
+  setUnit: (unit: any) => void;
 }
 
 const LocationSearchBar = (props: LocationSearchBarInterface) => {
-  const { location, setLocation, distance, setDistance } = props;
+  const { location, setLocation, distance, setDistance, unit, setUnit } = props;
   const inputRef: any = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearByGolfCourses, setNearByGolfCourses] = useState([] as any);
+  const [locationName, setLocationName] = useState("Using Current location");
   const key = ""; // Replace with your Google Maps API key
 
-  const handleSliderChange = (event: Event, value: number | number[]) => {
-    setDistance(value as number);
+  const handleDistanceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
+    if (value >= 1) {
+      setDistance(value);
+    }
+  };
+
+  const handleUnitClick = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    setUnit((prev: "km" | "mi") => {
+      if (prev === "mi") {
+        return "km";
+      }
+      return "mi";
+    });
   };
 
   const handlePlaceSelect = async () => {
@@ -66,6 +82,7 @@ const LocationSearchBar = (props: LocationSearchBarInterface) => {
         },
         (error) => {
           console.error("Error getting location:", error);
+          setLocationName("Enter location or enable location");
         }
       );
     } else {
@@ -79,38 +96,47 @@ const LocationSearchBar = (props: LocationSearchBarInterface) => {
         width: "100%",
         display: "flex",
         alignItems: "center",
-        flexDirection: "column",
+        flexDirection: "row",
+        justifyContent: "center",
       }}
     >
-      <LoadScript googleMapsApiKey={key} libraries={libraries}>
-        <GoogleMap></GoogleMap>
-        <StandaloneSearchBox
-          onLoad={(ref) => (inputRef.current = ref)}
-          onPlacesChanged={handlePlaceSelect}
-        >
-          <Autocomplete
-            options={libraries}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Enter a location"
-                variant="outlined"
-                inputProps={{
-                  style: {
-                    width: "100%",
-                    padding: ".5em",
-                  },
-                }}
-              />
-            )}
-          />
-        </StandaloneSearchBox>
-      </LoadScript>
-      <Typography variant="subtitle2">
-        lat: {location.lat} lon:{location.lon}
-      </Typography>
-
-      <DistancePicker value={distance} onChange={handleSliderChange} />
+      <div
+        style={{
+          padding: ".5em",
+          width: "240px",
+        }}
+      >
+        <LoadScript googleMapsApiKey={key} libraries={libraries}>
+          <GoogleMap></GoogleMap>
+          <StandaloneSearchBox
+            onLoad={(ref) => (inputRef.current = ref)}
+            onPlacesChanged={handlePlaceSelect}
+          >
+            <Autocomplete
+              options={libraries}
+              value={locationName}
+              renderInput={(params) => (
+                <TextField {...params} label={"Location"} variant="outlined" />
+              )}
+            />
+          </StandaloneSearchBox>
+        </LoadScript>
+      </div>
+      <TextField
+        type="number"
+        label={"Distance"}
+        value={distance}
+        style={{ paddingRight: ".5em", width: "140px" }}
+        onChange={handleDistanceChange}
+        inputProps={{ min: 1 }}
+        InputProps={{
+          endAdornment: (
+            <div onClick={handleUnitClick}>
+              <InputAdornment position="end">{unit}</InputAdornment>
+            </div>
+          ),
+        }}
+      />
       {currentLocation && <h5>current location: {currentLocation}</h5>}
     </div>
   );
