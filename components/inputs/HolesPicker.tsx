@@ -1,0 +1,42 @@
+"use client";
+
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Typography from "@mui/material/Typography";
+import { Holes } from "@/lib/types";
+
+type HolesPickerProps = {
+  value: Holes;
+  onChange: (newHoles: Holes) => void;
+};
+
+const HolesPicker: React.FC<HolesPickerProps> = ({ value, onChange }) => {
+  const handleHolesChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newHoles: Holes
+  ) => {
+    onChange(newHoles);
+  };
+
+  return (
+    <ToggleButtonGroup
+      color="primary"
+      size="medium"
+      value={value}
+      exclusive
+      onChange={handleHolesChange}
+      aria-label="holes-input"
+    >
+      <ToggleButton value={9}>
+        <Typography variant="h5" sx={{ px: 1 }}>
+          9
+        </Typography>
+      </ToggleButton>
+      <ToggleButton value={18}>
+        <Typography variant="h5">18</Typography>
+      </ToggleButton>
+    </ToggleButtonGroup>
+  );
+};
+
+export default HolesPicker;

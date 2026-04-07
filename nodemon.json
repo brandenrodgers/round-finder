@@ -1,6 +1,0 @@
-{
-  "ignore": ["node_modules"],
-  "watch": ["server"],
-  "ext": "ts",
-  "exec": "concurrently \"npx tsc --watch\" \"node dist/index.js\""
-}
