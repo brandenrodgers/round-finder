@@ -56,7 +56,7 @@ const makeFormatResponse =
           result.push({
             courseId,
             courseName,
-            availablePlayers: 4 - teeTime.bookedPlayers,
+            availablePlayers: teeTime.maxPlayers,
             time: {
               hours: getHoursFromDate(teeTime.teetime),
               minutes: getMinutesFromDate(teeTime.teetime),

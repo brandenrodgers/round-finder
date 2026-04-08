@@ -5,6 +5,7 @@ import butternutFarm from "./butternutFarm";
 import cedarGlen from "./cedarGlen";
 import campbellsScottishHighlands from "./campbellsScottishHighlands";
 import crystalLake from "./crystalLake";
+import farCorner from "./farCorner";
 import hickoryHill from "./hickoryHill";
 import maynard from "./maynard";
 import merrimackValley from "./merrimackValley";
@@ -22,6 +23,7 @@ import fourOaks from "./fourOaks";
 import gannon from "./gannon";
 import georgeWright from "./georgeWright";
 import graniteFields from "./graniteFields";
+import redTail from "./redTail";
 import williamJDevine from "./williamJDevine";
 
 const courseHandlers = {
@@ -32,6 +34,7 @@ const courseHandlers = {
   cedarGlen,
   campbellsScottishHighlands,
   crystalLake,
+  farCorner,
   hickoryHill,
   maynard,
   merrimackValley,
@@ -51,6 +54,7 @@ export const manualCourseHandlers = {
   gannon,
   georgeWright,
   graniteFields,
+  redTail,
   williamJDevine,
 };
 
