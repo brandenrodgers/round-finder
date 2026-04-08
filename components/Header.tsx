@@ -243,6 +243,29 @@ const Header: React.FC = () => {
             Tap any course to see its available times, and tap a time to go
             directly to that course&apos;s booking page.
           </Typography>
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+            <Box
+              component="button"
+              onClick={() => {
+                setInfoOpen(false);
+                router.push("/courses");
+              }}
+              sx={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "primary.main",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                p: 0,
+                textDecoration: "underline",
+                textUnderlineOffset: 2,
+                "&:hover": { color: "primary.dark" },
+              }}
+            >
+              View all supported courses
+            </Box>
+          </Box>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 2.5, textAlign: "center" }}>
             Built for fun, not profit. If it helps you get out on the course,
             feel free to buy me a beer for my next round.

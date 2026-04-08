@@ -18,4 +18,5 @@ export default makePHXHandler({
   rank: RANK,
   coordinates: { lat: 42.4864, lng: -71.4479 }, // Acton, MA
   location: "Acton, MA",
+  nineHoleOnly: true,
 });

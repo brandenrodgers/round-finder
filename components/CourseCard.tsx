@@ -89,6 +89,14 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
               variant="outlined"
               sx={{ fontWeight: 600, fontSize: "0.75rem" }}
             />
+            {course.nineHoleOnly && (
+              <Chip
+                label="9 holes"
+                size="small"
+                variant="outlined"
+                sx={{ fontWeight: 600, fontSize: "0.75rem" }}
+              />
+            )}
             {distanceMi !== null && (
               <Chip
                 label={`${distanceMi.toFixed(1)} mi`}

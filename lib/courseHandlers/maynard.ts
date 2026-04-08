@@ -18,4 +18,5 @@ export default makePHXHandler({
   rank: RANK,
   coordinates: { lat: 42.4274, lng: -71.4614 }, // Maynard, MA
   location: "Maynard, MA",
+  nineHoleOnly: true,
 });

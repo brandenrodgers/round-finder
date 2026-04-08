@@ -9,6 +9,7 @@ export type Course = {
   courseImage: string;
   location?: string;
   error?: string;
+  nineHoleOnly?: boolean;
   rank: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   coordinates?: Coordinates;
   teeTimes?: Array<TeeTime>;
@@ -44,6 +45,7 @@ export type Handler = {
   bookLink: string;
   image: string;
   location?: string;
+  nineHoleOnly?: boolean;
   rank: Course["rank"];
   coordinates?: Coordinates;
   fetchTeeTimes: (params: GenericFetchParams) => Promise<any>;
@@ -58,6 +60,7 @@ export type ManualHandler = {
   bookLink: string;
   image: string;
   location?: string;
+  nineHoleOnly?: boolean;
   rank: Course["rank"];
   coordinates?: Coordinates;
 };

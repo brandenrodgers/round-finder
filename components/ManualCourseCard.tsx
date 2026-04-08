@@ -2,6 +2,7 @@
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import GolfCourseIcon from "@mui/icons-material/GolfCourse";
@@ -71,6 +72,14 @@ const ManualCourseCard: React.FC<ManualCourseCardProps> = ({ course }) => {
         <Typography variant="body2" fontWeight={600} noWrap>
           {course.courseName}
         </Typography>
+        {course.nineHoleOnly && (
+          <Chip
+            label="9 holes"
+            size="small"
+            variant="outlined"
+            sx={{ flexShrink: 0, fontSize: "0.7rem" }}
+          />
+        )}
         {distanceMi !== null && (
           <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
             {distanceMi.toFixed(1)} mi

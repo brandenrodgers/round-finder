@@ -8,6 +8,7 @@ export const makeManualHandler = ({
   rank,
   coordinates,
   location,
+  nineHoleOnly,
 }: {
   id: string;
   name: string;
@@ -16,6 +17,7 @@ export const makeManualHandler = ({
   rank: Course["rank"];
   coordinates?: { lat: number; lng: number };
   location?: string;
+  nineHoleOnly?: boolean;
 }): ManualHandler => ({
   type: "manual",
   id,
@@ -25,4 +27,5 @@ export const makeManualHandler = ({
   rank,
   coordinates,
   location,
+  nineHoleOnly,
 });

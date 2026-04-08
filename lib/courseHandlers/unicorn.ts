@@ -18,4 +18,5 @@ export default makePHXHandler({
   rank: RANK,
   coordinates: { lat: 42.4840, lng: -71.0880 }, // Stoneham, MA
   location: "Stoneham, MA",
+  nineHoleOnly: true,
 });
