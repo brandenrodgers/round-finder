@@ -9,7 +9,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Course } from "@/lib/types";
 import { getRankInfo } from "@/lib/rankInfo";
 import { haversineDistance } from "@/lib/distance";
-import { getLocation } from "@/store/selectors";
+import { getLocation, getFilter } from "@/store/selectors";
 import { useAppSelector } from "@/store/hooks";
 
 type ManualCourseCardProps = {
@@ -18,6 +18,7 @@ type ManualCourseCardProps = {
 
 const ManualCourseCard: React.FC<ManualCourseCardProps> = ({ course }) => {
   const location = useAppSelector(getLocation);
+  const filter = useAppSelector(getFilter);
 
   const distanceMi =
     location && course.coordinates
@@ -81,7 +82,22 @@ const ManualCourseCard: React.FC<ManualCourseCardProps> = ({ course }) => {
         size="small"
         variant="outlined"
         endIcon={<OpenInNewIcon sx={{ fontSize: "13px !important" }} />}
-        onClick={() => window.open(course.bookLink, "_blank", "noreferrer")}
+        onClick={() => {
+          const url = new URL(course.bookLink);
+          if (url.hostname.endsWith("cps.golf")) {
+            if (filter.times) {
+              url.searchParams.set("TeeOffTimeMin", String(filter.times[0]));
+              url.searchParams.set("TeeOffTimeMax", String(filter.times[1]));
+            }
+            if (filter.players) {
+              url.searchParams.set("Player", String(filter.players));
+            }
+            if (filter.holes) {
+              url.searchParams.set("Hole", String(filter.holes));
+            }
+          }
+          window.open(url.toString(), "_blank", "noreferrer");
+        }}
         sx={{ flexShrink: 0, borderRadius: 999, fontSize: "0.7rem" }}
       >
         Book

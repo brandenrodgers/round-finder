@@ -31,7 +31,7 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({
 }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const handleShare = (e: React.MouseEvent) => {
+  const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const params = new URLSearchParams({
       courseId: teeTime.courseId,
@@ -41,8 +41,21 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({
       side: teeTime.startSide,
     });
     const url = `${window.location.origin}/share?${params.toString()}`;
-    navigator.clipboard.writeText(url);
-    setSnackbarOpen(true);
+    const formattedTime = dayjs(
+      `${teeTime.time.hours}:${teeTime.time.minutes}`,
+      "H:m"
+    ).format("h:mm a");
+    const shareData = {
+      title: `Tee time at ${teeTime.courseName}`,
+      text: `Want to join a round? ${teeTime.holes} holes at ${teeTime.courseName} on ${date} at ${formattedTime}.`,
+      url,
+    };
+    if (navigator.share && navigator.canShare?.(shareData)) {
+      await navigator.share(shareData);
+    } else {
+      navigator.clipboard.writeText(url);
+      setSnackbarOpen(true);
+    }
   };
 
   return (

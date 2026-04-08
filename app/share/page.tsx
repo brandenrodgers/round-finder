@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
@@ -19,6 +20,41 @@ type SearchParams = {
   holes?: string;
   side?: string;
 };
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}): Promise<Metadata> {
+  const { courseId, date, time, holes } = searchParams;
+
+  const handler =
+    courseId
+      ? (courseHandlers as Record<string, Handler>)[courseId] ??
+        (manualCourseHandlers as Record<string, ManualHandler>)[courseId]
+      : null;
+
+  if (!handler || !date || !time || !holes) {
+    return { title: "Round Finder" };
+  }
+
+  const [hoursStr, minutesStr] = time.split("-");
+  const formattedTime = dayjs(`${hoursStr}:${minutesStr}`, "H:m").format("h:mm a");
+  const formattedDate = dayjs(date, "MM/DD/YYYY").format("dddd, MMMM D");
+
+  const title = `${holes} holes at ${handler.name} — ${formattedTime}`;
+  const description = `${formattedDate} at ${formattedTime}. Tap to see the tee time and book.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: handler.image ? [{ url: handler.image }] : [],
+    },
+  };
+}
 
 export default async function SharePage({
   searchParams,

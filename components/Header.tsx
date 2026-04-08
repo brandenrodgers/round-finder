@@ -51,7 +51,7 @@ const Header: React.FC = () => {
             aria-label="menu"
             onClick={() => router.push("/")}
           >
-            <HomeOutlinedIcon sx={{ fontSize: 28 }} />
+            <HomeOutlinedIcon sx={{ fontSize: 26 }} />
           </IconButton>
         </Box>
       );
@@ -82,7 +82,7 @@ const Header: React.FC = () => {
           Round
           <Box
             component="img"
-            sx={{ height: 38, width: 38 }}
+            sx={{ height: 40, width: 40 }}
             alt="icon"
             src="/round-finder-icon.png"
           />
@@ -116,12 +116,7 @@ const Header: React.FC = () => {
         <Box
           sx={{
             display: "inline-flex",
-            px: 1.75,
-            py: 0.35,
-            borderRadius: 999,
-            border: "1px solid",
-            borderColor: "primary.main",
-            color: "primary.main",
+            color: "text.secondary",
           }}
         >
           <Typography variant="body2" fontWeight={600} letterSpacing="0.02em">
