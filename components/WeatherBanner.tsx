@@ -14,7 +14,7 @@ type WeatherBannerProps = {
 const WeatherBanner: React.FC<WeatherBannerProps> = ({ weather, loading }) => {
   if (loading) {
     return (
-      <Box sx={{ px: 2, pb: 1.5 }}>
+      <Box sx={{ px: 2, pb: 1.5, maxWidth: 600, mx: "auto" }}>
         <Skeleton variant="rounded" height={64} sx={{ borderRadius: "12px" }} />
       </Box>
     );
@@ -26,7 +26,7 @@ const WeatherBanner: React.FC<WeatherBannerProps> = ({ weather, loading }) => {
   const iconBg = wmoToIconBg(weather.wmoCode);
 
   return (
-    <Box sx={{ px: 2, pb: 1.5 }}>
+    <Box sx={{ px: 2, pb: 1.5, maxWidth: 600, mx: "auto" }}>
       <Box
         sx={{
           bgcolor: "white",
