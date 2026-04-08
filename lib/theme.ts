@@ -41,6 +41,13 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          overscrollBehavior: "none",
+        },
+      },
+    },
     MuiCard: {
       defaultProps: {
         elevation: 0,
@@ -91,6 +98,13 @@ const theme = createTheme({
         root: {
           textTransform: "none",
           fontWeight: 500,
+          "&.Mui-selected": {
+            backgroundColor: "#0D9465",
+            color: "#fff",
+            "&:hover": {
+              backgroundColor: "#076646",
+            },
+          },
         },
       },
     },

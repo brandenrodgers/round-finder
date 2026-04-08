@@ -48,11 +48,10 @@ const SearchForm: React.FC = () => {
   return (
     <Box
       sx={{
-        mt: 3,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        width: "100%",
       }}
     >
       <Paper
@@ -65,6 +64,11 @@ const SearchForm: React.FC = () => {
           backdropFilter: "blur(14px)",
           border: "1px solid rgba(255, 255, 255, 0.5)",
           borderRadius: 3,
+          animation: "fadeUp 0.4s ease-out both",
+          "@keyframes fadeUp": {
+            from: { opacity: 0, transform: "translateY(14px)" },
+            to: { opacity: 1, transform: "translateY(0)" },
+          },
         }}
         elevation={0}
       >

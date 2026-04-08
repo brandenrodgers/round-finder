@@ -196,10 +196,16 @@ const Header: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation={0}>
+      <AppBar
+        position="fixed"
+        elevation={0}
+        sx={pathname === "/" ? { bgcolor: "transparent", boxShadow: "none" } : {}}
+      >
         {renderToolbar()}
       </AppBar>
-      {renderToolbar(HIDDEN_HEADER_ID)}
+      <Box sx={pathname === "/" ? { visibility: "hidden" } : {}}>
+        {renderToolbar(HIDDEN_HEADER_ID)}
+      </Box>
       {renderSubToolbar()}
 
       <Dialog
