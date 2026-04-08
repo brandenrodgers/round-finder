@@ -236,18 +236,46 @@ const Header: React.FC = () => {
         <DialogContent sx={{ pt: 2 }}>
           <Typography variant="body1" gutterBottom>
             Round Finder helps you quickly see available tee times at public
-            golf courses in and around the Boston area — all in one place.
+            golf courses in and around the Boston area, all in one place.
           </Typography>
           <Typography variant="body1" gutterBottom sx={{ mt: 1.5 }}>
             To get started, select how many holes you want to play, pick a date,
             choose the number of players in your group, and set a time window.
-            Hit <strong>Find Tee Times</strong> and you&apos;ll see which
+            Hit <strong>Find tee times</strong> and you&apos;ll see which
             courses have openings that match.
           </Typography>
           <Typography variant="body1" sx={{ mt: 1.5 }}>
             Tap any course to see its available times, and tap a time to go
             directly to that course&apos;s booking page.
           </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2.5, textAlign: "center" }}>
+            Built for fun, not profit. If it helps you get out on the course,
+            feel free to buy me a beer for my next round.
+          </Typography>
+          <Box sx={{ mt: 1.5, display: "flex", justifyContent: "center" }}>
+            <Box
+              component="a"
+              href="https://www.buymeacoffee.com/brandenr"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 1,
+                px: 2.5,
+                py: 1,
+                borderRadius: 2,
+                bgcolor: "#FFDD00",
+                color: "#000000",
+                textDecoration: "none",
+                fontWeight: 700,
+                fontSize: "1rem",
+                "&:hover": { bgcolor: "#f0cf00" },
+              }}
+            >
+              🍺 Buy me a beer
+            </Box>
+          </Box>
         </DialogContent>
       </Dialog>
     </Box>

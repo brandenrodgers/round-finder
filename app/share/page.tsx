@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import courseHandlers, { manualCourseHandlers } from "@/lib/courseHandlers";
 import PlayersIcon from "@/components/PlayersIcon";
-import { Handler } from "@/lib/types";
+import { Handler, ManualHandler } from "@/lib/types";
 
 dayjs.extend(customParseFormat);
 
@@ -31,11 +31,9 @@ export default async function SharePage({
     notFound();
   }
 
-  const allHandlers = { ...courseHandlers, ...manualCourseHandlers } as Record<
-    string,
-    Handler
-  >;
-  const handler = allHandlers[courseId];
+  const handler =
+    (courseHandlers as Record<string, Handler>)[courseId] ??
+    (manualCourseHandlers as Record<string, ManualHandler>)[courseId];
 
   if (!handler) {
     notFound();
