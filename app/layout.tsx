@@ -23,21 +23,12 @@ export const metadata: Metadata = {
     description: "Find golf tee times in the Boston area",
     url: "https://round-finder.com",
     siteName: "Round Finder",
-    images: [
-      {
-        url: "https://round-finder.com/round-finder-icon.png",
-        width: 512,
-        height: 512,
-        alt: "Round Finder",
-      },
-    ],
     type: "website",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Round Finder",
     description: "Find golf tee times in the Boston area",
-    images: ["https://round-finder.com/round-finder-icon.png"],
   },
 };
 
