@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import StoreProvider from "@/components/StoreProvider";
 import ThemeRegistry from "@/components/ThemeRegistry";
 
@@ -30,6 +31,7 @@ export default function RootLayout({
         <StoreProvider>
           <ThemeRegistry>{children}</ThemeRegistry>
         </StoreProvider>
+        <Analytics />
       </body>
     </html>
   );

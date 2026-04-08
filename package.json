@@ -27,6 +27,7 @@
     "@mui/material-nextjs": "^5.15.14",
     "@mui/x-date-pickers": "^7.1.0",
     "@reduxjs/toolkit": "^2.2.2",
+    "@vercel/analytics": "^2.0.1",
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "next": "^14.2.0",
