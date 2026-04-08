@@ -17,7 +17,28 @@ const dmSerifDisplay = DM_Serif_Display({
 
 export const metadata: Metadata = {
   title: "Round Finder",
-  description: "Find local golf tee times",
+  description: "Find golf tee times in the Boston area",
+  openGraph: {
+    title: "Round Finder",
+    description: "Find golf tee times in the Boston area",
+    url: "https://round-finder.com",
+    siteName: "Round Finder",
+    images: [
+      {
+        url: "https://round-finder.com/round-finder-icon.png",
+        width: 512,
+        height: 512,
+        alt: "Round Finder",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Round Finder",
+    description: "Find golf tee times in the Boston area",
+    images: ["https://round-finder.com/round-finder-icon.png"],
+  },
 };
 
 export default function RootLayout({
