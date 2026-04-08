@@ -136,8 +136,8 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({
               aria-label="Share tee time"
               sx={{ color: "primary.main", gap: 0.75, borderRadius: 1.5, px: 1, py: 0.75, width: "100%" }}
             >
-              <IosShareIcon sx={{ fontSize: 16 }} />
-              <Typography variant="caption" fontWeight={600} color="primary.main">
+              <IosShareIcon sx={{ fontSize: 20 }} />
+              <Typography variant="body2" fontWeight={600} color="primary.main">
                 Share this tee time
               </Typography>
             </IconButton>

@@ -13,9 +13,12 @@ import { Courses } from "@/lib/types";
 import { updateCourses } from "@/store/courseSlice";
 import CourseCard from "./CourseCard";
 import ManualCourseCard from "./ManualCourseCard";
+import WeatherBanner from "./WeatherBanner";
+import type { WeatherData } from "@/lib/weather";
 import {
   getDate,
   getFilteredTeeTimesMemoized,
+  getLocation,
   getManualCoursesMemoized,
   getSortedCourseIdsMemoized,
 } from "@/store/selectors";
@@ -47,7 +50,10 @@ const ManualCoursesSection: React.FC = () => {
 
 const CourseListingsView: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weatherLoading, setWeatherLoading] = useState(false);
   const date = useAppSelector(getDate);
+  const location = useAppSelector(getLocation);
   const filteredTeeTimes = useAppSelector(getFilteredTeeTimesMemoized);
   const sortedCourseIds = useAppSelector(getSortedCourseIdsMemoized);
 
@@ -58,6 +64,7 @@ const CourseListingsView: React.FC = () => {
     if (date) {
       setLoading(true);
       fetchTeeTimes();
+      fetchWeather();
     }
   }, [date]);
 
@@ -67,6 +74,27 @@ const CourseListingsView: React.FC = () => {
     });
     dispatch(updateCourses(resp.data));
     setLoading(false);
+  };
+
+  const fetchWeather = async () => {
+    if (!date) return;
+    setWeatherLoading(true);
+    try {
+      // Convert MM/DD/YYYY → YYYY-MM-DD for Open-Meteo
+      const [month, day, year] = date.split("/");
+      const isoDate = `${year}-${month}-${day}`;
+      const params: Record<string, string> = { date: isoDate };
+      if (location) {
+        params.lat = String(location.lat);
+        params.lng = String(location.lng);
+      }
+      const resp = await axios.get<WeatherData>("/api/weather", { params });
+      setWeather(resp.data);
+    } catch {
+      setWeather(null);
+    } finally {
+      setWeatherLoading(false);
+    }
   };
 
   const renderCourseCard = (courseId: string) => {
@@ -116,11 +144,14 @@ const CourseListingsView: React.FC = () => {
           justifyContent: "center",
           gap: 2,
           px: 3,
-          pt: 4,
+          pt: 2,
           pb: 12,
           backgroundColor: (theme) => theme.palette.secondary.light,
         }}
       >
+        <Box sx={{ width: "100%", maxWidth: 500 }}>
+          <WeatherBanner weather={weather} loading={weatherLoading} />
+        </Box>
         <Box
           sx={{
             width: 80,
@@ -169,6 +200,7 @@ const CourseListingsView: React.FC = () => {
         backgroundColor: (theme) => theme.palette.secondary.light,
       }}
     >
+      <WeatherBanner weather={weather} loading={weatherLoading} />
       <Box
         sx={{
           display: "grid",

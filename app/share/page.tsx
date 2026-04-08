@@ -9,6 +9,9 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import courseHandlers, { manualCourseHandlers } from "@/lib/courseHandlers";
 import PlayersIcon from "@/components/PlayersIcon";
+import WeatherBanner from "@/components/WeatherBanner";
+import { wmoToCondition } from "@/lib/weather";
+import type { WeatherData } from "@/lib/weather";
 import { Handler, ManualHandler } from "@/lib/types";
 
 dayjs.extend(customParseFormat);
@@ -112,6 +115,45 @@ export default async function SharePage({
     bookingUrl = null;
   }
 
+  const isoDate = dayjs(date, "MM/DD/YYYY").format("YYYY-MM-DD");
+  const lat = handler.coordinates?.lat ?? 42.3601;
+  const lng = handler.coordinates?.lng ?? -71.0589;
+
+  let weather: WeatherData | null = null;
+  try {
+    const weatherUrl = new URL("https://api.open-meteo.com/v1/forecast");
+    weatherUrl.searchParams.set("latitude", String(lat));
+    weatherUrl.searchParams.set("longitude", String(lng));
+    weatherUrl.searchParams.set(
+      "daily",
+      "temperature_2m_max,temperature_2m_min,weathercode,precipitation_probability_max,windspeed_10m_max"
+    );
+    weatherUrl.searchParams.set("temperature_unit", "fahrenheit");
+    weatherUrl.searchParams.set("windspeed_unit", "mph");
+    weatherUrl.searchParams.set("timezone", "America/New_York");
+    weatherUrl.searchParams.set("start_date", isoDate);
+    weatherUrl.searchParams.set("end_date", isoDate);
+    const weatherResp = await fetch(weatherUrl.toString(), {
+      next: { revalidate: 3600 },
+    });
+    if (weatherResp.ok) {
+      const data = await weatherResp.json();
+      const daily = data.daily;
+      if (daily?.temperature_2m_max?.length) {
+        weather = {
+          high: Math.round(daily.temperature_2m_max[0]),
+          low: Math.round(daily.temperature_2m_min[0]),
+          wmoCode: daily.weathercode[0],
+          condition: wmoToCondition(daily.weathercode[0]),
+          precipChance: daily.precipitation_probability_max[0] ?? 0,
+          windSpeed: Math.round(daily.windspeed_10m_max[0]),
+        };
+      }
+    }
+  } catch {
+    // weather is non-critical — leave null
+  }
+
   return (
     <Box
       sx={{
@@ -181,6 +223,10 @@ export default async function SharePage({
         <Typography variant="body1" color="text.secondary">
           {formattedDate} at {formattedTime}
         </Typography>
+      </Box>
+
+      <Box sx={{ width: "100%", maxWidth: 480, px: 0 }}>
+        <WeatherBanner weather={weather} loading={false} />
       </Box>
 
       <Box
