@@ -20,4 +20,5 @@ export default makeForeupsoftwareHandler({
   scheduleId: SCHEDULE_ID,
   coordinates: { lat: 42.1979, lng: -71.7781 }, // Millbury, MA
   location: "Millbury, MA",
+  hasRange: true,
 });

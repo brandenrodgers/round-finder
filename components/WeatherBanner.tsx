@@ -82,7 +82,10 @@ const WeatherBanner: React.FC<WeatherBannerProps> = ({ weather, loading }) => {
                 lineHeight: 1.3,
               }}
             >
-              H {weather.high}° / L {weather.low}°
+              <Box component="span" sx={{ color: "error.main" }}>H</Box>
+              {" "}{weather.high}° /{" "}
+              <Box component="span" sx={{ color: "#2196f3" }}>L</Box>
+              {" "}{weather.low}°
             </Typography>
           </Box>
 

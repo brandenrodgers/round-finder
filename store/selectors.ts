@@ -39,6 +39,7 @@ export const getFilteredTeeTimesMemoized = createSelector(
       const course = courses[courseId];
 
       if (course.type === "manual") return;
+      if (filter.range && !course.hasRange) return;
 
       const filteredTeeTimes = course.teeTimes
         ? course.teeTimes.filter((teeTime) => filterTeeTime(teeTime, filter))
@@ -57,10 +58,11 @@ export const getFilteredTeeTimesMemoized = createSelector(
 );
 
 export const getManualCoursesMemoized = createSelector(
-  [getCourses],
-  (courses) =>
+  [getCourses, getFilter],
+  (courses, filter) =>
     Object.values(courses)
       .filter((course) => course.type === "manual")
+      .filter((course) => !filter.range || course.hasRange)
       .sort((a, b) => a.courseName.localeCompare(b.courseName))
 );
 

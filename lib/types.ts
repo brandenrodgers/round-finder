@@ -10,6 +10,7 @@ export type Course = {
   location?: string;
   error?: string;
   nineHoleOnly?: boolean;
+  hasRange?: boolean;
   rank: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   coordinates?: Coordinates;
   teeTimes?: Array<TeeTime>;
@@ -46,6 +47,7 @@ export type Handler = {
   image: string;
   location?: string;
   nineHoleOnly?: boolean;
+  hasRange?: boolean;
   rank: Course["rank"];
   coordinates?: Coordinates;
   fetchTeeTimes: (params: GenericFetchParams) => Promise<any>;
@@ -61,6 +63,7 @@ export type ManualHandler = {
   image: string;
   location?: string;
   nineHoleOnly?: boolean;
+  hasRange?: boolean;
   rank: Course["rank"];
   coordinates?: Coordinates;
 };
@@ -189,6 +192,7 @@ export type Filter = {
   holes?: Holes;
   players?: Players;
   times?: number[];
+  range?: boolean;
 };
 
 export type SortBy = "alphabetical" | "quality" | "distance" | "For Me";

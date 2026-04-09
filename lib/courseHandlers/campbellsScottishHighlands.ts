@@ -18,4 +18,5 @@ export default makePHXHandler({
   rank: RANK,
   coordinates: { lat: 42.7837, lng: -71.2220 }, // Salem, NH
   location: "Salem, NH",
+  hasRange: true,
 });

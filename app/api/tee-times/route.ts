@@ -20,6 +20,7 @@ const fetchTeeTimesForCourse = async (
       coordinates: handler.coordinates,
       location: handler.location,
       nineHoleOnly: handler.nineHoleOnly,
+      hasRange: handler.hasRange,
       teeTimes: formattedResponse,
     };
   } catch (e: any) {
@@ -34,6 +35,7 @@ const fetchTeeTimesForCourse = async (
       coordinates: handler.coordinates,
       location: handler.location,
       nineHoleOnly: handler.nineHoleOnly,
+      hasRange: handler.hasRange,
       error: `Failed to fetch tee times for ${handler.name}`,
     };
   }
@@ -49,6 +51,7 @@ const buildManualCourse = (handler: ManualHandler): Course => ({
   coordinates: handler.coordinates,
   location: handler.location,
   nineHoleOnly: handler.nineHoleOnly,
+  hasRange: handler.hasRange,
 });
 
 export async function GET(req: NextRequest) {

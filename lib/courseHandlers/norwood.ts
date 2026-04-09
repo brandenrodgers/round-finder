@@ -18,4 +18,5 @@ export default makePHXHandler({
   rank: RANK,
   coordinates: { lat: 42.1624, lng: -71.2180 }, // Norwood, MA
   location: "Norwood, MA",
+  hasRange: true,
 });

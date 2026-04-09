@@ -4,9 +4,9 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import GolfCourseIcon from "@mui/icons-material/GolfCourse";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import SportsGolf from "@mui/icons-material/SportsGolf";
 import { Course } from "@/lib/types";
 import { getRankInfo } from "@/lib/rankInfo";
 import { haversineDistance } from "@/lib/distance";
@@ -124,10 +124,22 @@ const ManualCourseCard: React.FC<ManualCourseCardProps> = ({ course }) => {
               sx={{ flexShrink: 0, fontSize: "0.7rem" }}
             />
           )}
+          {course.hasRange && (
+            <Chip
+              label="range"
+              size="small"
+              variant="outlined"
+              icon={<SportsGolf />}
+              sx={{ flexShrink: 0, fontSize: "0.7rem" }}
+            />
+          )}
           {distanceMi !== null && (
-            <Typography variant="caption" color="text.secondary">
-              {distanceMi.toFixed(1)} mi
-            </Typography>
+            <Chip
+              label={`${distanceMi.toFixed(1)} mi`}
+              size="small"
+              variant="outlined"
+              sx={{ flexShrink: 0, fontSize: "0.7rem" }}
+            />
           )}
         </Box>
       </Box>

@@ -19,4 +19,5 @@ export default makeForeupsoftwareHandler({
   scheduleId: SCHEDULE_ID,
   coordinates: { lat: 42.3146, lng: -71.1614 }, // Chestnut Hill, MA
   location: "Chestnut Hill, MA",
+  hasRange: true,
 });

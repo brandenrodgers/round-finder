@@ -77,6 +77,7 @@ export const makeForeupsoftwareHandler = ({
   coordinates,
   location,
   nineHoleOnly,
+  hasRange,
 }: {
   bookingClass: number;
   bookingId: number;
@@ -88,6 +89,7 @@ export const makeForeupsoftwareHandler = ({
   coordinates?: { lat: number; lng: number };
   location?: string;
   nineHoleOnly?: boolean;
+  hasRange?: boolean;
 }) => ({
   type: "live" as const,
   bookLink: `https://foreupsoftware.com/index.php/booking/${bookingId}/${scheduleId}#teetimes`,
@@ -101,4 +103,5 @@ export const makeForeupsoftwareHandler = ({
   coordinates,
   location,
   nineHoleOnly,
+  hasRange,
 });

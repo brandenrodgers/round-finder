@@ -80,6 +80,7 @@ export const makePHXHandler = ({
   coordinates,
   location,
   nineHoleOnly,
+  hasRange,
 }: {
   facilityAlias: string;
   facilityId: number;
@@ -90,6 +91,7 @@ export const makePHXHandler = ({
   coordinates?: { lat: number; lng: number };
   location?: string;
   nineHoleOnly?: boolean;
+  hasRange?: boolean;
 }) => ({
   type: "live" as const,
   bookLink: `https://${facilityAlias}.book.teeitup.golf/?course=${facilityId}`,
@@ -103,4 +105,5 @@ export const makePHXHandler = ({
   coordinates,
   location,
   nineHoleOnly,
+  hasRange,
 });

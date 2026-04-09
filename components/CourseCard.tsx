@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
+import SportsGolf from "@mui/icons-material/SportsGolf";
 import { Course } from "@/lib/types";
 import { getRankInfo } from "@/lib/rankInfo";
 import { haversineDistance } from "@/lib/distance";
@@ -94,6 +95,15 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
                 label="9 holes"
                 size="small"
                 variant="outlined"
+                sx={{ fontWeight: 600, fontSize: "0.75rem" }}
+              />
+            )}
+            {course.hasRange && (
+              <Chip
+                label="range"
+                size="small"
+                variant="outlined"
+                icon={<SportsGolf />}
                 sx={{ fontWeight: 600, fontSize: "0.75rem" }}
               />
             )}

@@ -9,6 +9,7 @@ export const makeManualHandler = ({
   coordinates,
   location,
   nineHoleOnly,
+  hasRange,
 }: {
   id: string;
   name: string;
@@ -18,6 +19,7 @@ export const makeManualHandler = ({
   coordinates?: { lat: number; lng: number };
   location?: string;
   nineHoleOnly?: boolean;
+  hasRange?: boolean;
 }): ManualHandler => ({
   type: "manual",
   id,
@@ -28,4 +30,5 @@ export const makeManualHandler = ({
   coordinates,
   location,
   nineHoleOnly,
+  hasRange,
 });

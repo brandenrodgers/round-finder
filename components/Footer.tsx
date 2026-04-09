@@ -12,6 +12,8 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import GolfCourseIcon from "@mui/icons-material/GolfCourse";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AccessTimeFilledOutlinedIcon from "@mui/icons-material/AccessTimeFilledOutlined";
+import SportsGolf from "@mui/icons-material/SportsGolf";
+import SportsGolfTwoTone from "@mui/icons-material/SportsGolfTwoTone";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Holes, Players } from "@/lib/types";
@@ -19,6 +21,7 @@ import { updateFilter } from "@/store/filterSlice";
 import HolesPicker from "./inputs/HolesPicker";
 import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
+import RangePicker from "./inputs/RangePicker";
 import PlayersIcon from "./PlayersIcon";
 import { getFilter } from "@/store/selectors";
 
@@ -28,11 +31,12 @@ const Footer: React.FC = () => {
   const [holes, setHoles] = useState(filter.holes || (9 as Holes));
   const [players, setPlayers] = useState(filter.players || (1 as Players));
   const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
+  const [range, setRange] = useState(filter.range || false);
 
   const dispatch = useAppDispatch();
 
   const handleDrawerClose = () => {
-    dispatch(updateFilter({ holes, players, times }));
+    dispatch(updateFilter({ holes, players, times, range: range || undefined }));
     setDrawerOpen(false);
   };
 
@@ -88,6 +92,20 @@ const Footer: React.FC = () => {
               onClick={handleNavClick}
               showLabel={!drawerOpen}
             />
+            {filter.range && (
+              <BottomNavigationAction
+                label="Range"
+                icon={
+                  drawerOpen ? (
+                    <SportsGolf />
+                  ) : (
+                    <SportsGolfTwoTone />
+                  )
+                }
+                onClick={handleNavClick}
+                showLabel={!drawerOpen}
+              />
+            )}
           </BottomNavigation>
         </Paper>
         <Drawer anchor="bottom" open={drawerOpen} onClose={handleDrawerClose}>
@@ -146,6 +164,18 @@ const Footer: React.FC = () => {
               <TimesPicker
                 value={times}
                 onChange={(newTimes) => setTimes(newTimes)}
+              />
+            </Grid>
+
+            <Grid
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <RangePicker
+                value={range}
+                onChange={(newValue) => setRange(newValue)}
               />
             </Grid>
 

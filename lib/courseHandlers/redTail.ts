@@ -10,4 +10,5 @@ export default makeManualHandler({
   rank: 9,
   coordinates: { lat: 42.5332, lng: -71.6021 }, // Devens, MA
   location: "Devens, MA",
+  hasRange: true,
 });

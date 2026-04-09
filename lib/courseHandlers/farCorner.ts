@@ -20,4 +20,5 @@ export default makeForeupsoftwareHandler({
   scheduleId: SCHEDULE_ID,
   coordinates: { lat: 42.6544, lng: -71.2097 }, // Boxford, MA
   location: "Boxford, MA",
+  hasRange: true,
 });
