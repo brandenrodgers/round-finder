@@ -27,7 +27,7 @@ export default function HomePage() {
           alignItems: "center",
           justifyContent: "center",
           px: 2,
-          pb: 4,
+          pb: { xs: 0, sm: 4 },
         }}
       >
         <Typography
@@ -37,7 +37,7 @@ export default function HomePage() {
             color: "rgba(255,255,255,0.9)",
             textShadow: "0 1px 8px rgba(0,0,0,0.5)",
             textAlign: "center",
-            mb: 2,
+            mb: { xs: 1, sm: 2 },
           }}
         >
           Boston area public golf tee times

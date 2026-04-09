@@ -91,15 +91,19 @@ const Footer: React.FC = () => {
           </BottomNavigation>
         </Paper>
         <Drawer anchor="bottom" open={drawerOpen} onClose={handleDrawerClose}>
-          <Grid container rowSpacing={2} paddingBottom={8} marginY={2}>
+          <Grid container rowSpacing={2.5} paddingBottom={8} marginY={2}>
             <Grid
               xs={12}
               display="flex"
               alignItems="center"
               flexDirection="column"
             >
-              <Typography variant="h5" gutterBottom>
-                I want to play
+              <Typography
+                variant="overline"
+                color="text.secondary"
+                sx={{ letterSpacing: "0.12em", mb: 0.5 }}
+              >
+                Holes
               </Typography>
               <HolesPicker
                 value={holes}
@@ -113,8 +117,12 @@ const Footer: React.FC = () => {
               alignItems="center"
               flexDirection="column"
             >
-              <Typography variant="h5" gutterBottom>
-                Holes with
+              <Typography
+                variant="overline"
+                color="text.secondary"
+                sx={{ letterSpacing: "0.12em", mb: 0.5 }}
+              >
+                Players
               </Typography>
               <PlayersPicker
                 value={players}
@@ -128,8 +136,12 @@ const Footer: React.FC = () => {
               alignItems="center"
               flexDirection="column"
             >
-              <Typography variant="h5" gutterBottom>
-                {players === 1 ? "Player" : "Players"} at
+              <Typography
+                variant="overline"
+                color="text.secondary"
+                sx={{ letterSpacing: "0.12em", mb: 0.5 }}
+              >
+                Time
               </Typography>
               <TimesPicker
                 value={times}
@@ -142,12 +154,14 @@ const Footer: React.FC = () => {
               display="flex"
               alignItems="center"
               flexDirection="column"
+              pt={0.5}
             >
               <Button
                 variant="contained"
                 size="medium"
                 endIcon={<FilterAltIcon />}
                 onClick={handleDrawerClose}
+                sx={{ borderRadius: 999, px: 4 }}
               >
                 Apply
               </Button>

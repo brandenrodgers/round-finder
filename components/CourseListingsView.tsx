@@ -115,6 +115,7 @@ const CourseListingsView: React.FC = () => {
           backgroundColor: (theme) => theme.palette.secondary.light,
         }}
       >
+        <WeatherBanner weather={weather} loading={weatherLoading} />
         <Box
           sx={{
             display: "grid",

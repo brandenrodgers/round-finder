@@ -10,7 +10,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Course } from "@/lib/types";
 import { getRankInfo } from "@/lib/rankInfo";
 import { haversineDistance } from "@/lib/distance";
-import { getLocation, getFilter } from "@/store/selectors";
+import { getLocation, getFilter, getDate } from "@/store/selectors";
 import { useAppSelector } from "@/store/hooks";
 
 type ManualCourseCardProps = {
@@ -20,6 +20,7 @@ type ManualCourseCardProps = {
 const ManualCourseCard: React.FC<ManualCourseCardProps> = ({ course }) => {
   const location = useAppSelector(getLocation);
   const filter = useAppSelector(getFilter);
+  const date = useAppSelector(getDate);
 
   const distanceMi =
     location && course.coordinates
@@ -31,23 +32,61 @@ const ManualCourseCard: React.FC<ManualCourseCardProps> = ({ course }) => {
     return <Icon sx={{ fontSize: 16, color }} />;
   };
 
+  const handleBook = () => {
+    const url = new URL(course.bookLink);
+    if (url.hostname.endsWith("cps.golf")) {
+      if (filter.times) {
+        url.searchParams.set("TeeOffTimeMin", String(filter.times[0]));
+        url.searchParams.set("TeeOffTimeMax", String(filter.times[1]));
+      }
+      if (filter.players) {
+        url.searchParams.set("Player", String(filter.players));
+      }
+      if (filter.holes) {
+        url.searchParams.set("Hole", String(filter.holes));
+      }
+    }
+    if (url.hostname === "secure.cambridgema.gov") {
+      if (date) {
+        url.searchParams.set("begindate", date);
+      }
+      if (filter.players) {
+        url.searchParams.set("numberofplayers", String(filter.players));
+      }
+      if (filter.holes) {
+        url.searchParams.set("numberofholes", String(filter.holes));
+      }
+      if (filter.times) {
+        const hour = filter.times[0];
+        const period = hour < 12 ? "am" : "pm";
+        const hour12 = hour % 12 === 0 ? 12 : hour % 12;
+        url.searchParams.set(
+          "begintime",
+          `${String(hour12).padStart(2, "0")}:00 ${period}`
+        );
+      }
+    }
+    window.open(url.toString(), "_blank", "noreferrer");
+  };
+
   return (
     <Card
+      onClick={handleBook}
       sx={{
         display: "flex",
         alignItems: "center",
         gap: 1.5,
         p: 1.25,
-        cursor: "default",
-        "&:hover": { transform: "none", boxShadow: "none" },
+        cursor: "pointer",
+        position: "relative",
       }}
     >
       <Box
         sx={{
-          width: 48,
-          height: 48,
+          width: 80,
+          height: 80,
           flexShrink: 0,
-          borderRadius: 0.75,
+          borderRadius: 1.5,
           overflow: "hidden",
           bgcolor: "secondary.main",
           display: "flex",
@@ -63,54 +102,52 @@ const ManualCourseCard: React.FC<ManualCourseCardProps> = ({ course }) => {
             sx={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
-          <GolfCourseIcon sx={{ color: "primary.dark", fontSize: 24 }} />
+          <GolfCourseIcon sx={{ color: "primary.dark", fontSize: 32 }} />
         )}
       </Box>
 
-      <Box sx={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 0.75 }}>
-        {renderRankIcon()}
-        <Typography variant="body2" fontWeight={600} noWrap>
+      <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 0.25 }}>
+        <Typography
+          variant="body1"
+          fontWeight={600}
+          sx={{ fontFamily: "var(--font-display), serif", pr: 6 }}
+        >
           {course.courseName}
         </Typography>
-        {course.nineHoleOnly && (
-          <Chip
-            label="9 holes"
-            size="small"
-            variant="outlined"
-            sx={{ flexShrink: 0, fontSize: "0.7rem" }}
-          />
-        )}
-        {distanceMi !== null && (
-          <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
-            {distanceMi.toFixed(1)} mi
-          </Typography>
-        )}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
+          {renderRankIcon()}
+          {course.nineHoleOnly && (
+            <Chip
+              label="9 holes"
+              size="small"
+              variant="outlined"
+              sx={{ flexShrink: 0, fontSize: "0.7rem" }}
+            />
+          )}
+          {distanceMi !== null && (
+            <Typography variant="caption" color="text.secondary">
+              {distanceMi.toFixed(1)} mi
+            </Typography>
+          )}
+        </Box>
       </Box>
 
-      <Button
-        size="small"
-        variant="outlined"
-        endIcon={<OpenInNewIcon sx={{ fontSize: "13px !important" }} />}
-        onClick={() => {
-          const url = new URL(course.bookLink);
-          if (url.hostname.endsWith("cps.golf")) {
-            if (filter.times) {
-              url.searchParams.set("TeeOffTimeMin", String(filter.times[0]));
-              url.searchParams.set("TeeOffTimeMax", String(filter.times[1]));
-            }
-            if (filter.players) {
-              url.searchParams.set("Player", String(filter.players));
-            }
-            if (filter.holes) {
-              url.searchParams.set("Hole", String(filter.holes));
-            }
-          }
-          window.open(url.toString(), "_blank", "noreferrer");
+      <Box
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 12,
+          display: "flex",
+          alignItems: "center",
+          gap: 0.25,
+          color: "text.secondary",
         }}
-        sx={{ flexShrink: 0, borderRadius: 999, fontSize: "0.7rem" }}
       >
-        Book
-      </Button>
+        <Typography variant="caption" sx={{ fontWeight: 700, lineHeight: 1 }}>
+          Book
+        </Typography>
+        <OpenInNewIcon sx={{ fontSize: 12 }} />
+      </Box>
     </Card>
   );
 };

@@ -54,8 +54,8 @@ export default function CoursesPage() {
       <Box sx={{ maxWidth: 600, mx: "auto", px: 2, py: 3 }}>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
           Round Finder checks tee time availability for these{" "}
-          {liveCourses.length} courses in real time. We also list{" "}
-          {manualCourses.length} additional courses you can book directly.
+          {liveCourses.length} courses in real time. There are an additional
+          {manualCourses.length} courses you can check manually with convenient links.
         </Typography>
 
         <Typography

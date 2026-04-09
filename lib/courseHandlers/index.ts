@@ -20,6 +20,7 @@ import windham from "./windham";
 
 import butterBrook from "./butterBrook";
 import fourOaks from "./fourOaks";
+import freshPond from "./freshPond";
 import gannon from "./gannon";
 import georgeWright from "./georgeWright";
 import graniteFields from "./graniteFields";
@@ -51,6 +52,7 @@ const courseHandlers = {
 export const manualCourseHandlers = {
   butterBrook,
   fourOaks,
+  freshPond,
   gannon,
   georgeWright,
   graniteFields,

@@ -105,7 +105,7 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({
             </Box>
           </Box>
 
-          <Box sx={{ display: "flex", gap: 2.5, mb: 1.5 }}>
+          <Box sx={{ display: "flex", gap: 2.5 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
               <SportsGolfIcon sx={{ fontSize: 16, color: "primary.main" }} />
               <Typography variant="body2" fontWeight={500} color="text.secondary">
@@ -122,10 +122,6 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({
               </Typography>
             </Box>
           </Box>
-
-          <Typography variant="caption" color="text.disabled">
-            Starting from the {teeTime.startSide}
-          </Typography>
 
           <Divider sx={{ mt: 1.5, mb: 0.5, mx: -2 }} />
 

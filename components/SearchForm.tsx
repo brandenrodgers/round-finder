@@ -6,6 +6,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
@@ -18,6 +19,23 @@ import HolesPicker from "./inputs/HolesPicker";
 import PlayersPicker from "./inputs/PlayersPicker";
 import TimesPicker from "./inputs/TimesPicker";
 import { getDate, getFilter } from "@/store/selectors";
+
+function getQuickDates() {
+  const today = dayjs();
+  const tomorrow = today.add(1, "day");
+
+  const daysUntilFriday = ((5 - today.day() + 7) % 7) || 7;
+  const nextFriday = today.add(daysUntilFriday, "day");
+
+  const daysUntilSaturday = ((6 - today.day() + 7) % 7) || 7;
+  const nextSaturday = today.add(daysUntilSaturday, "day");
+
+  return [
+    { label: "Tomorrow", date: tomorrow },
+    ...(!nextFriday.isSame(tomorrow, "day") ? [{ label: "Friday", date: nextFriday }] : []),
+    ...(!nextSaturday.isSame(tomorrow, "day") ? [{ label: "Saturday", date: nextSaturday }] : []),
+  ];
+}
 
 const SearchForm: React.FC = () => {
   const filter = useAppSelector(getFilter);
@@ -58,7 +76,7 @@ const SearchForm: React.FC = () => {
         sx={{
           width: "90%",
           maxWidth: 560,
-          py: 3,
+          py: { xs: 1.5, sm: 3 },
           px: 1,
           background: "rgba(255, 255, 255, 0.78)",
           backdropFilter: "blur(14px)",
@@ -72,7 +90,7 @@ const SearchForm: React.FC = () => {
         }}
         elevation={0}
       >
-        <Grid container rowSpacing={2.5}>
+        <Grid container rowSpacing={{ xs: 1.5, sm: 2.5 }}>
           <Grid
             xs={12}
             display="flex"
@@ -82,7 +100,7 @@ const SearchForm: React.FC = () => {
             <Typography
               variant="overline"
               color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: 0.5 }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
             >
               Holes
             </Typography>
@@ -100,11 +118,24 @@ const SearchForm: React.FC = () => {
             <Typography
               variant="overline"
               color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: 0.5 }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
             >
               Date
             </Typography>
             <DatePicker label="Date" value={date} onChange={handleDateChange} />
+            <Box sx={{ display: "flex", gap: 0.75, mt: 1 }}>
+              {getQuickDates().map(({ label, date: quickDate }) => (
+                <Chip
+                  key={label}
+                  label={label}
+                  size="small"
+                  onClick={() => setDate(quickDate)}
+                  variant={date.isSame(quickDate, "day") ? "filled" : "outlined"}
+                  color={date.isSame(quickDate, "day") ? "primary" : "default"}
+                  sx={{ cursor: "pointer" }}
+                />
+              ))}
+            </Box>
           </Grid>
 
           <Grid
@@ -116,7 +147,7 @@ const SearchForm: React.FC = () => {
             <Typography
               variant="overline"
               color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: 0.5 }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
             >
               Players
             </Typography>
@@ -135,7 +166,7 @@ const SearchForm: React.FC = () => {
             <Typography
               variant="overline"
               color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: 0.5 }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
             >
               Time
             </Typography>
@@ -153,7 +184,7 @@ const SearchForm: React.FC = () => {
               startIcon={<SearchIcon />}
               disabled={!holes || !players || !times.length}
               onClick={handleSearch}
-              sx={{ borderRadius: 999, py: 1.5 }}
+              sx={{ borderRadius: 999, py: { xs: 1, sm: 1.5 } }}
             >
               Find tee times
             </Button>

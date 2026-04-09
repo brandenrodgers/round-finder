@@ -17,7 +17,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { useAppSelector } from "@/store/hooks";
 import { getDate } from "@/store/selectors";
 import { HIDDEN_HEADER_ID } from "@/lib/constants";
@@ -33,37 +32,11 @@ const Header: React.FC = () => {
 
   const shouldRenderFixedDate = date && pathname !== "/";
 
-  const renderHomeIcon = () => {
-    if (pathname.includes("tee-times")) {
-      return (
-        <Box
-          sx={{
-            position: "absolute",
-            left: 8,
-            display: "flex",
-            height: "100%",
-            alignItems: "center",
-          }}
-        >
-          <IconButton
-            size="large"
-            color="inherit"
-            aria-label="menu"
-            onClick={() => router.push("/")}
-          >
-            <HomeOutlinedIcon sx={{ fontSize: 26 }} />
-          </IconButton>
-        </Box>
-      );
-    }
-    return null;
-  };
 
   // A hack to make fixed position work. Hide this behind the fixed toolbar
   const renderToolbar = (id?: string) => {
     return (
       <Toolbar id={id}>
-        {renderHomeIcon()}
         <Typography
           variant="h4"
           component="div"
@@ -153,6 +126,22 @@ const Header: React.FC = () => {
     }
     return (
       <Box sx={{ display: "flex", position: "relative" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            left: 8,
+            display: "flex",
+            height: "100%",
+          }}
+        >
+          <Button
+            variant="text"
+            startIcon={<ChevronLeftIcon />}
+            onClick={() => router.push("/")}
+          >
+            New Search
+          </Button>
+        </Box>
         {renderDate()}
         <Box
           sx={{
@@ -195,7 +184,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar
         position="fixed"
         elevation={0}
