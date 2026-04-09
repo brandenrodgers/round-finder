@@ -193,6 +193,11 @@ const CourseListingsView: React.FC = () => {
     );
   }
 
+  const totalTeeTimes = Object.values(filteredTeeTimes).reduce(
+    (sum, course) => sum + (course.teeTimes?.length ?? 0),
+    0
+  );
+
   return (
     <Box
       sx={{
@@ -202,6 +207,21 @@ const CourseListingsView: React.FC = () => {
       }}
     >
       <WeatherBanner weather={weather} loading={weatherLoading} />
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ textAlign: "center", mb: 2 }}
+      >
+        Found{" "}
+        <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
+          {totalTeeTimes}
+        </Box>{" "}
+        tee time{totalTeeTimes !== 1 ? "s" : ""} across{" "}
+        <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
+          {sortedCourseIds.length}
+        </Box>{" "}
+        course{sortedCourseIds.length !== 1 ? "s" : ""}
+      </Typography>
       <Box
         sx={{
           display: "grid",

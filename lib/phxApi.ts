@@ -21,6 +21,9 @@ const makeFetchTeeTimes =
         params,
       }
     );
+    if (facilityAlias === "butternut-farm-golf-club") {
+      console.log(`[butternut] curl -H "X-Be-Alias: ${facilityAlias}" "https://phx-api-be-east-1b.kenna.io/v2/tee-times?facilityIds=${facilityId}&date=${params.date}"`);
+    }
     return data;
   };
 

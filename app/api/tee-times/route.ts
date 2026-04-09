@@ -10,6 +10,9 @@ const fetchTeeTimesForCourse = async (
   try {
     const resp = await handler.fetchTeeTimes(handler.formatParams({ date }));
     const formattedResponse = handler.formatResponse(resp);
+    if (handler.id === "butternutFarm") {
+      console.log(`[butternutFarm] formatted tee times count: ${formattedResponse.length}`, formattedResponse[0]);
+    }
     return {
       type: "live",
       courseId: handler.id,

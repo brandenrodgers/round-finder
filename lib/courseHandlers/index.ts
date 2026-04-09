@@ -12,6 +12,7 @@ import merrimackValley from "./merrimackValley";
 import mountHood from "./mountHood";
 import newtonCommonwealth from "./newtonCommonwealth";
 import norwood from "./norwood";
+import pineValley from "./pineValley";
 import presidents from "./presidents";
 import quailRidge from "./quailRidge";
 import sagamoreSpring from "./sagamoreSpring";
@@ -23,6 +24,7 @@ import fourOaks from "./fourOaks";
 import freshPond from "./freshPond";
 import gannon from "./gannon";
 import georgeWright from "./georgeWright";
+import meadowAtPeabody from "./meadowAtPeabody";
 import graniteFields from "./graniteFields";
 import redTail from "./redTail";
 import williamJDevine from "./williamJDevine";
@@ -42,6 +44,7 @@ const courseHandlers = {
   mountHood,
   newtonCommonwealth,
   norwood,
+  pineValley,
   presidents,
   quailRidge,
   sagamoreSpring,
@@ -55,6 +58,7 @@ export const manualCourseHandlers = {
   freshPond,
   gannon,
   georgeWright,
+  meadowAtPeabody,
   graniteFields,
   redTail,
   williamJDevine,

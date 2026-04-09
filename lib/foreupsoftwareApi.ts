@@ -39,13 +39,16 @@ const formatParams = (params: GenericFetchParams): FetchParams => {
 };
 
 const makeFormatResponse =
-  (courseId: string, courseName: string) =>
+  (courseId: string, courseName: string, nineHoleOnly?: boolean) =>
   (resp: ForeupsoftwareTeeTimeResponse): Array<TeeTime> => {
+    if (!Array.isArray(resp)) return [];
     const result = [] as Array<TeeTime>;
 
     resp.forEach((teeTime) => {
       const holesArray =
-        typeof teeTime.holes === "string" ? [9, 18] : [teeTime.holes];
+        typeof teeTime.holes === "string"
+          ? nineHoleOnly ? [9] : [9, 18]
+          : [teeTime.holes];
 
       holesArray.forEach((hole) => {
         result.push({
@@ -95,7 +98,7 @@ export const makeForeupsoftwareHandler = ({
   bookLink: `https://foreupsoftware.com/index.php/booking/${bookingId}/${scheduleId}#teetimes`,
   fetchTeeTimes: makeFetchTeeTimes(bookingClass, scheduleId),
   formatParams,
-  formatResponse: makeFormatResponse(id, name),
+  formatResponse: makeFormatResponse(id, name, nineHoleOnly),
   id,
   image,
   name,
