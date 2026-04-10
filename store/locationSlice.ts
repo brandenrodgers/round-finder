@@ -12,7 +12,8 @@ export const requestLocation = createAsyncThunk(
       navigator.geolocation.getCurrentPosition(
         (pos) =>
           resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-        (err) => reject(err)
+        (err) => reject(err),
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     })
 );
