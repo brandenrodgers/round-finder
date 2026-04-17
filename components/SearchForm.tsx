@@ -32,11 +32,13 @@ function getQuickDates() {
   const nextSaturday = today.add(daysUntilSaturday, "day");
 
   // Thu: tomorrow=Fri, so skip Friday but keep Saturday (2 days away)
-  // Fri/Sat: only show Tomorrow — next Fri/Sat are too far out
+  // Fri/Sat: show Today + Tomorrow; next Fri/Sat are too far out
+  const showToday = dow === 5 || dow === 6;
   const showFriday = dow < 4;
   const showSaturday = dow < 5;
 
   return [
+    ...(showToday ? [{ label: "Today", date: today }] : []),
     { label: "Tomorrow", date: tomorrow },
     ...(showFriday ? [{ label: "Friday", date: nextFriday }] : []),
     ...(showSaturday ? [{ label: "Saturday", date: nextSaturday }] : []),
