@@ -112,8 +112,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: "none",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
-          backgroundColor: "#076646",
+          borderBottom: "1px solid rgba(0,0,0,0.10)",
+          background: "linear-gradient(135deg, #065c3e 0%, #087a52 100%)",
         },
       },
     },

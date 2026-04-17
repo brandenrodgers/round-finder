@@ -6,12 +6,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SportsGolf from "@mui/icons-material/SportsGolf";
 import { Course } from "@/lib/types";
 import { getRankInfo } from "@/lib/rankInfo";
 import { haversineDistance } from "@/lib/distance";
-import { getLocation } from "@/store/selectors";
-import { useAppSelector } from "@/store/hooks";
+import { getLocation, getFavorites } from "@/store/selectors";
+import { toggleFavorite } from "@/store/favoritesSlice";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { useRouter } from "next/navigation";
 
 type CourseCardPropTypes = {
@@ -20,7 +24,15 @@ type CourseCardPropTypes = {
 
 const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const location = useAppSelector(getLocation);
+  const favoriteIds = useAppSelector(getFavorites);
+  const isFavorite = favoriteIds.includes(course.courseId);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(toggleFavorite(course.courseId));
+  };
 
   const distanceMi =
     location && course.coordinates
@@ -41,6 +53,26 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
               title="course-photo"
             />
           </Box>
+          <IconButton
+            size="small"
+            onClick={handleFavoriteClick}
+            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            sx={{
+              position: "absolute",
+              top: 4,
+              left: 4,
+              bgcolor: "rgba(255,255,255,0.92)",
+              "&:hover": { bgcolor: "rgba(255,255,255,1)" },
+              width: 28,
+              height: 28,
+            }}
+          >
+            {isFavorite ? (
+              <FavoriteIcon sx={{ fontSize: 18, color: "error.main" }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+            )}
+          </IconButton>
           {(() => {
             const { Icon, label, color } = getRankInfo(course.rank);
             return (

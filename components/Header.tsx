@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { usePathname, useRouter, useParams } from "next/navigation";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
@@ -21,6 +23,7 @@ import { useAppSelector } from "@/store/hooks";
 import { getDate } from "@/store/selectors";
 import { HIDDEN_HEADER_ID } from "@/lib/constants";
 import SortMenu from "./SortMenu";
+import FilterButton from "./FilterButton";
 
 const Header: React.FC = () => {
   const [infoOpen, setInfoOpen] = useState(false);
@@ -29,6 +32,9 @@ const Header: React.FC = () => {
   const courseId = params?.courseId as string | undefined;
   const pathname = usePathname();
   const router = useRouter();
+
+  const theme = useTheme();
+  const compact = useMediaQuery(theme.breakpoints.down("sm"));
 
   const shouldRenderFixedDate = date && pathname !== "/";
 
@@ -112,13 +118,24 @@ const Header: React.FC = () => {
               height: "100%",
             }}
           >
-            <Button
-              variant="text"
-              startIcon={<ChevronLeftIcon />}
-              onClick={() => router.push("/tee-times")}
-            >
-              Back
-            </Button>
+            {compact ? (
+              <IconButton
+                size="small"
+                color="primary"
+                aria-label="Back"
+                onClick={() => router.push("/tee-times")}
+              >
+                <ChevronLeftIcon />
+              </IconButton>
+            ) : (
+              <Button
+                variant="text"
+                startIcon={<ChevronLeftIcon />}
+                onClick={() => router.push("/tee-times")}
+              >
+                Back
+              </Button>
+            )}
           </Box>
           {renderDate()}
         </Box>
@@ -134,24 +151,38 @@ const Header: React.FC = () => {
             height: "100%",
           }}
         >
-          <Button
-            variant="text"
-            startIcon={<ChevronLeftIcon />}
-            onClick={() => router.push("/")}
-          >
-            New Search
-          </Button>
+          {compact ? (
+            <IconButton
+              size="small"
+              color="primary"
+              aria-label="New Search"
+              onClick={() => router.push("/")}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+          ) : (
+            <Button
+              variant="text"
+              startIcon={<ChevronLeftIcon />}
+              onClick={() => router.push("/")}
+            >
+              New Search
+            </Button>
+          )}
         </Box>
         {renderDate()}
         <Box
           sx={{
             position: "absolute",
-            right: 16,
+            right: 8,
             display: "flex",
+            alignItems: "center",
             height: "100%",
+            gap: 0.5,
           }}
         >
-          <SortMenu />
+          <FilterButton iconOnly={compact} />
+          <SortMenu iconOnly={compact} />
         </Box>
       </Box>
     );

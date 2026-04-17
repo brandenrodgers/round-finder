@@ -18,4 +18,5 @@ export default makePHXHandler({
   rank: RANK,
   coordinates: { lat: 42.8069, lng: -71.2978 }, // Windham, NH
   location: "Windham, NH",
+  hasRange: true,
 });

@@ -20,4 +20,5 @@ export default makeForeupsoftwareHandler({
   scheduleId: SCHEDULE_ID,
   coordinates: { lat: 42.7285, lng: -71.1861 }, // Methuen, MA
   location: "Methuen, MA",
+  hasRange: true,
 });

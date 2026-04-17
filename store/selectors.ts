@@ -10,6 +10,7 @@ export const getDate = (state: RootState) => state.date.value;
 export const getSort = (state: RootState) => state.sort.value;
 export const getLocation = (state: RootState) => state.location.coords;
 export const getLocationStatus = (state: RootState) => state.location.status;
+export const getFavorites = (state: RootState) => state.favorites.courseIds;
 
 const filterTeeTime = (teeTime: TeeTime, filter: Filter): boolean => {
   if (filter.players && teeTime.availablePlayers < filter.players) {
@@ -67,8 +68,8 @@ export const getManualCoursesMemoized = createSelector(
 );
 
 export const getSortedCourseIdsMemoized = createSelector(
-  [getFilteredTeeTimesMemoized, getSort, getLocation],
-  (filterTeeTimes, sort, location) => {
+  [getFilteredTeeTimesMemoized, getSort, getLocation, getFavorites],
+  (filterTeeTimes, sort, location, favoriteIds) => {
     const courseIds = Object.keys(filterTeeTimes);
 
     if (sort === SORT_VALUES.alphabetical) {
@@ -114,12 +115,14 @@ export const getSortedCourseIdsMemoized = createSelector(
     }
 
     if (sort === SORT_VALUES.forMe) {
+      const favoriteSet = new Set(favoriteIds);
       return courseIds.sort((a, b) => {
+        const aFav = favoriteSet.has(a);
+        const bFav = favoriteSet.has(b);
+        if (aFav !== bFav) return aFav ? -1 : 1;
         const courseA = filterTeeTimes[a];
         const courseB = filterTeeTimes[b];
-        // Primary: rank descending
         if (courseB.rank !== courseA.rank) return courseB.rank - courseA.rank;
-        // Secondary: distance ascending (if available)
         if (location && courseA.coordinates && courseB.coordinates) {
           return (
             haversineDistance(location, courseA.coordinates) -

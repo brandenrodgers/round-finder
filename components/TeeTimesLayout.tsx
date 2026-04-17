@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Header from "./Header";
-import Footer from "./Footer";
 import { getDate, getLocationStatus } from "@/store/selectors";
 import { requestLocation } from "@/store/locationSlice";
 
@@ -33,7 +32,6 @@ const TeeTimesLayout: React.FC<{ children: React.ReactNode }> = ({
     <Box sx={{ height: "100%" }}>
       <Header />
       {children}
-      <Footer />
     </Box>
   );
 };
