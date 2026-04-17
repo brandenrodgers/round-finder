@@ -2,13 +2,17 @@
 
 import React, { useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { useAppSelector } from "@/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import Box from "@mui/material/Box";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { TeeTime } from "@/lib/types";
 import TeeTimeCard from "./TeeTimeCard";
-import { getDate, getFilteredTeeTimesMemoized } from "@/store/selectors";
+import { getDate, getFilteredTeeTimesMemoized, getFavorites } from "@/store/selectors";
+import { toggleFavorite } from "@/store/favoritesSlice";
 import { HIDDEN_HEADER_ID } from "@/lib/constants";
 
 const CourseTeeTimesView: React.FC = () => {
@@ -17,6 +21,9 @@ const CourseTeeTimesView: React.FC = () => {
   const date = useAppSelector(getDate);
   const courses = useAppSelector(getFilteredTeeTimesMemoized);
   const course = courseId ? courses[courseId] : null;
+  const dispatch = useAppDispatch();
+  const favoriteIds = useAppSelector(getFavorites);
+  const isFavorite = courseId ? favoriteIds.includes(courseId) : false;
 
   const router = useRouter();
 
@@ -74,7 +81,26 @@ const CourseTeeTimesView: React.FC = () => {
               image={course.courseImage}
               title="course-photo"
             />
-            <Box
+            <IconButton
+              onClick={() => courseId && dispatch(toggleFavorite(courseId))}
+              aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              sx={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                bgcolor: "rgba(255,255,255,0.92)",
+                "&:hover": { bgcolor: "rgba(255,255,255,1)" },
+                width: 36,
+                height: 36,
+              }}
+            >
+              {isFavorite ? (
+                <FavoriteIcon sx={{ fontSize: 20, color: "error.main" }} />
+              ) : (
+                <FavoriteBorderIcon sx={{ fontSize: 20, color: "text.secondary" }} />
+              )}
+            </IconButton>
+          <Box
               sx={{
                 position: "absolute",
                 bottom: 0,

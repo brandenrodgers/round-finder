@@ -146,7 +146,7 @@ const CourseListingsView: React.FC = () => {
           gap: 2,
           px: 3,
           pt: 2,
-          pb: 12,
+          pb: 4,
           backgroundColor: (theme) => theme.palette.secondary.light,
         }}
       >
@@ -202,7 +202,7 @@ const CourseListingsView: React.FC = () => {
     <Box
       sx={{
         pt: 2,
-        pb: 12,
+        pb: 4,
         backgroundColor: (theme) => theme.palette.secondary.light,
       }}
     >

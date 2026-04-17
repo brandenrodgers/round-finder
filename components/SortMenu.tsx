@@ -3,6 +3,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoodOutlinedIcon from "@mui/icons-material/MoodOutlined";
@@ -15,7 +16,7 @@ import { requestLocation } from "@/store/locationSlice";
 import { SORT_VALUES } from "@/lib/constants";
 import { SortBy } from "@/lib/types";
 
-const SortMenu: React.FC = () => {
+const SortMenu: React.FC<{ iconOnly?: boolean }> = ({ iconOnly }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const sort = useAppSelector(getSort);
@@ -57,9 +58,15 @@ const SortMenu: React.FC = () => {
 
   return (
     <>
-      <Button variant="text" endIcon={renderIcon(sort)} onClick={handleClick}>
-        Sort
-      </Button>
+      {iconOnly ? (
+        <IconButton onClick={handleClick} size="small" color="primary" aria-label="Sort">
+          {renderIcon(sort)}
+        </IconButton>
+      ) : (
+        <Button variant="text" endIcon={renderIcon(sort)} onClick={handleClick}>
+          Sort
+        </Button>
+      )}
       <Menu
         id="sort-menu"
         anchorEl={anchorEl}

@@ -22,18 +22,24 @@ import { getDate, getFilter } from "@/store/selectors";
 
 function getQuickDates() {
   const today = dayjs();
+  const dow = today.day(); // 0=Sun … 4=Thu, 5=Fri, 6=Sat
   const tomorrow = today.add(1, "day");
 
-  const daysUntilFriday = ((5 - today.day() + 7) % 7) || 7;
+  const daysUntilFriday = ((5 - dow + 7) % 7) || 7;
   const nextFriday = today.add(daysUntilFriday, "day");
 
-  const daysUntilSaturday = ((6 - today.day() + 7) % 7) || 7;
+  const daysUntilSaturday = ((6 - dow + 7) % 7) || 7;
   const nextSaturday = today.add(daysUntilSaturday, "day");
+
+  // Thu: tomorrow=Fri, so skip Friday but keep Saturday (2 days away)
+  // Fri/Sat: only show Tomorrow — next Fri/Sat are too far out
+  const showFriday = dow < 4;
+  const showSaturday = dow < 5;
 
   return [
     { label: "Tomorrow", date: tomorrow },
-    ...(!nextFriday.isSame(tomorrow, "day") ? [{ label: "Friday", date: nextFriday }] : []),
-    ...(!nextSaturday.isSame(tomorrow, "day") ? [{ label: "Saturday", date: nextSaturday }] : []),
+    ...(showFriday ? [{ label: "Friday", date: nextFriday }] : []),
+    ...(showSaturday ? [{ label: "Saturday", date: nextSaturday }] : []),
   ];
 }
 

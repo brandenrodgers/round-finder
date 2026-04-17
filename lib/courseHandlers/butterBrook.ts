@@ -10,4 +10,5 @@ export default makeManualHandler({
   rank: 7,
   coordinates: { lat: 42.5742, lng: -71.4525 }, // Westford, MA
   location: "Westford, MA",
+  hasRange: true,
 });
