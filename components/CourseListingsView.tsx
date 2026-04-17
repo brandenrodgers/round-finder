@@ -2,12 +2,17 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Button from "@mui/material/Button";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import SportsGolfIcon from "@mui/icons-material/SportsGolf";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import MapIcon from "@mui/icons-material/Map";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Courses } from "@/lib/types";
 import { updateCourses } from "@/store/courseSlice";
@@ -22,6 +27,8 @@ import {
   getManualCoursesMemoized,
   getSortedCourseIdsMemoized,
 } from "@/store/selectors";
+
+const CourseMapView = dynamic(() => import("./CourseMapView"), { ssr: false });
 
 const ManualCoursesSection: React.FC = () => {
   const manualCourses = useAppSelector(getManualCoursesMemoized);
@@ -48,10 +55,13 @@ const ManualCoursesSection: React.FC = () => {
   );
 };
 
+type ViewMode = "list" | "map";
+
 const CourseListingsView: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const date = useAppSelector(getDate);
   const location = useAppSelector(getLocation);
   const filteredTeeTimes = useAppSelector(getFilteredTeeTimesMemoized);
@@ -202,38 +212,56 @@ const CourseListingsView: React.FC = () => {
     <Box
       sx={{
         pt: 2,
-        pb: 4,
+        pb: viewMode === "map" ? 0 : 4,
         backgroundColor: (theme) => theme.palette.secondary.light,
       }}
     >
       <WeatherBanner weather={weather} loading={weatherLoading} />
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={{ textAlign: "center", mb: 2 }}
-      >
-        Found{" "}
-        <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
-          {totalTeeTimes}
-        </Box>{" "}
-        tee time{totalTeeTimes !== 1 ? "s" : ""} across{" "}
-        <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
-          {sortedCourseIds.length}
-        </Box>{" "}
-        course{sortedCourseIds.length !== 1 ? "s" : ""}
-      </Typography>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 345px))",
-          gap: 3,
-          justifyContent: "center",
-          px: 2,
-        }}
-      >
-        {sortedCourseIds.map(renderCourseCard)}
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 2, gap: 1.5 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
+          Found{" "}
+          <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
+            {totalTeeTimes}
+          </Box>{" "}
+          tee time{totalTeeTimes !== 1 ? "s" : ""} across{" "}
+          <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
+            {sortedCourseIds.length}
+          </Box>{" "}
+          course{sortedCourseIds.length !== 1 ? "s" : ""}
+        </Typography>
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          size="small"
+          onChange={(_, val) => val && setViewMode(val)}
+          aria-label="view mode"
+        >
+          <ToggleButton value="list" aria-label="list view">
+            <ViewListIcon fontSize="small" />
+          </ToggleButton>
+          <ToggleButton value="map" aria-label="map view">
+            <MapIcon fontSize="small" />
+          </ToggleButton>
+        </ToggleButtonGroup>
       </Box>
-      <ManualCoursesSection />
+      {viewMode === "map" ? (
+        <CourseMapView />
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 345px))",
+              gap: 3,
+              justifyContent: "center",
+              px: 2,
+            }}
+          >
+            {sortedCourseIds.map(renderCourseCard)}
+          </Box>
+          <ManualCoursesSection />
+        </>
+      )}
     </Box>
   );
 };
