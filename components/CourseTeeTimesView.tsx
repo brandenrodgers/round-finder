@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import Box from "@mui/material/Box";
@@ -24,6 +24,14 @@ const CourseTeeTimesView: React.FC = () => {
   const dispatch = useAppDispatch();
   const favoriteIds = useAppSelector(getFavorites);
   const isFavorite = courseId ? favoriteIds.includes(courseId) : false;
+  const [justToggled, setJustToggled] = useState(false);
+
+  const handleFavoriteClick = () => {
+    if (!courseId) return;
+    dispatch(toggleFavorite(courseId));
+    setJustToggled(true);
+    setTimeout(() => setJustToggled(false), 350);
+  };
 
   const router = useRouter();
 
@@ -41,7 +49,17 @@ const CourseTeeTimesView: React.FC = () => {
 
   const renderTeeTime = (teeTime: TeeTime, index: number) => {
     return (
-      <Box key={`${index}-${teeTime.time}`}>
+      <Box
+        key={`${index}-${teeTime.time}`}
+        sx={{
+          animation: "cardFadeUp 0.3s ease-out both",
+          animationDelay: `${Math.min(index, 9) * 45}ms`,
+          "@keyframes cardFadeUp": {
+            from: { opacity: 0, transform: "translateY(12px)" },
+            to: { opacity: 1, transform: "translateY(0)" },
+          },
+        }}
+      >
         <TeeTimeCard
           bookLink={course ? course.bookLink : undefined}
           date={date}
@@ -82,7 +100,7 @@ const CourseTeeTimesView: React.FC = () => {
               title="course-photo"
             />
             <IconButton
-              onClick={() => courseId && dispatch(toggleFavorite(courseId))}
+              onClick={handleFavoriteClick}
               aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
               sx={{
                 position: "absolute",
@@ -92,6 +110,15 @@ const CourseTeeTimesView: React.FC = () => {
                 "&:hover": { bgcolor: "rgba(255,255,255,1)" },
                 width: 36,
                 height: 36,
+                ...(justToggled && {
+                  animation: "favPop 0.35s ease-out",
+                  "@keyframes favPop": {
+                    "0%": { transform: "scale(1)" },
+                    "40%": { transform: "scale(1.45)" },
+                    "70%": { transform: "scale(0.88)" },
+                    "100%": { transform: "scale(1)" },
+                  },
+                }),
               }}
             >
               {isFavorite ? (

@@ -55,6 +55,7 @@ const SearchForm: React.FC = () => {
   const [holes, setHoles] = useState(filter.holes || (9 as Holes));
   const [players, setPlayers] = useState(filter.players || (1 as Players));
   const [times, setTimes] = useState<number[]>(filter.times || [7, 11]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -66,9 +67,10 @@ const SearchForm: React.FC = () => {
   };
 
   const handleSearch = () => {
+    setIsSearching(true);
     dispatch(updateDate(date.format("MM/DD/YYYY")));
     dispatch(updateFilter({ holes, players, times }));
-    router.push("/tee-times");
+    setTimeout(() => router.push("/tee-times"), 650);
   };
 
   return (
@@ -89,7 +91,7 @@ const SearchForm: React.FC = () => {
           background: "rgba(255, 255, 255, 0.78)",
           backdropFilter: "blur(14px)",
           border: "1px solid rgba(255, 255, 255, 0.5)",
-          borderRadius: 3,
+          borderRadius: 2,
           animation: "fadeUp 0.4s ease-out both",
           "@keyframes fadeUp": {
             from: { opacity: 0, transform: "translateY(14px)" },
@@ -190,9 +192,28 @@ const SearchForm: React.FC = () => {
               variant="contained"
               size="large"
               startIcon={<SearchIcon />}
-              disabled={!holes || !players || !times.length}
+              disabled={!holes || !players || !times.length || isSearching}
               onClick={handleSearch}
-              sx={{ borderRadius: 999, py: { xs: 1, sm: 1.5 } }}
+              sx={{
+                borderRadius: 999,
+                py: { xs: 1, sm: 1.5 },
+                transition: "transform 0.1s ease",
+                "&:active": { transform: "scale(0.97)" },
+                ...(isSearching && {
+                  background:
+                    "linear-gradient(to right, #3BA783 50%, #0D9465 50%)",
+                  backgroundSize: "200% 100%",
+                  backgroundPosition: "100% center",
+                  animation: "chargeFill 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+                  "@keyframes chargeFill": {
+                    "0%": { backgroundPosition: "100% center", transform: "scale(0.97)" },
+                    "10%": { transform: "scale(1)" },
+                    "70%": { backgroundPosition: "0% center" },
+                    "83%": { backgroundPosition: "0% center", filter: "brightness(1.15)", transform: "scale(1.03)" },
+                    "100%": { backgroundPosition: "0% center", filter: "brightness(1)", transform: "scale(1)" },
+                  },
+                }),
+              }}
             >
               Find tee times
             </Button>

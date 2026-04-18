@@ -15,6 +15,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
+import Collapse from "@mui/material/Collapse";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -27,6 +29,7 @@ import FilterButton from "./FilterButton";
 
 const Header: React.FC = () => {
   const [infoOpen, setInfoOpen] = useState(false);
+  const [whyOpen, setWhyOpen] = useState(false);
   const date = useAppSelector(getDate);
   const params = useParams();
   const courseId = params?.courseId as string | undefined;
@@ -230,7 +233,7 @@ const Header: React.FC = () => {
 
       <Dialog
         open={infoOpen}
-        onClose={() => setInfoOpen(false)}
+        onClose={() => { setInfoOpen(false); setWhyOpen(false); }}
         maxWidth="xs"
         fullWidth
         PaperProps={{ sx: { borderRadius: 3, mx: 2 } }}
@@ -292,6 +295,42 @@ const Header: React.FC = () => {
               View all supported courses
             </Box>
           </Box>
+          <Divider sx={{ mt: 2.5 }} />
+          <Box
+            onClick={() => setWhyOpen((o) => !o)}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              mt: 1.5,
+              cursor: "pointer",
+              userSelect: "none",
+            }}
+          >
+            <Typography variant="subtitle2" fontWeight={700}>
+              Why not just use a booking app?
+            </Typography>
+            <ExpandMoreIcon
+              fontSize="small"
+              sx={{
+                color: "text.secondary",
+                transform: whyOpen ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.2s",
+              }}
+            />
+          </Box>
+          <Collapse in={whyOpen}>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
+              Most tee time booking apps only list courses that have partnered
+              with them, so you&apos;re only ever seeing a fraction of what&apos;s
+              actually available nearby. They also charge a per-round convenience
+              fee on top of the course rate. Round Finder skips all that. It
+              searches across public courses in the area and links you directly
+              to the course&apos;s own booking page, so you pay exactly what the
+              course charges, nothing more.
+            </Typography>
+          </Collapse>
+          <Divider sx={{ mt: 1 }} />
           <Typography variant="body2" color="text.secondary" sx={{ mt: 2.5, textAlign: "center" }}>
             Built for fun, not profit. If it helps you get out on the course,
             feel free to buy me a beer for my next round.

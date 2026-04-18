@@ -8,6 +8,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import IconButton from "@mui/material/IconButton";
 import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IosShareIcon from "@mui/icons-material/IosShare";
@@ -144,9 +146,17 @@ const TeeTimeCard: React.FC<TeeTimeCardPropTypes> = ({
         open={snackbarOpen}
         autoHideDuration={2500}
         onClose={() => setSnackbarOpen(false)}
-        message="Link copied!"
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      />
+      >
+        <Alert
+          icon={<CheckCircleIcon fontSize="small" />}
+          severity="success"
+          onClose={() => setSnackbarOpen(false)}
+          sx={{ fontWeight: 600, borderRadius: 2, boxShadow: 3 }}
+        >
+          Link copied!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

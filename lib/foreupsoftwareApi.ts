@@ -42,6 +42,7 @@ const makeFormatResponse =
   (courseId: string, courseName: string, nineHoleOnly?: boolean) =>
   (resp: ForeupsoftwareTeeTimeResponse): Array<TeeTime> => {
     if (!Array.isArray(resp)) return [];
+    const seen = new Set<string>();
     const result = [] as Array<TeeTime>;
 
     resp.forEach((teeTime) => {
@@ -51,16 +52,18 @@ const makeFormatResponse =
           : [teeTime.holes];
 
       holesArray.forEach((hole) => {
+        const hours = getHoursFromDate(teeTime.time);
+        const minutes = getMinutesFromDate(teeTime.time);
+        const key = `${hours}-${minutes}-${hole}`;
+        if (seen.has(key)) return;
+        seen.add(key);
         result.push({
           courseId,
           courseName,
           availablePlayers: teeTime.available_spots,
           startSide:
             teeTime.teesheet_side_name.toLowerCase() as TeeTime["startSide"],
-          time: {
-            hours: getHoursFromDate(teeTime.time),
-            minutes: getMinutesFromDate(teeTime.time),
-          },
+          time: { hours, minutes },
           holes: hole as TeeTime["holes"],
         });
       });

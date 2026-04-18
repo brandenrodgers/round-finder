@@ -12,7 +12,18 @@ export const getLocation = (state: RootState) => state.location.coords;
 export const getLocationStatus = (state: RootState) => state.location.status;
 export const getFavorites = (state: RootState) => state.favorites.courseIds;
 
-const filterTeeTime = (teeTime: TeeTime, filter: Filter): boolean => {
+const isToday = (date: string | null): boolean => {
+  if (!date) return false;
+  const today = new Date();
+  const [month, day, year] = date.split("/").map(Number);
+  return (
+    today.getFullYear() === year &&
+    today.getMonth() + 1 === month &&
+    today.getDate() === day
+  );
+};
+
+const filterTeeTime = (teeTime: TeeTime, filter: Filter, searchIsToday: boolean): boolean => {
   if (filter.players && teeTime.availablePlayers < filter.players) {
     return false;
   }
@@ -26,12 +37,24 @@ const filterTeeTime = (teeTime: TeeTime, filter: Filter): boolean => {
   ) {
     return false;
   }
+  if (searchIsToday) {
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+    if (
+      teeTime.time.hours < currentHours ||
+      (teeTime.time.hours === currentHours && teeTime.time.minutes < currentMinutes)
+    ) {
+      return false;
+    }
+  }
   return true;
 };
 
 export const getFilteredTeeTimesMemoized = createSelector(
-  [getCourses, getFilter],
-  (courses, filter) => {
+  [getCourses, getFilter, getDate],
+  (courses, filter, date) => {
+    const searchIsToday = isToday(date);
     const courseIds = Object.keys(courses);
 
     const result = {} as Courses;
@@ -43,7 +66,7 @@ export const getFilteredTeeTimesMemoized = createSelector(
       if (filter.range && !course.hasRange) return;
 
       const filteredTeeTimes = course.teeTimes
-        ? course.teeTimes.filter((teeTime) => filterTeeTime(teeTime, filter))
+        ? course.teeTimes.filter((teeTime) => filterTeeTime(teeTime, filter, searchIsToday))
         : [];
 
       if (filteredTeeTimes.length) {

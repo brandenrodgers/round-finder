@@ -3,6 +3,7 @@ import { DM_Serif_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import StoreProvider from "@/components/StoreProvider";
 import ThemeRegistry from "@/components/ThemeRegistry";
+import PageTransition from "@/components/PageTransition";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -41,7 +42,9 @@ export default function RootLayout({
     <html lang="en" className={dmSerifDisplay.variable}>
       <body>
         <StoreProvider>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+              <PageTransition>{children}</PageTransition>
+            </ThemeRegistry>
         </StoreProvider>
         <Analytics />
       </body>

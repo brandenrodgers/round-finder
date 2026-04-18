@@ -28,7 +28,12 @@ import {
   getSortedCourseIdsMemoized,
 } from "@/store/selectors";
 
-const CourseMapView = dynamic(() => import("./CourseMapView"), { ssr: false });
+const CourseMapView = dynamic(() => import("./CourseMapView"), {
+  ssr: false,
+  loading: () => (
+    <Skeleton variant="rectangular" sx={{ height: "calc(100dvh - 112px)", width: "100%" }} />
+  ),
+});
 
 const ManualCoursesSection: React.FC = () => {
   const manualCourses = useAppSelector(getManualCoursesMemoized);
@@ -36,7 +41,7 @@ const ManualCoursesSection: React.FC = () => {
   if (!manualCourses.length) return null;
 
   return (
-    <Box sx={{ width: "100%", px: 2, pt: 3 }}>
+    <Box sx={{ width: "100%", alignSelf: "stretch", px: 2, pt: 3 }}>
       <Box sx={{ maxWidth: 500, mx: "auto" }}>
         <Typography
           variant="overline"
@@ -107,11 +112,25 @@ const CourseListingsView: React.FC = () => {
     }
   };
 
-  const renderCourseCard = (courseId: string) => {
+  const renderCourseCard = (courseId: string, index: number) => {
     const course = filteredTeeTimes[courseId];
 
     if (course && course.teeTimes && course.teeTimes.length) {
-      return <CourseCard key={course.courseId} course={course} />;
+      return (
+        <Box
+          key={course.courseId}
+          sx={{
+            animation: "cardFadeUp 0.35s ease-out both",
+            animationDelay: `${Math.min(index, 7) * 60}ms`,
+            "@keyframes cardFadeUp": {
+              from: { opacity: 0, transform: "translateY(16px)" },
+              to: { opacity: 1, transform: "translateY(0)" },
+            },
+          }}
+        >
+          <CourseCard course={course} />
+        </Box>
+      );
     }
     return null;
   };
@@ -146,58 +165,59 @@ const CourseListingsView: React.FC = () => {
 
   if (!sortedCourseIds.length) {
     return (
-      <Box
-        sx={{
-          minHeight: "60dvh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 2,
-          px: 3,
-          pt: 2,
-          pb: 4,
-          backgroundColor: (theme) => theme.palette.secondary.light,
-        }}
-      >
-        <Box sx={{ width: "100%", maxWidth: 500 }}>
-          <WeatherBanner weather={weather} loading={weatherLoading} />
-        </Box>
+      <Box sx={{ backgroundColor: (theme) => theme.palette.secondary.light, pb: 4 }}>
         <Box
           sx={{
-            width: 80,
-            height: 80,
-            borderRadius: "50%",
-            bgcolor: "rgba(13, 148, 101, 0.1)",
+            minHeight: "60dvh",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+            gap: 2,
+            px: 3,
+            pt: 2,
+            pb: 4,
           }}
         >
-          <SportsGolfIcon sx={{ fontSize: 40, color: "primary.main" }} />
+          <Box sx={{ width: "100%", maxWidth: 500 }}>
+            <WeatherBanner weather={weather} loading={weatherLoading} />
+          </Box>
+          <Box
+            sx={{
+              width: 80,
+              height: 80,
+              borderRadius: "50%",
+              bgcolor: "rgba(13, 148, 101, 0.1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <SportsGolfIcon sx={{ fontSize: 40, color: "primary.main" }} />
+          </Box>
+          <Typography
+            variant="h5"
+            sx={{ fontFamily: "var(--font-display), serif", textAlign: "center" }}
+          >
+            No tee times found
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textAlign: "center", maxWidth: 280 }}
+          >
+            No openings match your filters for that date. Try a different day or
+            adjust your time range.
+          </Typography>
+          <Button
+            variant="contained"
+            size="medium"
+            sx={{ borderRadius: 999, mt: 1 }}
+            onClick={() => router.push("/")}
+          >
+            Adjust search
+          </Button>
         </Box>
-        <Typography
-          variant="h5"
-          sx={{ fontFamily: "var(--font-display), serif", textAlign: "center" }}
-        >
-          No tee times found
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center", maxWidth: 280 }}
-        >
-          No openings match your filters for that date. Try a different day or
-          adjust your time range.
-        </Typography>
-        <Button
-          variant="contained"
-          size="medium"
-          sx={{ borderRadius: 999, mt: 1 }}
-          onClick={() => router.push("/")}
-        >
-          Adjust search
-        </Button>
         <ManualCoursesSection />
       </Box>
     );
@@ -244,24 +264,32 @@ const CourseListingsView: React.FC = () => {
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      {viewMode === "map" ? (
-        <CourseMapView />
-      ) : (
-        <>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 345px))",
-              gap: 3,
-              justifyContent: "center",
-              px: 2,
-            }}
-          >
-            {sortedCourseIds.map(renderCourseCard)}
-          </Box>
-          <ManualCoursesSection />
-        </>
-      )}
+      <Box
+        key={viewMode}
+        sx={{
+          animation: "viewFadeIn 150ms ease-in-out",
+          "@keyframes viewFadeIn": { from: { opacity: 0 }, to: { opacity: 1 } },
+        }}
+      >
+        {viewMode === "map" ? (
+          <CourseMapView />
+        ) : (
+          <>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 345px))",
+                gap: 3,
+                justifyContent: "center",
+                px: 2,
+              }}
+            >
+              {sortedCourseIds.map((id, i) => renderCourseCard(id, i))}
+            </Box>
+            <ManualCoursesSection />
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

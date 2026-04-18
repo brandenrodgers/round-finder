@@ -1,6 +1,7 @@
 "use client";
 
 import Box from "@mui/material/Box";
+import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -28,10 +29,13 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
   const location = useAppSelector(getLocation);
   const favoriteIds = useAppSelector(getFavorites);
   const isFavorite = favoriteIds.includes(course.courseId);
+  const [justToggled, setJustToggled] = useState(false);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(toggleFavorite(course.courseId));
+    setJustToggled(true);
+    setTimeout(() => setJustToggled(false), 350);
   };
 
   const distanceMi =
@@ -65,6 +69,15 @@ const CourseCard: React.FC<CourseCardPropTypes> = ({ course }) => {
               "&:hover": { bgcolor: "rgba(255,255,255,1)" },
               width: 28,
               height: 28,
+              ...(justToggled && {
+                animation: "favPop 0.35s ease-out",
+                "@keyframes favPop": {
+                  "0%": { transform: "scale(1)" },
+                  "40%": { transform: "scale(1.45)" },
+                  "70%": { transform: "scale(0.88)" },
+                  "100%": { transform: "scale(1)" },
+                },
+              }),
             }}
           >
             {isFavorite ? (

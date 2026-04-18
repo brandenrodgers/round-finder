@@ -15,6 +15,20 @@ import {
   getSortedCourseIdsMemoized,
 } from "@/store/selectors";
 
+const userLocationIcon = L.divIcon({
+  html: `<div style="
+    background: #1565c0;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #1565c0, 0 2px 6px rgba(0,0,0,0.4);
+  "></div>`,
+  className: "",
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+});
+
 const createMarkerIcon = (count: number) =>
   L.divIcon({
     html: `<div style="
@@ -63,6 +77,18 @@ const CourseMapView: React.FC = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+        {location && (
+          <Marker
+            position={[location.lat, location.lng]}
+            icon={userLocationIcon}
+          >
+            <Popup>
+              <Typography variant="caption" fontWeight={600}>
+                Your location
+              </Typography>
+            </Popup>
+          </Marker>
+        )}
         {courses.map((course) => (
           <Marker
             key={course.courseId}
