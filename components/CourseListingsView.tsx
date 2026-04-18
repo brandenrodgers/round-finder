@@ -67,6 +67,8 @@ const CourseListingsView: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [displayedTeeTimes, setDisplayedTeeTimes] = useState(0);
+  const [displayedCourses, setDisplayedCourses] = useState(0);
   const date = useAppSelector(getDate);
   const location = useAppSelector(getLocation);
   const filteredTeeTimes = useAppSelector(getFilteredTeeTimesMemoized);
@@ -82,6 +84,28 @@ const CourseListingsView: React.FC = () => {
       fetchWeather();
     }
   }, [date]);
+
+  const totalTeeTimes = Object.values(filteredTeeTimes).reduce(
+    (sum, course) => sum + (course.teeTimes?.length ?? 0),
+    0
+  );
+
+  useEffect(() => {
+    if (loading || !totalTeeTimes) return;
+    setDisplayedTeeTimes(0);
+    setDisplayedCourses(0);
+    const steps = 24;
+    const duration = 700;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const eased = 1 - (1 - step / steps) ** 2;
+      setDisplayedTeeTimes(Math.round(eased * totalTeeTimes));
+      setDisplayedCourses(Math.round(eased * sortedCourseIds.length));
+      if (step >= steps) clearInterval(timer);
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [loading, totalTeeTimes, sortedCourseIds.length]);
 
   const fetchTeeTimes = async () => {
     const resp = await axios.get<Courses>("/api/tee-times", {
@@ -223,11 +247,6 @@ const CourseListingsView: React.FC = () => {
     );
   }
 
-  const totalTeeTimes = Object.values(filteredTeeTimes).reduce(
-    (sum, course) => sum + (course.teeTimes?.length ?? 0),
-    0
-  );
-
   return (
     <Box
       sx={{
@@ -241,11 +260,11 @@ const CourseListingsView: React.FC = () => {
         <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
           Found{" "}
           <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
-            {totalTeeTimes}
+            {displayedTeeTimes}
           </Box>{" "}
           tee time{totalTeeTimes !== 1 ? "s" : ""} across{" "}
           <Box component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
-            {sortedCourseIds.length}
+            {displayedCourses}
           </Box>{" "}
           course{sortedCourseIds.length !== 1 ? "s" : ""}
         </Typography>

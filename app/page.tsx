@@ -38,6 +38,11 @@ export default function HomePage() {
             textShadow: "0 1px 8px rgba(0,0,0,0.5)",
             textAlign: "center",
             mb: { xs: 1, sm: 2 },
+            animation: "fadeUp 0.4s ease-out both",
+            "@keyframes fadeUp": {
+              from: { opacity: 0, transform: "translateY(10px)" },
+              to: { opacity: 1, transform: "translateY(0)" },
+            },
           }}
         >
           Boston area public golf tee times

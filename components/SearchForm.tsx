@@ -92,7 +92,7 @@ const SearchForm: React.FC = () => {
           backdropFilter: "blur(14px)",
           border: "1px solid rgba(255, 255, 255, 0.5)",
           borderRadius: 2,
-          animation: "fadeUp 0.4s ease-out both",
+          animation: "fadeUp 0.4s ease-out 120ms both",
           "@keyframes fadeUp": {
             from: { opacity: 0, transform: "translateY(14px)" },
             to: { opacity: 1, transform: "translateY(0)" },
