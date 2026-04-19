@@ -1,8 +1,5 @@
 "use client";
 
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Typography from "@mui/material/Typography";
 import { Players } from "@/lib/types";
 
 type PlayersPickerProps = {
@@ -10,35 +7,41 @@ type PlayersPickerProps = {
   onChange: (newPlayers: Players) => void;
 };
 
+const PLAYERS = [1, 2, 3, 4] as const;
+
 const PlayersPicker: React.FC<PlayersPickerProps> = ({ value, onChange }) => {
-  const handlePlayersChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newPlayers: Players
-  ) => {
-    onChange(newPlayers);
-  };
   return (
-    <ToggleButtonGroup
-      color="primary"
-      size="medium"
-      value={value}
-      exclusive
-      onChange={handlePlayersChange}
-      aria-label="players-input"
-    >
-      <ToggleButton value={1}>
-        <Typography variant="h5">1</Typography>
-      </ToggleButton>
-      <ToggleButton value={2}>
-        <Typography variant="h5">2</Typography>
-      </ToggleButton>
-      <ToggleButton value={3}>
-        <Typography variant="h5">3</Typography>
-      </ToggleButton>
-      <ToggleButton value={4}>
-        <Typography variant="h5">4</Typography>
-      </ToggleButton>
-    </ToggleButtonGroup>
+    <div style={{ display: "flex", gap: 10 }}>
+      {PLAYERS.map((n) => {
+        const selected = value === n;
+        return (
+          <button
+            key={n}
+            onClick={() => onChange(n as Players)}
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: "50%",
+              border: selected ? "1px solid #2d6a4f" : "1px solid #bdbdbd",
+              backgroundColor: selected ? "#2d6a4f" : "rgba(0, 0, 0, 0.06)",
+              color: selected ? "#fff" : "#1a2e1a",
+              fontSize: 18,
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 0,
+              transition: "all 0.15s ease",
+            }}
+            aria-label={`${n} player${n > 1 ? "s" : ""}`}
+            aria-pressed={selected}
+          >
+            {n}
+          </button>
+        );
+      })}
+    </div>
   );
 };
 

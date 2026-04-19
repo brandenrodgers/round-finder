@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
-import SearchIcon from "@mui/icons-material/Search";
+import GolfCourseOutlinedIcon from "@mui/icons-material/GolfCourseOutlined";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -31,15 +31,17 @@ function getQuickDates() {
   const daysUntilSaturday = ((6 - dow + 7) % 7) || 7;
   const nextSaturday = today.add(daysUntilSaturday, "day");
 
+  // Sun: show Today + upcoming Fri/Sat (no Tomorrow/Monday)
   // Thu: tomorrow=Fri, so skip Friday but keep Saturday (2 days away)
   // Fri/Sat: show Today + Tomorrow; next Fri/Sat are too far out
-  const showToday = dow === 5 || dow === 6;
+  const showToday = dow === 0 || dow === 5 || dow === 6;
+  const showTomorrow = dow !== 0;
   const showFriday = dow < 4;
   const showSaturday = dow < 5;
 
   return [
     ...(showToday ? [{ label: "Today", date: today }] : []),
-    { label: "Tomorrow", date: tomorrow },
+    ...(showTomorrow ? [{ label: "Tomorrow", date: tomorrow }] : []),
     ...(showFriday ? [{ label: "Friday", date: nextFriday }] : []),
     ...(showSaturday ? [{ label: "Saturday", date: nextSaturday }] : []),
   ];
@@ -109,10 +111,9 @@ const SearchForm: React.FC = () => {
           >
             <Typography
               variant="overline"
-              color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 }, color: "#1a2e1a", fontWeight: 800 }}
             >
-              Holes
+              Round Length
             </Typography>
             <HolesPicker
               value={holes}
@@ -127,12 +128,26 @@ const SearchForm: React.FC = () => {
           >
             <Typography
               variant="overline"
-              color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 }, color: "#1a2e1a", fontWeight: 800 }}
             >
               Date
             </Typography>
-            <DatePicker label="Date" value={date} onChange={handleDateChange} />
+            <DatePicker
+              label="Date"
+              value={date}
+              onChange={handleDateChange}
+              slotProps={{
+                textField: {
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: "rgba(0, 0, 0, 0.06)",
+                      "& fieldset": { borderColor: "rgba(0, 0, 0, 0.08)" },
+                      "&:hover fieldset": { borderColor: "rgba(0, 0, 0, 0.15)" },
+                    },
+                  },
+                },
+              }}
+            />
             <Box sx={{ display: "flex", gap: 0.75, mt: 1 }}>
               {getQuickDates().map(({ label, date: quickDate }) => (
                 <Chip
@@ -156,8 +171,7 @@ const SearchForm: React.FC = () => {
           >
             <Typography
               variant="overline"
-              color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 }, color: "#1a2e1a", fontWeight: 800 }}
             >
               Players
             </Typography>
@@ -175,10 +189,9 @@ const SearchForm: React.FC = () => {
           >
             <Typography
               variant="overline"
-              color="text.secondary"
-              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 } }}
+              sx={{ letterSpacing: "0.12em", mb: { xs: 0.25, sm: 0.5 }, color: "#1a2e1a", fontWeight: 800 }}
             >
-              Time
+              Time Window
             </Typography>
             <TimesPicker
               value={times}
@@ -191,7 +204,7 @@ const SearchForm: React.FC = () => {
               fullWidth
               variant="contained"
               size="large"
-              startIcon={<SearchIcon />}
+              startIcon={<GolfCourseOutlinedIcon sx={{ mb: "3px" }} />}
               disabled={!holes || !players || !times.length || isSearching}
               onClick={handleSearch}
               sx={{
